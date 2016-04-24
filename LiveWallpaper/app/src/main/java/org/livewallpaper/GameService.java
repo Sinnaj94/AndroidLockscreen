@@ -11,6 +11,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+import android.view.View;
 import android.view.WindowManager;
 
 public class GameService extends WallpaperService {
@@ -47,6 +48,11 @@ public class GameService extends WallpaperService {
 		private boolean           mVisible;
 		private SharedPreferences mPreferences;
 
+        private float posX;
+        private float posY;
+        private float height;
+        private float width;
+
 		private Rect mRectFrame;
 
 
@@ -58,6 +64,7 @@ public class GameService extends WallpaperService {
 		private boolean mMotion       = true;
 		private String  mShape        = "smpte";
 
+        //Hier ist der Konstruktor
 		TestPatternEngine() {
 			final Paint paint = mPaint;
 			paint.setColor(0xffffffff);
@@ -65,8 +72,10 @@ public class GameService extends WallpaperService {
 			paint.setStrokeWidth(2);
 			paint.setStrokeCap(Paint.Cap.ROUND);
 			paint.setStyle(Paint.Style.STROKE);
-
-			mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
+            posY = 900;
+            width = 200;
+            height = 50;
+            mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
 			mPreferences.registerOnSharedPreferenceChangeListener(this);
 			onSharedPreferenceChanged(mPreferences, null);
 		}
@@ -139,6 +148,7 @@ public class GameService extends WallpaperService {
 			if (event.getAction() == MotionEvent.ACTION_MOVE) {
 				mTouchX = event.getX();
 				mTouchY = event.getY();
+                posX = mTouchX;
 			} else {
 				mTouchX = -1;
 				mTouchY = -1;
@@ -159,7 +169,7 @@ public class GameService extends WallpaperService {
 				c = holder.lockCanvas();
 				if (c != null) {
 					// draw something
-					refreshAll(c);
+
 					drawAll(c);
 				}
 			} finally {
@@ -181,12 +191,24 @@ public class GameService extends WallpaperService {
 		}
 
 		void drawAll(Canvas c) {
+            refreshAll(c);
             drawBackground(c);
-            c.drawRect(0,0,c.getWidth(),c.getHeight()/2,a);
+            drawSpaceShip(c);
+
 			if (mTouchX >= 0 && mTouchY >= 0) {
 				c.drawCircle(mTouchX, mTouchY, 10, mPaint);
 			}
 		}
+
+        void drawSpaceShip(Canvas c){
+            Paint a = new Paint();
+            a.setARGB(255,255,0,0);
+            float left = posX-width/2;
+            float up = posY;
+            float right = left+width;
+            float down = up+height;
+            c.drawRect(left,up,right,down,a);
+        }
 
         void drawBackground(Canvas c){
             c.drawARGB(255,0,0,10);
