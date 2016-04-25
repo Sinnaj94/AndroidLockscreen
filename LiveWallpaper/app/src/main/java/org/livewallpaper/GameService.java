@@ -47,22 +47,14 @@ public class GameService extends WallpaperService {
 		};
 		private boolean           mVisible;
 		private SharedPreferences mPreferences;
-
-        private float posX;
-        private float posY;
-        private float height;
-        private float width;
-
 		private Rect mRectFrame;
-
-
-
-
-
 		private boolean mHorizontal   = false;
 		private int     mFrameCounter = 0;
 		private boolean mMotion       = true;
 		private String  mShape        = "smpte";
+
+        //Unseres
+        Player player;
 
         //Hier ist der Konstruktor
 		TestPatternEngine() {
@@ -72,12 +64,12 @@ public class GameService extends WallpaperService {
 			paint.setStrokeWidth(2);
 			paint.setStrokeCap(Paint.Cap.ROUND);
 			paint.setStyle(Paint.Style.STROKE);
-            posY = 900;
-            width = 200;
-            height = 50;
             mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
 			mPreferences.registerOnSharedPreferenceChangeListener(this);
 			onSharedPreferenceChanged(mPreferences, null);
+
+            //Unseres
+            player = new Player(720,1280,100,50,.7f);
 		}
 
 		public void onSharedPreferenceChanged(SharedPreferences prefs,
@@ -148,7 +140,6 @@ public class GameService extends WallpaperService {
 			if (event.getAction() == MotionEvent.ACTION_MOVE) {
 				mTouchX = event.getX();
 				mTouchY = event.getY();
-                posX = mTouchX;
 			} else {
 				mTouchX = -1;
 				mTouchY = -1;
@@ -168,8 +159,9 @@ public class GameService extends WallpaperService {
 			try {
 				c = holder.lockCanvas();
 				if (c != null) {
-					// draw something
-
+					//update
+                    updateAll();
+                    //draw
 					drawAll(c);
 				}
 			} finally {
@@ -183,32 +175,29 @@ public class GameService extends WallpaperService {
 			}
 		}
 
-		void refreshAll(Canvas c) {
-			c.save();
-            //to refresh the background?
-			c.drawColor(0xff000000);
-			c.restore();
-		}
+        void updateAll(){
+            if(mTouchX >=0){
+                player.changePosX(mTouchX);
+            }
+        }
+
 
 		void drawAll(Canvas c) {
             refreshAll(c);
             drawBackground(c);
-            drawSpaceShip(c);
-
-			if (mTouchX >= 0 && mTouchY >= 0) {
-				c.drawCircle(mTouchX, mTouchY, 10, mPaint);
-			}
+            player.draw(c);
 		}
 
-        void drawSpaceShip(Canvas c){
-            Paint a = new Paint();
-            a.setARGB(255,255,0,0);
-            float left = posX-width/2;
-            float up = posY;
-            float right = left+width;
-            float down = up+height;
-            c.drawRect(left,up,right,down,a);
+        void refreshAll(Canvas c) {
+            c.save();
+
+            //to refresh the background?
+            c.drawColor(0xff000000);
+            c.restore();
         }
+
+
+
 
         void drawBackground(Canvas c){
             c.drawARGB(255,0,0,10);
@@ -235,4 +224,6 @@ public class GameService extends WallpaperService {
 
 		}
 	}
+
 }
+
