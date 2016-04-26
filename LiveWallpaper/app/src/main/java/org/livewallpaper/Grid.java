@@ -30,8 +30,8 @@ public class Grid {
     public void update(){
         top = 0;
         left = 0;
-        bottom = windowSizeX;
-        right = windowSizeY;
+        bottom = windowSizeY/2;
+        right = windowSizeX;
         senkrechte = new RectF(left,top,right,bottom);
     }
     public void draw(Canvas c){

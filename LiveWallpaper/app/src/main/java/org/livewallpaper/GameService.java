@@ -57,6 +57,7 @@ public class GameService extends WallpaperService {
         Player player;
 		Enemy enemy;
         Grid grid;
+		Canvas canvas;
         //Hier ist der Konstruktor
 		TestPatternEngine() {
 			final Paint paint = mPaint;
@@ -70,9 +71,11 @@ public class GameService extends WallpaperService {
 			onSharedPreferenceChanged(mPreferences, null);
 
             //Unseres
-            //TODO: Automatically detect the Windowsize.
-			float windowSizeX = 768;
+
+
+			float windowSizeX = 720;
 			float windowSizeY = 1280;
+
             player = new Player(windowSizeX,windowSizeY,100,50,.7f);
 			enemy = new Enemy(windowSizeX,windowSizeY,100,100,.1f);
             grid = new Grid(windowSizeX,windowSizeY);
