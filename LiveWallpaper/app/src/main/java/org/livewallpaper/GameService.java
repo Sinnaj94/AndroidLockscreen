@@ -72,11 +72,12 @@ public class GameService extends WallpaperService {
 			//merge
             //Unseres
 
-
-			float windowSizeX = 720;
-			float windowSizeY = 1280;
+			//TODO Größe relativ implementieren
+			float windowSizeX = 1080;
+			float windowSizeY = 1920;
 
             player = new Player(windowSizeX,windowSizeY,100,50,.7f);
+			player.shoot();
 			enemy = new Enemy(windowSizeX,windowSizeY,100,100,.1f);
             grid = new Grid(windowSizeX,windowSizeY);
 		}
@@ -189,6 +190,7 @@ public class GameService extends WallpaperService {
             if(mTouchX >=0){
                 player.changePosX(mTouchX);
             }
+			player.update();
         }
 
 

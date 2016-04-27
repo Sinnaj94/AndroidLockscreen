@@ -14,7 +14,7 @@ public class Player {
     float posY;
     float width;
     float height;
-
+    Bullet bullet;
     RectF rectShape;
     Paint a;
 
@@ -30,12 +30,18 @@ public class Player {
         update();
     }
 
+    public void shoot(){
+        bullet = new Bullet(posX+width/2, posY);
+    }
+
     public void changePosX(float newPosX){
         this.posX = newPosX;
-        update();
     }
 
     public void update(){
+        if(bullet!=null){
+            bullet.update();
+        }
         float left = posX-width/2;
         float up = posY-height/2;
         float right = left+width;
@@ -45,5 +51,6 @@ public class Player {
     }
     void draw(Canvas c){
         c.drawRect(rectShape,a);
+        bullet.draw(c);
     }
 }
