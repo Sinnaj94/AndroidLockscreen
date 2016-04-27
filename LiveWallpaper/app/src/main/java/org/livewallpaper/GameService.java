@@ -69,7 +69,7 @@ public class GameService extends WallpaperService {
             mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
 			mPreferences.registerOnSharedPreferenceChangeListener(this);
 			onSharedPreferenceChanged(mPreferences, null);
-
+			//merge
             //Unseres
 
 
