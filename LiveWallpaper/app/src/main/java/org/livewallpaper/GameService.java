@@ -73,8 +73,8 @@ public class GameService extends WallpaperService {
             //Unseres
 
 			//TODO Größe relativ implementieren
-			float windowSizeX = 1080;
-			float windowSizeY = 1920;
+			float windowSizeX = 720;
+			float windowSizeY = 1280;
 
             player = new Player(windowSizeX,windowSizeY,100,50,.7f);
 			player.shoot();

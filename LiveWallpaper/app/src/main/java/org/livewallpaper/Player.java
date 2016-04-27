@@ -14,7 +14,7 @@ public class Player {
     float posY;
     float width;
     float height;
-    Bullet bullet;
+    float speed;
     RectF rectShape;
     Paint a;
 
@@ -23,6 +23,7 @@ public class Player {
         this.posY = windowSizeY*percentDown;
         this.width = width;
         this.height = height;
+        speed = 20f;
         rectShape = new RectF();
         a = new Paint();
         a.setARGB(255,255,0,0);
@@ -31,17 +32,24 @@ public class Player {
     }
 
     public void shoot(){
-        bullet = new Bullet(posX+width/2, posY);
+
     }
 
     public void changePosX(float newPosX){
-        this.posX = newPosX;
+        float delta = Math.abs(newPosX-posX);
+        if(newPosX>posX){
+
+            posX+=delta*.1;
+        }else if(newPosX<posX){
+            posX-=delta*.1;
+        }
+
     }
 
     public void update(){
-        if(bullet!=null){
-            bullet.update();
-        }
+        //if(bullet!=null){
+            //bullet.update();
+        //}
         float left = posX-width/2;
         float up = posY-height/2;
         float right = left+width;
@@ -51,6 +59,6 @@ public class Player {
     }
     void draw(Canvas c){
         c.drawRect(rectShape,a);
-        bullet.draw(c);
+
     }
 }
