@@ -113,11 +113,12 @@ public class GameService extends WallpaperService {
             float windowSizeY = rectFrame.height();
 
             // In onCreate method
-            sensorMan = (SensorManager)getSystemService(SENSOR_SERVICE);
+            sensorMan = (SensorManager) getSystemService(SENSOR_SERVICE);
             accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            
+
             player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
-            player.shoot();
+
+
             enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
             grid = new Grid(windowSizeX, windowSizeY);
         }
@@ -209,16 +210,31 @@ public class GameService extends WallpaperService {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 gravity = event.values.clone();
 
                 float x = gravity[0];
                 float y = gravity[1];
                 float z = gravity[2];
-                Log.v(GameEngine.class.getSimpleName(),String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
+                Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
+
+                float minTreshold = 1.5f;
+
+                if (Math.abs(x) > minTreshold) {
+                    // Tilt detected
+                    if (x >= 0) {
+                        // Device tilt to the left
+
+                    } else if (x < 0) {
+                        // Device tilt to the right
+                    }
+
+                }
+
             }
 
         }
+
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
             // required method

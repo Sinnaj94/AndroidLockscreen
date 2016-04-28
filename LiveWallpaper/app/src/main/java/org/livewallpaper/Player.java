@@ -14,6 +14,9 @@ public class Player {
     float posY;
     float width;
     float height;
+
+    Bullet bullet = new Bullet();
+
     /** The Bounds */
     float boundX;
     float boundY;
@@ -49,7 +52,8 @@ public class Player {
      * This method shoots a bullet
      */
     public void shoot(){
-
+        Bullet bullet = new Bullet();
+        //bullet.posY += 1;
     }
 
     /**
@@ -115,6 +119,6 @@ public class Player {
      */
     void draw(Canvas c){
         c.drawRect(rectShape,a);
-
+        bullet.draw(c);
     }
 }
