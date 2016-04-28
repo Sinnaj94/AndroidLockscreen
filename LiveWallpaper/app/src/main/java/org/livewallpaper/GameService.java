@@ -4,6 +4,10 @@ import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 import android.util.DisplayMetrics;
@@ -43,36 +47,43 @@ public class GameService extends WallpaperService {
      * GameEngine handling drawing and manage game logic.
      */
     class GameEngine extends Engine implements
-            SharedPreferences.OnSharedPreferenceChangeListener {
+            SharedPreferences.OnSharedPreferenceChangeListener, SensorEventListener {
 
+
+        /** */
+        private SensorManager sensorMan;
+        /** */
+        private Sensor accelerometer;
+        /** */
+        private float[] gravity;
         /**  */
-        private final Handler mHandler = new Handler();
+        private final Handler handler = new Handler();
         /**  */
-        private float mTouchX = -1;
+        private float touchX = -1;
         /**  */
-        private float mTouchY = -1;
+        private float touchY = -1;
         /**  */
-        private final Paint mPaint = new Paint();
+        private final Paint paint = new Paint();
         /**   */
-        private final Runnable mDrawPattern = new Runnable() {
+        private final Runnable drawPattern = new Runnable() {
             public void run() {
                 drawFrame();
             }
         };
         /**  */
-        private boolean mVisible;
+        private boolean visible;
         /**  */
-        private SharedPreferences mPreferences;
+        private SharedPreferences preferences;
         /**  */
-        private Rect mRectFrame;
+        private Rect rectFrame;
         /**  */
-        private boolean mHorizontal = false;
+        private boolean horizontal = false;
         /**  */
-        private int mFrameCounter = 0;
+        private int frameCounter = 0;
         /**  */
-        private boolean mMotion = true;
+        private boolean motion = true;
         /**  */
-        private String mShape = "smpte";
+        private String shape = "smpte";
         /**  */
         Player player;
         /**  */
@@ -86,22 +97,25 @@ public class GameService extends WallpaperService {
          * Main constructor
          */
         GameEngine() {
-            final Paint paint = mPaint;
+            final Paint paint = this.paint;
             paint.setColor(0xffffffff);
             paint.setAntiAlias(true);
             paint.setStrokeWidth(2);
             paint.setStrokeCap(Paint.Cap.ROUND);
             paint.setStyle(Paint.Style.STROKE);
-            mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
-            mPreferences.registerOnSharedPreferenceChangeListener(this);
-            onSharedPreferenceChanged(mPreferences, null);
+            preferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
+            preferences.registerOnSharedPreferenceChangeListener(this);
+            onSharedPreferenceChanged(preferences, null);
             initFrameParams();
 
             // Set window width and height
-            float windowSizeX = mRectFrame.width();
-            float windowSizeY = mRectFrame.height();
+            float windowSizeX = rectFrame.width();
+            float windowSizeY = rectFrame.height();
 
-
+            // In onCreate method
+            sensorMan = (SensorManager)getSystemService(SENSOR_SERVICE);
+            accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            
             player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
             player.shoot();
             enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
@@ -124,21 +138,24 @@ public class GameService extends WallpaperService {
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
             setTouchEventsEnabled(true);
+            sensorMan.registerListener(this, accelerometer,
+                    SensorManager.SENSOR_DELAY_UI);
         }
 
         @Override
         public void onDestroy() {
             super.onDestroy();
-            mHandler.removeCallbacks(mDrawPattern);
+            handler.removeCallbacks(drawPattern);
+            sensorMan.unregisterListener(this);
         }
 
         @Override
         public void onVisibilityChanged(boolean visible) {
-            mVisible = visible;
+            this.visible = visible;
             if (visible) {
                 drawFrame();
             } else {
-                mHandler.removeCallbacks(mDrawPattern);
+                handler.removeCallbacks(drawPattern);
             }
         }
 
@@ -162,8 +179,8 @@ public class GameService extends WallpaperService {
         public void onSurfaceDestroyed(SurfaceHolder holder) {
             Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceDestroyed()"));
             super.onSurfaceDestroyed(holder);
-            mVisible = false;
-            mHandler.removeCallbacks(mDrawPattern);
+            visible = false;
+            handler.removeCallbacks(drawPattern);
         }
 
         @Override
@@ -181,13 +198,30 @@ public class GameService extends WallpaperService {
         @Override
         public void onTouchEvent(MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                mTouchX = event.getX();
-                mTouchY = event.getY();
+                touchX = event.getX();
+                touchY = event.getY();
             } else {
-                mTouchX = -1;
-                mTouchY = -1;
+                touchX = -1;
+                touchY = -1;
             }
             super.onTouchEvent(event);
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+                gravity = event.values.clone();
+
+                float x = gravity[0];
+                float y = gravity[1];
+                float z = gravity[2];
+                Log.v(GameEngine.class.getSimpleName(),String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
+            }
+
+        }
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // required method
         }
 
         /**
@@ -212,9 +246,9 @@ public class GameService extends WallpaperService {
                     holder.unlockCanvasAndPost(c);
             }
 
-            mHandler.removeCallbacks(mDrawPattern);
-            if (mVisible) {
-                mHandler.postDelayed(mDrawPattern, 1000 / 25);
+            handler.removeCallbacks(drawPattern);
+            if (visible) {
+                handler.postDelayed(drawPattern, 1000 / 25);
             }
         }
 
@@ -223,8 +257,8 @@ public class GameService extends WallpaperService {
          */
         void updateAll() {
 
-            if (mTouchX >= 0) {
-                player.changePosX(mTouchX);
+            if (touchX >= 0) {
+                player.changePosX(touchX);
             }
             player.update();
             enemy.update();
@@ -273,14 +307,14 @@ public class GameService extends WallpaperService {
             Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
             display.getMetrics(metrics);
 
-            mRectFrame = new Rect(0, 0, metrics.widthPixels, metrics.heightPixels);
+            rectFrame = new Rect(0, 0, metrics.widthPixels, metrics.heightPixels);
 
 
             int rotation = display.getOrientation();
             if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
-                mHorizontal = false;
+                horizontal = false;
             else
-                mHorizontal = true;
+                horizontal = true;
 
         }
     }
