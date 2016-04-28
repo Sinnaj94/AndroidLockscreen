@@ -103,7 +103,8 @@ public class GameService extends WallpaperService {
 
 
             player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
-            player.shoot();
+
+
             enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
             grid = new Grid(windowSizeX, windowSizeY);
         }
@@ -183,6 +184,7 @@ public class GameService extends WallpaperService {
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 mTouchX = event.getX();
                 mTouchY = event.getY();
+
             } else {
                 mTouchX = -1;
                 mTouchY = -1;
