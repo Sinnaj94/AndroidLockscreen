@@ -191,6 +191,7 @@ public class GameService extends WallpaperService {
                 player.changePosX(mTouchX);
             }
 			player.update();
+			enemy.update();
         }
 
 
@@ -214,9 +215,8 @@ public class GameService extends WallpaperService {
 
 
         void drawBackground(Canvas c){
-            c.drawARGB(255,100,100,10);
-            Paint a = new Paint();
-            a.setARGB(255,255,0,0);
+            c.drawARGB(255,0,0,10);
+
         }
 
 		void initFrameParams() {
