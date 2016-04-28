@@ -10,14 +10,16 @@ import android.graphics.RectF;
 public class Enemy {
     float posX;
     float posY;
+    float thePosX;
     float width;
     float height;
-
+    int currentStep;
     RectF rectShape;
     Paint a;
     int type;
     public Enemy(float windowSizeX, float windowSizeY,float width,float height, float percentY){
         this.posX = windowSizeX/2;
+        this.thePosX = posX;
         this.posY = windowSizeY*percentY;
         this.width = width;
         this.height = height;
@@ -29,12 +31,18 @@ public class Enemy {
     }
 
     public void update(){
+        move();
         float left = posX-width/2;
         float up = posY-height/2;
         float right = left+width;
         float down = up+height;
         rectShape.set(left,up,right,down);
+        currentStep++;
 
+    }
+
+    public void move(){
+        this.posX = thePosX + (float)(Math.sin(currentStep/10)*100);
     }
     void draw(Canvas c){
         c.drawRect(rectShape,a);
