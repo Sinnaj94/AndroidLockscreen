@@ -7,11 +7,11 @@ import android.graphics.Rect;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.View;
 import android.view.WindowManager;
 
 public class GameService extends WallpaperService {
@@ -47,18 +47,19 @@ public class GameService extends WallpaperService {
 		};
 		private boolean           mVisible;
 		private SharedPreferences mPreferences;
-		private Rect mRectFrame;
+		private Rect              mRectFrame;
 		private boolean mHorizontal   = false;
 		private int     mFrameCounter = 0;
 		private boolean mMotion       = true;
 		private String  mShape        = "smpte";
 
-        //Unseres
-        Player player;
-		Enemy enemy;
-        Grid grid;
+		//Unseres
+		Player player;
+		Enemy  enemy;
+		Grid   grid;
 		Canvas canvas;
-        //Hier ist der Konstruktor
+
+		//Hier ist der Konstruktor
 		TestPatternEngine() {
 			final Paint paint = mPaint;
 			paint.setColor(0xffffffff);
@@ -66,20 +67,21 @@ public class GameService extends WallpaperService {
 			paint.setStrokeWidth(2);
 			paint.setStrokeCap(Paint.Cap.ROUND);
 			paint.setStyle(Paint.Style.STROKE);
-            mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
+			mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
 			mPreferences.registerOnSharedPreferenceChangeListener(this);
 			onSharedPreferenceChanged(mPreferences, null);
 			//merge
-            //Unseres
+			//Unseres
 
 			//TODO Größe relativ implementieren
 			float windowSizeX = 720;
 			float windowSizeY = 1280;
 
-            player = new Player(windowSizeX,windowSizeY,100,50,.7f);
+
+			player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
 			player.shoot();
-			enemy = new Enemy(windowSizeX,windowSizeY,100,100,.1f);
-            grid = new Grid(windowSizeX,windowSizeY);
+			enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
+			grid = new Grid(windowSizeX, windowSizeY);
 		}
 
 		public void onSharedPreferenceChanged(SharedPreferences prefs,
@@ -87,7 +89,6 @@ public class GameService extends WallpaperService {
 
 
 		}
-
 
 
 		@Override
@@ -98,6 +99,7 @@ public class GameService extends WallpaperService {
 
 		@Override
 		public void onDestroy() {
+
 			super.onDestroy();
 			mHandler.removeCallbacks(mDrawPattern);
 		}
@@ -115,6 +117,7 @@ public class GameService extends WallpaperService {
 		@Override
 		public void onSurfaceChanged(SurfaceHolder holder, int format,
 									 int width, int height) {
+			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceChanged(format: %d, width: %d, height: %d)", format, width, height));
 			super.onSurfaceChanged(holder, format, width, height);
 
 			initFrameParams();
@@ -124,11 +127,13 @@ public class GameService extends WallpaperService {
 
 		@Override
 		public void onSurfaceCreated(SurfaceHolder holder) {
+			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceCreated()"));
 			super.onSurfaceCreated(holder);
 		}
 
 		@Override
 		public void onSurfaceDestroyed(SurfaceHolder holder) {
+			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceDestroyed()"));
 			super.onSurfaceDestroyed(holder);
 			mVisible = false;
 			mHandler.removeCallbacks(mDrawPattern);
@@ -170,8 +175,8 @@ public class GameService extends WallpaperService {
 				c = holder.lockCanvas();
 				if (c != null) {
 					//update
-                    updateAll();
-                    //draw
+					updateAll();
+					//draw
 					drawAll(c);
 				}
 			} finally {
@@ -185,39 +190,37 @@ public class GameService extends WallpaperService {
 			}
 		}
 
-        void updateAll(){
+		void updateAll() {
 
-            if(mTouchX >=0){
-                player.changePosX(mTouchX);
-            }
+			if (mTouchX >= 0) {
+				player.changePosX(mTouchX);
+			}
 			player.update();
-        }
+		}
 
 
 		void drawAll(Canvas c) {
-            refreshAll(c);
-            drawBackground(c);
-            grid.draw(c);
-            player.draw(c);
+			refreshAll(c);
+			drawBackground(c);
+			grid.draw(c);
+			player.draw(c);
 			enemy.draw(c);
 		}
 
-        void refreshAll(Canvas c) {
-            c.save();
+		void refreshAll(Canvas c) {
+			c.save();
 
-            //to refresh the background?
-            c.drawColor(0xff000000);
-            c.restore();
-        }
-
-
+			//to refresh the background?
+			c.drawColor(0xff000000);
+			c.restore();
+		}
 
 
-        void drawBackground(Canvas c){
-            c.drawARGB(255,100,100,10);
-            Paint a = new Paint();
-            a.setARGB(255,255,0,0);
-        }
+		void drawBackground(Canvas c) {
+			c.drawARGB(255, 100, 100, 10);
+			Paint a = new Paint();
+			a.setARGB(255, 255, 0, 0);
+		}
 
 		void initFrameParams() {
 			DisplayMetrics metrics = new DisplayMetrics();
