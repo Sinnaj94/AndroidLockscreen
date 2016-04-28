@@ -199,14 +199,8 @@ public class GameService extends WallpaperService {
         @Override
         public void onTouchEvent(MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
-<<<<<<< HEAD
-                mTouchX = event.getX();
-                mTouchY = event.getY();
-
-=======
                 touchX = event.getX();
                 touchY = event.getY();
->>>>>>> 083cbe9e38ed611134b659e524c936eee76615a4
             } else {
                 touchX = -1;
                 touchY = -1;
