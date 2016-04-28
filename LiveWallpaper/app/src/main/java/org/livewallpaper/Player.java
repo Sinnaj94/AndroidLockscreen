@@ -14,6 +14,11 @@ public class Player {
     float posY;
     float width;
     float height;
+
+
+    /** The Bounds */
+    float boundX;
+    float boundY;
     float speed;
     //the Rectangle Shape is defined by the position X Y and width and height
     RectF rectShape;
@@ -37,7 +42,8 @@ public class Player {
         rectShape = new RectF();
         a = new Paint();
         a.setARGB(255,255,0,0);
-
+        boundX = windowSizeX;
+        boundY = windowSizeY;
         update();
     }
 
@@ -56,13 +62,28 @@ public class Player {
     public void changePosX(float newPosX){
         float delta = Math.abs(newPosX-posX);
         if(newPosX>posX){
-
             posX+=delta*.1;
         }else if(newPosX<posX){
             posX-=delta*.1;
         }
 
+        //Here we check if the player is outside the area
+        collideWithWalls();
+
     }
+
+    /**
+     * Method used to detect, whether the player collides with a wall. Also handles the collision
+     */
+    private void collideWithWalls(){
+        if(posX - width/2<0){
+            posX = width/2;
+        }else if(posX+width/2 > boundX){
+            posX = boundX-width/2;
+        }
+    }
+
+
 
     /**
      * The update method builds the rectShape and automatically puts the posX and posY attribute in the middle of the player.
