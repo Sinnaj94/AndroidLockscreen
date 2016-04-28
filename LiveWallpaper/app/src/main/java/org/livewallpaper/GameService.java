@@ -14,9 +14,15 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
+/**
+ * GameService runs in background and update the shown wallpaper.
+ */
 public class GameService extends WallpaperService {
 
-	public static final String SHARED_PREFS_NAME = "livewallpapersettings";
+	/**
+	 * Key of the prefs file.
+	 */
+	public static final String SHARED_PREFS_NAME = "livewallpaper";
 
 	@Override
 	public void onCreate() {
@@ -33,33 +39,52 @@ public class GameService extends WallpaperService {
 		return new GameEngine();
 	}
 
+	/**
+	 * GameEngine handling drawing and manage game logic.
+	 */
 	class GameEngine extends Engine implements
-										   SharedPreferences.OnSharedPreferenceChangeListener {
+									SharedPreferences.OnSharedPreferenceChangeListener {
 
+		/**  */
 		private final Handler  mHandler     = new Handler();
+		/**  */
 		private       float    mTouchX      = -1;
+		/**  */
 		private       float    mTouchY      = -1;
+		/**  */
 		private final Paint    mPaint       = new Paint();
+		/**   */
 		private final Runnable mDrawPattern = new Runnable() {
 			public void run() {
 				drawFrame();
 			}
 		};
+		/**  */
 		private boolean           mVisible;
+		/**  */
 		private SharedPreferences mPreferences;
+		/**  */
 		private Rect              mRectFrame;
+		/**  */
 		private boolean mHorizontal   = false;
+		/**  */
 		private int     mFrameCounter = 0;
+		/**  */
 		private boolean mMotion       = true;
+		/**  */
 		private String  mShape        = "smpte";
-
-		//Unseres
+		/**  */
 		Player player;
+		/**  */
 		Enemy  enemy;
+		/**  */
 		Grid   grid;
+		/**  */
 		Canvas canvas;
 
-		//Hier ist der Konstruktor
+		/**
+		 * Main constructor
+		 */
 		GameEngine() {
 			final Paint paint = mPaint;
 			paint.setColor(0xffffffff);
@@ -70,12 +95,11 @@ public class GameService extends WallpaperService {
 			mPreferences = GameService.this.getSharedPreferences(SHARED_PREFS_NAME, 0);
 			mPreferences.registerOnSharedPreferenceChangeListener(this);
 			onSharedPreferenceChanged(mPreferences, null);
-			//merge
-			//Unseres
+			initFrameParams();
 
-			//TODO Größe relativ implementieren
-			float windowSizeX = 720;
-			float windowSizeY = 1280;
+			// Set window width and height
+			float windowSizeX = mRectFrame.width();
+			float windowSizeY = mRectFrame.height();
 
 
 			player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
@@ -84,9 +108,14 @@ public class GameService extends WallpaperService {
 			grid = new Grid(windowSizeX, windowSizeY);
 		}
 
+		/**
+		 * Listens to changed settings
+		 *
+		 * @param prefs the new preferences
+		 * @param key the changed key
+		 */
 		public void onSharedPreferenceChanged(SharedPreferences prefs,
 											  String key) {
-
 
 		}
 
@@ -99,7 +128,6 @@ public class GameService extends WallpaperService {
 
 		@Override
 		public void onDestroy() {
-
 			super.onDestroy();
 			mHandler.removeCallbacks(mDrawPattern);
 		}
@@ -121,7 +149,6 @@ public class GameService extends WallpaperService {
 			super.onSurfaceChanged(holder, format, width, height);
 
 			initFrameParams();
-
 			drawFrame();
 		}
 
@@ -142,13 +169,13 @@ public class GameService extends WallpaperService {
 		@Override
 		public void onOffsetsChanged(float xOffset, float yOffset, float xStep,
 									 float yStep, int xPixels, int yPixels) {
-
 			drawFrame();
 		}
 
-		/*
+		/**
 		 * Store the position of the touch event so we can use it for drawing
 		 * later
+		 * @param event the motion event
 		 */
 		@Override
 		public void onTouchEvent(MotionEvent event) {
@@ -162,7 +189,7 @@ public class GameService extends WallpaperService {
 			super.onTouchEvent(event);
 		}
 
-		/*
+		/**
 		 * Draw one frame of the animation. This method gets called repeatedly
 		 * by posting a delayed Runnable. You can do any drawing you want in
 		 * here. This example draws a wireframe cube.
@@ -190,15 +217,22 @@ public class GameService extends WallpaperService {
 			}
 		}
 
+		/**
+		 * Update game objects.
+		 */
 		void updateAll() {
 
 			if (mTouchX >= 0) {
 				player.changePosX(mTouchX);
 			}
 			player.update();
+			enemy.update();
 		}
 
-
+		/**
+		 * Draw game objects and background on the canvas.
+		 * @param c the canvas
+		 */
 		void drawAll(Canvas c) {
 			refreshAll(c);
 			drawBackground(c);
@@ -207,6 +241,10 @@ public class GameService extends WallpaperService {
 			enemy.draw(c);
 		}
 
+		/**
+		 * Clear the canvas.
+		 * @param c the canvas
+		 */
 		void refreshAll(Canvas c) {
 			c.save();
 
@@ -215,13 +253,17 @@ public class GameService extends WallpaperService {
 			c.restore();
 		}
 
-
+		/**
+		 * Draw the background on a given canvas.
+		 * @param c the canvas
+		 */
 		void drawBackground(Canvas c) {
-			c.drawARGB(255, 100, 100, 10);
-			Paint a = new Paint();
-			a.setARGB(255, 255, 0, 0);
+			c.drawARGB(255,0,0,10);
 		}
 
+		/**
+		 * Update the frame parameters.
+		 */
 		void initFrameParams() {
 			DisplayMetrics metrics = new DisplayMetrics();
 			Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
@@ -235,9 +277,6 @@ public class GameService extends WallpaperService {
 				mHorizontal = false;
 			else
 				mHorizontal = true;
-
-			System.out.println("mHorizontal " + mHorizontal);
-			System.out.println("mShape " + mShape);
 
 		}
 	}
