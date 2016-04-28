@@ -30,10 +30,10 @@ public class GameService extends WallpaperService {
 
 	@Override
 	public Engine onCreateEngine() {
-		return new TestPatternEngine();
+		return new GameEngine();
 	}
 
-	class TestPatternEngine extends Engine implements
+	class GameEngine extends Engine implements
 										   SharedPreferences.OnSharedPreferenceChangeListener {
 
 		private final Handler  mHandler     = new Handler();
@@ -60,7 +60,7 @@ public class GameService extends WallpaperService {
 		Canvas canvas;
 
 		//Hier ist der Konstruktor
-		TestPatternEngine() {
+		GameEngine() {
 			final Paint paint = mPaint;
 			paint.setColor(0xffffffff);
 			paint.setAntiAlias(true);
@@ -117,7 +117,7 @@ public class GameService extends WallpaperService {
 		@Override
 		public void onSurfaceChanged(SurfaceHolder holder, int format,
 									 int width, int height) {
-			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceChanged(format: %d, width: %d, height: %d)", format, width, height));
+			Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceChanged(format: %d, width: %d, height: %d)", format, width, height));
 			super.onSurfaceChanged(holder, format, width, height);
 
 			initFrameParams();
@@ -127,13 +127,13 @@ public class GameService extends WallpaperService {
 
 		@Override
 		public void onSurfaceCreated(SurfaceHolder holder) {
-			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceCreated()"));
+			Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceCreated()"));
 			super.onSurfaceCreated(holder);
 		}
 
 		@Override
 		public void onSurfaceDestroyed(SurfaceHolder holder) {
-			Log.d(TestPatternEngine.class.getSimpleName(), String.format("entered onSurfaceDestroyed()"));
+			Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceDestroyed()"));
 			super.onSurfaceDestroyed(holder);
 			mVisible = false;
 			mHandler.removeCallbacks(mDrawPattern);
