@@ -9,17 +9,15 @@ import android.graphics.RectF;
  * Created by Jannis on 25.04.2016.
  */
 public class Player {
-
+    /** rectangle Attributes! */
     float posX;
     float posY;
     float width;
     float height;
-
-
     /** The Bounds */
     float boundX;
     float boundY;
-    float speed;
+    float maxSpeed;
     //the Rectangle Shape is defined by the position X Y and width and height
     RectF rectShape;
     //The Paint
@@ -38,7 +36,7 @@ public class Player {
         this.posY = windowSizeY*percentDown;
         this.width = width;
         this.height = height;
-        speed = 20f;
+        maxSpeed = 10f;
         rectShape = new RectF();
         a = new Paint();
         a.setARGB(255,255,0,0);
@@ -62,13 +60,24 @@ public class Player {
     public void changePosX(float newPosX){
         float delta = Math.abs(newPosX-posX);
         if(newPosX>posX){
-            posX+=delta*.1;
+            posX+=delta* maxSpeed;
         }else if(newPosX<posX){
-            posX-=delta*.1;
+            posX-=delta* maxSpeed;
         }
-
         //Here we check if the player is outside the area
         collideWithWalls();
+    }
+
+    /**
+     * method to move the player with a given maxSpeed factor (use for accelerometer)
+     * @param speed the speed the player can move
+     */
+    public void moveX(float speed){
+        if(Math.abs(speed)>.5){
+            float delta = this.maxSpeed *speed;
+            posX-=delta;
+            collideWithWalls();
+        }
 
     }
 
