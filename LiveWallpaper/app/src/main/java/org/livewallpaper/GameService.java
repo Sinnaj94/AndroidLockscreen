@@ -117,7 +117,8 @@ public class GameService extends WallpaperService {
             accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
             player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
-            player.shoot();
+
+
             enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
             grid = new Grid(windowSizeX, windowSizeY);
         }
@@ -198,8 +199,14 @@ public class GameService extends WallpaperService {
         @Override
         public void onTouchEvent(MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
+<<<<<<< HEAD
+                mTouchX = event.getX();
+                mTouchY = event.getY();
+
+=======
                 touchX = event.getX();
                 touchY = event.getY();
+>>>>>>> 083cbe9e38ed611134b659e524c936eee76615a4
             } else {
                 touchX = -1;
                 touchY = -1;

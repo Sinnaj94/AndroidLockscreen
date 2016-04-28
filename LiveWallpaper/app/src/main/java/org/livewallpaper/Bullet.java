@@ -9,6 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.shapes.RectShape;
 
 public class Bullet {
+
     float posX;
     float posY;
     float speed;
@@ -17,7 +18,8 @@ public class Bullet {
     RectF rectShape;
     float damage;
     Paint a;
-    public Bullet(float posX, float posY){
+
+    public Bullet(){
         this.posX = posX;
         this.posY = posY;
         speed = .0001f;
