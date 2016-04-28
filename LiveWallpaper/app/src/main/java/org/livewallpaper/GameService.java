@@ -93,6 +93,8 @@ public class GameService extends WallpaperService {
         /**  */
         Canvas canvas;
 
+        float accX;
+
         /**
          * Main constructor
          */
@@ -218,21 +220,19 @@ public class GameService extends WallpaperService {
                 float z = gravity[2];
                 Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
 
-                float minTreshold = 1.5f;
+                setAccX(x);
 
-                if (Math.abs(x) > minTreshold) {
-                    // Tilt detected
-                    if (x >= 0) {
-                        // Device tilt to the left
-
-                    } else if (x < 0) {
-                        // Device tilt to the right
-                    }
-
-                }
 
             }
 
+        }
+
+        private void setAccX(float accX){
+            this.accX = accX;
+        }
+
+        private float getAccX(){
+            return accX;
         }
 
         @Override
@@ -273,9 +273,7 @@ public class GameService extends WallpaperService {
          */
         void updateAll() {
 
-            if (touchX >= 0) {
-                player.changePosX(touchX);
-            }
+            player.moveX(getAccX());
             player.update();
             enemy.update();
         }
