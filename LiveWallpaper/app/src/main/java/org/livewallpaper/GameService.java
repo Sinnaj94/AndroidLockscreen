@@ -209,7 +209,6 @@ public class GameService extends WallpaperService {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 player.shoot();
             } else
-
                 super.onTouchEvent(event);
         }
 
