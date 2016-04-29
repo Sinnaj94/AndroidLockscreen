@@ -78,12 +78,7 @@ public class GameService extends WallpaperService {
         private Rect rectFrame;
         /**  */
         private boolean horizontal = false;
-        /**  */
-        private int frameCounter = 0;
-        /**  */
-        private boolean motion = true;
-        /**  */
-        private String shape = "smpte";
+
         /**  */
         Player player;
         /**  */
@@ -91,7 +86,6 @@ public class GameService extends WallpaperService {
         /**  */
         Grid grid;
         /**  */
-        Canvas canvas;
 
         float accX;
 
@@ -324,7 +318,7 @@ public class GameService extends WallpaperService {
             rectFrame = new Rect(0, 0, metrics.widthPixels, metrics.heightPixels);
 
 
-            int rotation = display.getOrientation();
+            int rotation = display.getRotation();
             if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
                 horizontal = false;
             else
