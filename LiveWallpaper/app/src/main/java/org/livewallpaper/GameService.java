@@ -104,8 +104,6 @@ public class GameService extends WallpaperService {
             accelerometer = sensorMan.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
             player = new Player(windowSizeX, windowSizeY, 100, 50, .7f);
-
-
             enemy = new Enemy(windowSizeX, windowSizeY, 100, 100, .1f);
             grid = new Grid(windowSizeX, windowSizeY);
         }
@@ -149,8 +147,11 @@ public class GameService extends WallpaperService {
         public void onVisibilityChanged(boolean visible) {
             this.visible = visible;
             if (visible) {
+                sensorMan.registerListener(this, accelerometer,
+                        SensorManager.SENSOR_DELAY_UI);
                 drawFrame();
             } else {
+                sensorMan.unregisterListener(this);
                 handler.removeCallbacks(drawPattern);
             }
         }
@@ -217,17 +218,17 @@ public class GameService extends WallpaperService {
          */
         @Override
         public void onSensorChanged(SensorEvent event) {
+
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 gravity = event.values.clone();
 
                 float x = gravity[0];
                 float y = gravity[1];
                 float z = gravity[2];
-                //Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
+
+                Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
 
                 setAccX(x);
-
-
             }
 
         }
