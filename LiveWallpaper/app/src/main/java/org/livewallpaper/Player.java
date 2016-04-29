@@ -4,6 +4,13 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import android.graphics.RectF;
+import android.support.annotation.NonNull;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.ListIterator;
 
 /**
  * Created by Jannis on 25.04.2016.
@@ -18,6 +25,9 @@ public class Player extends GameObject {
     float height;
 
     Bullet bullet;
+    List<Bullet> bulletList = new ArrayList<Bullet>();
+
+
 
     /**
      * The Bounds
@@ -58,8 +68,7 @@ public class Player extends GameObject {
      */
     public void shoot() {
         bullet = new Bullet(posX, posY);
-
-        //bullet.posY += 1;
+        bulletList.add(bullet);
     }
 
     /**
@@ -110,7 +119,9 @@ public class Player extends GameObject {
     @Override
     public void update() {
         if (bullet != null) {
-            bullet.update();
+            for(Bullet b : bulletList) {
+                b.update();
+            }
         }
         float left = posX - width / 2;
         float up = posY - height / 2;
@@ -129,7 +140,9 @@ public class Player extends GameObject {
     public void draw(Canvas c) {
         c.drawRect(rectShape, a);
         if (bullet != null) {
-            bullet.draw(c);
+            for(Bullet b : bulletList) {
+                b.draw(c);
+            }
         }
     }
 }
