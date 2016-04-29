@@ -19,10 +19,10 @@ public class Bullet {
     float damage;
     Paint a;
 
-    public Bullet(){
+    public Bullet(float posX, float posY){
         this.posX = posX;
         this.posY = posY;
-        speed = .0001f;
+        speed = 30f;
         width = 10;
         height = 10;
         rectShape = new RectF();

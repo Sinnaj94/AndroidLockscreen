@@ -15,7 +15,7 @@ public class Player {
     float width;
     float height;
 
-    Bullet bullet = new Bullet();
+    Bullet bullet;
 
     /** The Bounds */
     float boundX;
@@ -52,7 +52,8 @@ public class Player {
      * This method shoots a bullet
      */
     public void shoot(){
-        Bullet bullet = new Bullet();
+        bullet = new Bullet(posX, posY);
+
         //bullet.posY += 1;
     }
 
@@ -102,9 +103,9 @@ public class Player {
      * The update method builds the rectShape and automatically puts the posX and posY attribute in the middle of the player.
      */
     public void update(){
-        //if(bullet!=null){
-            //bullet.update();
-        //}
+        if(bullet!=null){
+            bullet.update();
+        }
         float left = posX-width/2;
         float up = posY-height/2;
         float right = left+width;
@@ -119,6 +120,9 @@ public class Player {
      */
     void draw(Canvas c){
         c.drawRect(rectShape,a);
-        bullet.draw(c);
-    }
+        if(bullet != null) {
+            bullet.draw(c);
+        }
+
+        }
 }
