@@ -223,7 +223,7 @@ public class GameService extends WallpaperService {
                 float x = gravity[0];
                 float y = gravity[1];
                 float z = gravity[2];
-                Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
+                //Log.v(GameEngine.class.getSimpleName(), String.format("onSensorChanged: x: %f, y: %f, z: %f", x, y, z));
 
                 setAccX(x);
 
