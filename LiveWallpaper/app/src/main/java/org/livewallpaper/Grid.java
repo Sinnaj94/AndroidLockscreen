@@ -7,7 +7,7 @@ import android.graphics.RectF;
 /**
  * This method draws a cross in the middle
  */
-public class Grid {
+public class Grid extends GameObject {
     float windowSizeX;
     float windowSizeY;
     float top;
@@ -38,6 +38,7 @@ public class Grid {
     /**
      * defines a cross (waagerechte & senkrechte). is only run once (in the constructor)
      */
+    @Override
     public void update(){
         top = 0;
         left = 0;
@@ -50,6 +51,10 @@ public class Grid {
         right = windowSizeX/2;
         waagerechte = new RectF(left,top,right,bottom);
     }
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public void draw(Canvas c){
         c.drawRect(senkrechte,a);
         c.drawRect(waagerechte,a);

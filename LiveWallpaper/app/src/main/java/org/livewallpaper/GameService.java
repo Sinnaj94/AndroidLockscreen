@@ -14,7 +14,6 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
@@ -59,10 +58,6 @@ public class GameService extends WallpaperService {
         /**  */
         private final Handler handler = new Handler();
         /**  */
-        private float touchX = -1;
-        /**  */
-        private float touchY = -1;
-        /**  */
         private final Paint paint = new Paint();
         /**   */
         private final Runnable drawPattern = new Runnable() {
@@ -77,16 +72,12 @@ public class GameService extends WallpaperService {
         /**  */
         private Rect rectFrame;
         /**  */
-        private boolean horizontal = false;
-
-        /**  */
         Player player;
         /**  */
         Enemy enemy;
         /**  */
         Grid grid;
         /**  */
-
         float accX;
 
         /**
@@ -130,7 +121,9 @@ public class GameService extends WallpaperService {
 
         }
 
-
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onCreate(SurfaceHolder surfaceHolder) {
             super.onCreate(surfaceHolder);
@@ -139,6 +132,9 @@ public class GameService extends WallpaperService {
                     SensorManager.SENSOR_DELAY_UI);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onDestroy() {
             super.onDestroy();
@@ -146,6 +142,9 @@ public class GameService extends WallpaperService {
             sensorMan.unregisterListener(this);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onVisibilityChanged(boolean visible) {
             this.visible = visible;
@@ -156,6 +155,9 @@ public class GameService extends WallpaperService {
             }
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onSurfaceChanged(SurfaceHolder holder, int format,
                                      int width, int height) {
@@ -166,12 +168,18 @@ public class GameService extends WallpaperService {
             drawFrame();
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onSurfaceCreated(SurfaceHolder holder) {
             Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceCreated()"));
             super.onSurfaceCreated(holder);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onSurfaceDestroyed(SurfaceHolder holder) {
             Log.d(GameEngine.class.getSimpleName(), String.format("entered onSurfaceDestroyed()"));
@@ -180,6 +188,9 @@ public class GameService extends WallpaperService {
             handler.removeCallbacks(drawPattern);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onOffsetsChanged(float xOffset, float yOffset, float xStep,
                                      float yStep, int xPixels, int yPixels) {
@@ -194,20 +205,16 @@ public class GameService extends WallpaperService {
          */
         @Override
         public void onTouchEvent(MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_DOWN){
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
                 player.shoot();
-            }else
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                touchX = event.getX();
-                touchY = event.getY();
-            } else {
-                touchX = -1;
-                touchY = -1;
-            }
+            } else
 
-            super.onTouchEvent(event);
+                super.onTouchEvent(event);
         }
 
+        /**
+         * {@inheritDoc}
+         */
         @Override
         public void onSensorChanged(SensorEvent event) {
             if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
@@ -225,11 +232,19 @@ public class GameService extends WallpaperService {
 
         }
 
-        private void setAccX(float accX){
+        /**
+         * Setter for accX.
+         * @param accX the value
+         */
+        private void setAccX(float accX) {
             this.accX = accX;
         }
 
-        private float getAccX(){
+        /**
+         * Getter for accX.
+         * @return accX
+         */
+        private float getAccX() {
             return accX;
         }
 
@@ -320,14 +335,6 @@ public class GameService extends WallpaperService {
             display.getMetrics(metrics);
 
             rectFrame = new Rect(0, 0, metrics.widthPixels, metrics.heightPixels);
-
-
-            int rotation = display.getRotation();
-            if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180)
-                horizontal = false;
-            else
-                horizontal = true;
-
         }
     }
 

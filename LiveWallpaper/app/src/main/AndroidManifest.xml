@@ -23,7 +23,6 @@
                 android:resource="@xml/wallpaper" />
         </service>
 
-        <activity android:name=".MainActivity"></activity>
     </application>
 
 </manifest>
