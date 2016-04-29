@@ -25,7 +25,7 @@ public class Player extends GameObject {
     float height;
 
     Bullet bullet;
-    List<Bullet> bulletList = new ArrayList<Bullet>();
+    List<Bullet> bulletList;
 
 
 
@@ -60,6 +60,7 @@ public class Player extends GameObject {
         a.setARGB(255, 255, 0, 0);
         boundX = windowSizeX;
         boundY = windowSizeY;
+        bulletList = new ArrayList<>();
         update();
     }
 
@@ -118,11 +119,11 @@ public class Player extends GameObject {
      */
     @Override
     public void update() {
-        if (bullet != null) {
-            for(Bullet b : bulletList) {
+
+        for(Bullet b : bulletList) {
                 b.update();
-            }
         }
+
         float left = posX - width / 2;
         float up = posY - height / 2;
         float right = left + width;
@@ -139,10 +140,9 @@ public class Player extends GameObject {
     @Override
     public void draw(Canvas c) {
         c.drawRect(rectShape, a);
-        if (bullet != null) {
-            for(Bullet b : bulletList) {
-                b.draw(c);
-            }
+
+        for(Bullet b : bulletList) {
+            b.draw(c);
         }
     }
 }
