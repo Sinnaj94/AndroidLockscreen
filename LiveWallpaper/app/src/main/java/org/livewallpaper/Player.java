@@ -123,6 +123,10 @@ public class Player extends GameObject {
         for(Bullet b : bulletList) {
                 b.update();
         }
+        //funktioniert noch nicht...?
+        //if(bullet.outOfScreen()){
+          //  bulletList.remove(bullet);
+        //}
 
         float left = posX - width / 2;
         float up = posY - height / 2;

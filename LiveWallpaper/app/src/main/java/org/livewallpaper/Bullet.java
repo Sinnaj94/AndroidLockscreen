@@ -40,6 +40,13 @@ public class Bullet extends GameObject {
         a.setARGB(255, 255, 255, 255);
     }
 
+    //funktioniert noch nicht...?
+    public boolean outOfScreen(){
+        if(posY <0){
+            return true;
+        }else return false;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -52,6 +59,8 @@ public class Bullet extends GameObject {
         float right = left + width;
         float down = up + height;
         rectShape.set(left, up, right, down);
+
+
     }
 
     /**
