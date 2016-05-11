@@ -7,6 +7,7 @@ package org.livewallpaper;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.util.Log;
 
 /**
  * Represents a bullet in the game.
@@ -42,9 +43,11 @@ public class Bullet extends GameObject {
 
     //funktioniert noch nicht...?
     public boolean outOfScreen(){
-        if(posY <0){
+        if(false){
+            Log.v(Bullet.class.getSimpleName(), "Bullet was deleted.");
             return true;
-        }else return false;
+        }
+        return false;
     }
 
     /**

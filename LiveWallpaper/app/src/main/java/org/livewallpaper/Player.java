@@ -26,7 +26,7 @@ public class Player extends GameObject {
 
     Bullet bullet;
     List<Bullet> bulletList;
-
+    Iterator<Bullet> bulletIterator;
 
 
     /**
@@ -39,6 +39,7 @@ public class Player extends GameObject {
     RectF rectShape;
     //The Paint
     Paint a;
+
 
     /**
      * The Constructor.
@@ -61,6 +62,7 @@ public class Player extends GameObject {
         boundX = windowSizeX;
         boundY = windowSizeY;
         bulletList = new ArrayList<>();
+
         update();
     }
 
@@ -119,14 +121,12 @@ public class Player extends GameObject {
      */
     @Override
     public void update() {
-
-        for(Bullet b : bulletList) {
-                b.update();
+        for (Iterator<Bullet> iter = bulletList.listIterator(); iter.hasNext(); ) {
+            Bullet a = iter.next();
+            if (a.outOfScreen()) {
+                iter.remove();
+            }
         }
-        //funktioniert noch nicht...?
-        //if(bullet.outOfScreen()){
-          //  bulletList.remove(bullet);
-        //}
 
         float left = posX - width / 2;
         float up = posY - height / 2;
