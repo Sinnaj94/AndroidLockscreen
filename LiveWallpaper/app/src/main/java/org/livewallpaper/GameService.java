@@ -277,7 +277,7 @@ public class GameService extends WallpaperService {
 
             handler.removeCallbacks(drawPattern);
             if (visible) {
-                handler.postDelayed(drawPattern, 1000 / 25);
+                handler.postDelayed(drawPattern, 1000 / 60);
             }
         }
 

@@ -4,10 +4,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 /**
  * Created by Jannis on 25.04.2016.
  */
@@ -20,8 +16,7 @@ public class Player extends GameObject {
     float width;
     float height;
 
-    Bullet bullet;
-    List<Bullet> bulletList;
+    BulletManager bulletManager;
 
 
     /**
@@ -56,7 +51,7 @@ public class Player extends GameObject {
         a.setARGB(255, 255, 0, 0);
         boundX = windowSizeX;
         boundY = windowSizeY;
-        bulletList = new ArrayList<>();
+        bulletManager = new BulletManager(Constants.BULLET_MAX_ELEMENTS);
 
         update();
     }
@@ -65,8 +60,7 @@ public class Player extends GameObject {
      * This method shoots a bullet
      */
     public void shoot() {
-        bullet = new Bullet(posX, posY);
-        bulletList.add(bullet);
+        bulletManager.shootBullet(posX,posY);
     }
 
     /**
@@ -116,21 +110,14 @@ public class Player extends GameObject {
      */
     @Override
     public void update() {
-        for (Iterator<Bullet> iter = bulletList.listIterator(); iter.hasNext(); ) {
-            Bullet a = iter.next();
-            if (a.outOfScreen()) {
-                iter.remove();
-            }else {
-                a.update();
-            }
-        }
+
+        bulletManager.update();
 
         float left = posX - width / 2;
         float up = posY - height / 2;
         float right = left + width;
         float down = up + height;
         rectShape.set(left, up, right, down);
-
     }
 
     /**
@@ -142,7 +129,7 @@ public class Player extends GameObject {
     public void draw(Canvas c) {
         c.drawRect(rectShape, a);
 
-        for(Bullet b : bulletList) {
+        for(Bullet b : bulletManager) {
             b.draw(c);
         }
     }

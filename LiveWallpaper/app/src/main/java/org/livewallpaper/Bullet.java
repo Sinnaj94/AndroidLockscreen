@@ -22,16 +22,15 @@ public class Bullet extends GameObject {
     RectF rectShape;
     float damage;
     Paint a;
+    boolean active;
 
-    /**
-     * Default constructor
-     * @param posX
-     * @param posY
-     */
-    public Bullet(float posX, float posY) {
-        this.posX = posX;
-        this.posY = posY;
-        speed = 30f;
+    public Bullet(){
+        init();
+    }
+
+    private void init() {
+        active = false;
+        speed = Constants.BULLET_SPEED;
         width = 10;
         height = 10;
         rectShape = new RectF();
@@ -41,10 +40,12 @@ public class Bullet extends GameObject {
         a.setARGB(255, 255, 255, 255);
     }
 
-    //funktioniert noch nicht...?
+    /**
+     * Determine if bullet is outside the screen
+     * @return true if inside the screen, false if not.
+     */
     public boolean outOfScreen(){
         if(posY <= 0){
-            Log.v(Bullet.class.getSimpleName(), "Bullet was deleted.");
             return true;
         }
         return false;
@@ -63,7 +64,32 @@ public class Bullet extends GameObject {
         float down = up + height;
         rectShape.set(left, up, right, down);
 
-        Log.v(Bullet.class.getSimpleName(),"Update: posY:" +  posY);
+        if(!outOfScreen()) {
+            Log.v(Bullet.class.getSimpleName(), "Update: posY:" + posY);
+        }else{
+            reset();
+            Log.v(Bullet.class.getSimpleName(), "Bullet out of screen.");
+        }
+    }
+
+    /**
+     *  Fire a bullet
+     * @param poxX start position x
+     * @param posY start position y
+     */
+    public void fire(float poxX, float posY){
+        active = true;
+        this.posX = poxX;
+        this.posY = posY;
+    }
+
+    /**
+     * Reset the bullet for the next usage.
+     */
+    private void reset() {
+        active = false;
+        this.posX = -1;
+        this.posY = -1;
     }
 
     /**
