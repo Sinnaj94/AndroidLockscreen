@@ -22,7 +22,6 @@ public class Player extends GameObject {
 
     Bullet bullet;
     List<Bullet> bulletList;
-    Iterator<Bullet> bulletIterator;
 
 
     /**
@@ -121,8 +120,9 @@ public class Player extends GameObject {
             Bullet a = iter.next();
             if (a.outOfScreen()) {
                 iter.remove();
+            }else {
+                a.update();
             }
-            a.update();
         }
 
         float left = posX - width / 2;

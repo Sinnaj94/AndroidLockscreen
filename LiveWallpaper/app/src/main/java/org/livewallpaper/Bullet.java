@@ -43,7 +43,7 @@ public class Bullet extends GameObject {
 
     //funktioniert noch nicht...?
     public boolean outOfScreen(){
-        if(false){
+        if(posY <= 0){
             Log.v(Bullet.class.getSimpleName(), "Bullet was deleted.");
             return true;
         }
@@ -63,7 +63,7 @@ public class Bullet extends GameObject {
         float down = up + height;
         rectShape.set(left, up, right, down);
 
-
+        Log.v(Bullet.class.getSimpleName(),"Update: posY:" +  posY);
     }
 
     /**
