@@ -2,15 +2,11 @@ package org.livewallpaper;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
-
 import android.graphics.RectF;
-import android.support.annotation.NonNull;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
-import java.util.ListIterator;
 
 /**
  * Created by Jannis on 25.04.2016.
@@ -126,6 +122,7 @@ public class Player extends GameObject {
             if (a.outOfScreen()) {
                 iter.remove();
             }
+            a.update();
         }
 
         float left = posX - width / 2;
