@@ -1,4 +1,4 @@
-package com.mygdx.game;
+package org.bob.core;
 
 /**
  * Created by jeff on 09/06/16.

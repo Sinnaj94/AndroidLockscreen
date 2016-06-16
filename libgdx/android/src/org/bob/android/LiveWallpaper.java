@@ -1,7 +1,9 @@
-package com.mygdx.game;
+package org.bob.android;
 
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
+
+import org.bob.core.Flap;
 
 /**
  * Created by jeff on 09/06/16.
