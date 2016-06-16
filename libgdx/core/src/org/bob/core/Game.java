@@ -30,8 +30,11 @@ public class Game extends InputAdapter implements ApplicationListener {
     Texture img;
     Viewport viewport;
     Camera camera;
+    private Array<Sprite> bears;
     @Override
     public void create() {
+        bears = new TextureAtlas("gfx/bear.sheet").createSprites();
+
         camera = new PerspectiveCamera();
         viewport = new FitViewport(1080, 1920, camera);
         batch = new SpriteBatch();
