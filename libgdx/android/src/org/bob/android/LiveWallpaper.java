@@ -4,6 +4,7 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 
 import org.bob.core.Flap;
+import org.bob.core.Game;
 
 /**
  * Created by jeff on 09/06/16.
@@ -14,6 +15,6 @@ public class LiveWallpaper extends AndroidLiveWallpaperService {
     public void onCreateApplication() {
         super.onCreateApplication();
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new Flap(), config);
+        initialize(new Game(), config);
     }
 }
