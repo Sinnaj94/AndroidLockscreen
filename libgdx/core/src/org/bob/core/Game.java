@@ -1,4 +1,5 @@
 package org.bob.core;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -11,15 +12,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.io.Console;
 import java.util.logging.Logger;
-
-
-
 
 
 /**
@@ -27,32 +31,47 @@ import java.util.logging.Logger;
  */
 public class Game extends InputAdapter implements ApplicationListener {
     SpriteBatch batch;
-    Texture img;
     Viewport viewport;
     Camera camera;
+    Bob bob;
+    Stage stage;
     private Array<Sprite> bears;
+
     @Override
     public void create() {
-        bears = new TextureAtlas("gfx/bear.sheet").createSprites();
+
 
         camera = new PerspectiveCamera();
-        viewport = new FitViewport(1080, 1920, camera);
+        viewport = new StretchViewport(1280, 720, camera);
+        stage = new Stage(viewport);
+        //INPUT
+
+        //ACTOR BOB **
+        bob = new Bob();
+        //INPUT
+        //** ACTOR BOB
+
+
+        stage.addActor(bob);
         batch = new SpriteBatch();
-        img = new Texture("gfx/baer.png");
+
+
     }
+
+
+
 
     @Override
     public void resize(int width, int height) {
-        viewport.update(width,height);
+        viewport.update(width, height);
     }
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(1,0,0,1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
-        batch.draw(img,0,100);
-        batch.end();
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
@@ -67,6 +86,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 }
