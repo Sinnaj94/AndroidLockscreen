@@ -1,0 +1,41 @@
+
+game.png
+size: 512,128
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+kiwi
+  rotate: false
+  xy: 2, 32
+  size: 117, 84
+  orig: 117, 84
+  offset: 0, 0
+  index: -1
+orange
+  rotate: false
+  xy: 322, 27
+  size: 92, 89
+  orig: 92, 89
+  offset: 0, 0
+  index: -1
+pair
+  rotate: false
+  xy: 416, 2
+  size: 64, 114
+  orig: 64, 114
+  offset: 0, 0
+  index: -1
+peach
+  rotate: false
+  xy: 121, 19
+  size: 101, 97
+  orig: 101, 97
+  offset: 0, 0
+  index: -1
+strawberry
+  rotate: false
+  xy: 224, 16
+  size: 96, 100
+  orig: 96, 100
+  offset: 0, 0
+  index: -1
