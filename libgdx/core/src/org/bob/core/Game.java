@@ -24,9 +24,13 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 public class Game extends InputAdapter implements ApplicationListener {
 
     private float accumulator = 0;
-    private float TIME_STEP = 1/300f;
-    private int VELOCITY_ITERATIONS = 6;
-    private int POSITION_ITERATIONS = 2;
+    public static final float TIME_STEP = 1/300f;
+    public static final int VELOCITY_ITERATIONS = 6;
+    public static final int POSITION_ITERATIONS = 2;
+
+    public static final int width = 1080;
+    public static final int height = 1920;
+
 
     SpriteBatch batch;
     Viewport viewport;
