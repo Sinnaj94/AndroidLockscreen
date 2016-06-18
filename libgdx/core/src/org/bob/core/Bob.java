@@ -41,6 +41,8 @@ public class Bob extends Actor {
     float timeToElapse;
     float minimumTime = 1;
     float maximumTime = 10;
+    float climbingSpeed;
+
 
     public Bob() {
         currentAction = 0;
@@ -49,11 +51,12 @@ public class Bob extends Actor {
         createSheet();
         bodyDef = new BodyDef();
         timer = 0;
+        climbingSpeed = 1;
         timeToElapse = 1f;
     }
 
     public void changeAction() {
-        currentAction = MathUtils.random(0, 1);
+        currentAction = MathUtils.random(0, 2);
     }
 
     private void setTimerRandom() {
@@ -74,6 +77,9 @@ public class Bob extends Actor {
                 break;
             case 1:
                 stand();
+                break;
+            case 2:
+                climb();
                 break;
         }
 
@@ -96,6 +102,11 @@ public class Bob extends Actor {
     //switch case nr 1
     public void stand() {
         //TODO: Implement
+    }
+
+    //switch case nr 2
+    public void climb(){
+        moveY(climbingSpeed);
     }
 
     private void changeDirection() {
@@ -128,6 +139,10 @@ public class Bob extends Actor {
         this.position.x += x;
     }
 
+    private void moveY(float y) {
+        this.position.y += y;
+    }
+
 
     private void createSheet() {
         walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet_new.png"));
@@ -137,7 +152,7 @@ public class Bob extends Actor {
         Gdx.app.log("actorsize", "Width = " + actorWidth + ", Height = " + actorHeight);
         walkFramesRight = new TextureRegion[FRAME_COLS * 5];
         walkFramesLeft = new TextureRegion[FRAME_COLS * 5];
-        idleFrames = new TextureRegion[4];
+        idleFrames = new TextureRegion[6];
         int index = 0;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < FRAME_COLS; j++) {
@@ -151,7 +166,7 @@ public class Bob extends Actor {
             }
         }
         index = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 6; i++) {
             idleFrames[index++] = tmp[10][i];
 
         }
