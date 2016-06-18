@@ -29,10 +29,12 @@ public class Bob extends Actor {
     SpriteBatch spriteBatch;            // #6
     TextureRegion currentFrame;           // #7
     float stateTime;                                        // #8
-    float actorX = 0, actorY = 100;
+    float actorX = 0, actorY = 100, actorWidth,actorHeight;
+    float walkingSpeed;
     public boolean started = false;
 
     public Bob() {
+        walkingSpeed = 3;
         createSheet();
 
 
@@ -40,21 +42,32 @@ public class Bob extends Actor {
 
     @Override
     public void act(float delta) {
-        Gdx.app.log("speed", "Delta = " + delta);
-        actorX += 10;
-        if(actorX >= Gdx.graphics.getWidth()){
-            actorX = -80;
-            actorY+=130;
-            if(actorY >= Gdx.graphics.getHeight()){
-                actorY = 0;
-            }
+        run();
+
+    }
+
+    public void run(){
+        if(actorX +actorWidth> Gdx.graphics.getWidth()){
+            walkingSpeed*=-1;
+            actorX = Gdx.graphics.getWidth() - actorWidth;
+        }else if(actorX < 0){
+            walkingSpeed*=-1;
+            actorX = 0;
+
         }
+        actorX += walkingSpeed;
+    }
+
+    public void stand(){
 
     }
 
     private void createSheet() {
-        walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet.png")); // #9
-        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);              // #10
+        walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet.png"));
+        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
+        actorWidth = walkSheet.getWidth() / FRAME_COLS;
+        actorHeight = walkSheet.getHeight()/FRAME_ROWS;
+        Gdx.app.log("actorsize", "Width = " + actorWidth + ", Height = " + actorHeight);
         walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
         for (int i = 0; i < FRAME_ROWS; i++) {
@@ -72,7 +85,7 @@ public class Bob extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);                        // #14
-        stateTime += Gdx.graphics.getDeltaTime();           // #15
+        stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = walkAnimation.getKeyFrame(stateTime, true);  // #16
         spriteBatch.begin();
         spriteBatch.draw(currentFrame, actorX, actorY);             // #17
