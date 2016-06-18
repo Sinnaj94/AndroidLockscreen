@@ -15,8 +15,6 @@ public class DesktopLauncher {
 		config.height = Game.height/2;
 
 		TexturePacker.Settings settings = new TexturePacker.Settings();
-		settings.maxWidth = 512;
-		settings.maxHeight = 512;
 		process(settings, "gfx/texturepack", "sprite", "game");
 
 		new LwjglApplication(new Game(), config);

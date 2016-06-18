@@ -4,38 +4,24 @@ size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-kiwi
+coconut
   rotate: false
-  xy: 2, 32
-  size: 117, 84
-  orig: 117, 84
+  xy: 109, 3
+  size: 101, 100
+  orig: 101, 100
   offset: 0, 0
   index: -1
-orange
+grape
   rotate: false
-  xy: 322, 27
-  size: 92, 89
-  orig: 92, 89
-  offset: 0, 0
-  index: -1
-pair
-  rotate: false
-  xy: 416, 2
-  size: 64, 114
-  orig: 64, 114
-  offset: 0, 0
-  index: -1
-peach
-  rotate: false
-  xy: 121, 19
-  size: 101, 97
-  orig: 101, 97
+  xy: 2, 2
+  size: 105, 101
+  orig: 105, 101
   offset: 0, 0
   index: -1
 strawberry
   rotate: false
-  xy: 224, 16
-  size: 96, 100
-  orig: 96, 100
+  xy: 212, 3
+  size: 101, 100
+  orig: 101, 100
   offset: 0, 0
   index: -1
