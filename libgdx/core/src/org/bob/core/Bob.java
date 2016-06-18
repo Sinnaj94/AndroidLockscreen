@@ -7,12 +7,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.particles.influencers.ColorInfluencer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.utils.Timer;
 
 /**
  * Created by jeff on 16/06/16.
@@ -20,10 +18,16 @@ import com.badlogic.gdx.utils.Timer;
 public class Bob extends Actor {
 
     private static final int FRAME_COLS = 6;         // #1
-    private static final int FRAME_ROWS = 5;         // #2
-    Animation walkAnimation;          // #3
+    private static final int FRAME_ROWS = 11;         // #2
+    Animation walkRightAnimation;          // #3
+    Animation walkLeftAnimation;
+    Animation idleAnimation;
+
     Texture walkSheet;              // #4
-    TextureRegion[] walkFrames;             // #5
+    TextureRegion[] walkFramesRight;             // #5
+    TextureRegion[] walkFramesLeft;             // #5
+    TextureRegion[] idleFrames;
+
     SpriteBatch spriteBatch;            // #6
     TextureRegion currentFrame;           // #7
     float stateTime;                                        // #8
@@ -37,8 +41,9 @@ public class Bob extends Actor {
     float timeToElapse;
     float minimumTime = 1;
     float maximumTime = 10;
+
     public Bob() {
-        currentAction = 1;
+        currentAction = 0;
         position = new Vector2(0, 0);
         walkingSpeed = 3;
         createSheet();
@@ -47,18 +52,18 @@ public class Bob extends Actor {
         timeToElapse = 1f;
     }
 
-    public void changeAction(){
-        currentAction = MathUtils.random(0,1);
+    public void changeAction() {
+        currentAction = MathUtils.random(0, 1);
     }
 
-    private void setTimerRandom(){
-        timeToElapse = MathUtils.random(minimumTime,maximumTime);
+    private void setTimerRandom() {
+        timeToElapse = MathUtils.random(minimumTime, maximumTime);
     }
 
     @Override
     public void act(float delta) {
-        timer+=delta;
-        if(timer >= timeToElapse){
+        timer += delta;
+        if (timer >= timeToElapse) {
             changeAction();
             setTimerRandom();
             timer = 0;
@@ -125,30 +130,67 @@ public class Bob extends Actor {
 
 
     private void createSheet() {
-        walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet.png"));
+        walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet_new.png"));
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
         actorWidth = walkSheet.getWidth() / FRAME_COLS;
         actorHeight = walkSheet.getHeight() / FRAME_ROWS;
         Gdx.app.log("actorsize", "Width = " + actorWidth + ", Height = " + actorHeight);
-        walkFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        walkFramesRight = new TextureRegion[FRAME_COLS * 5];
+        walkFramesLeft = new TextureRegion[FRAME_COLS * 5];
+        idleFrames = new TextureRegion[4];
         int index = 0;
-        for (int i = 0; i < FRAME_ROWS; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < FRAME_COLS; j++) {
-                walkFrames[index++] = tmp[i][j];
+                walkFramesRight[index++] = tmp[i][j];
             }
         }
-        walkAnimation = new Animation(0.025f, walkFrames);      // #11
+        index = 0;
+        for (int i = 5; i < 10; i++) {
+            for (int j = FRAME_COLS - 1; j > -1; j--) {
+                walkFramesLeft[index++] = tmp[i][j];
+            }
+        }
+        index = 0;
+        for (int i = 0; i < 4; i++) {
+            idleFrames[index++] = tmp[10][i];
+
+        }
+
+
+        walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
+        walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
+        idleAnimation = new Animation(0.15f, idleFrames);
         spriteBatch = new SpriteBatch();                // #12
         stateTime = 0f;
 
         // #13
     }
 
+    private TextureRegion returnSpriteSheet() {
+        switch (currentAction) {
+            case 0:
+                if (walkingSpeed < 0) {
+                    return walkLeftAnimation.getKeyFrame(stateTime, true);
+
+                } else {
+                    return walkRightAnimation.getKeyFrame(stateTime, true);
+
+                }
+            case 1:
+                return idleAnimation.getKeyFrame(stateTime, true);
+
+
+        }
+
+        return idleAnimation.getKeyFrame(stateTime, true);
+
+    }
+
     @Override
     public void draw(Batch batch, float alpha) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);                        // #14
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         stateTime += Gdx.graphics.getDeltaTime();
-        currentFrame = walkAnimation.getKeyFrame(stateTime, true);  // #16
+        currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
         spriteBatch.draw(currentFrame, position.x, position.y);             // #17
         spriteBatch.end();
