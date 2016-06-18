@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -45,7 +45,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      */
     static final int COUNT = 25;
     Body[] fruitBodies = new Body[COUNT];
-    static final float SCALE = 0.05f;
+    static final float SCALE = 1.05f;
     final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
     Sprite[] fruitSprites = new Sprite[COUNT];
     TextureAtlas textureAtlas;
@@ -73,10 +73,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         debugRenderer = new Box2DDebugRenderer();
 
         // Camera
-        camera = new PerspectiveCamera();
+        camera = new OrthographicCamera();
 
         // Viewport
-        viewport = new StretchViewport(1080, 1920, camera);
+        viewport = new StretchViewport(width, height, camera);
+
+        //viewport = new ExtendViewport(50, 50, camera);
 
         // Stage
         stage = new Stage(viewport);
@@ -104,13 +106,13 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         debugRenderer.render(world, camera.combined);
         doPhysicsStep(Gdx.graphics.getDeltaTime());
-
 
         batch.begin();
 
@@ -127,7 +129,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             float degrees = (float) Math.toDegrees(body.getAngle());
 
             // draw the fruit on the screen
-            drawSprite(fruitSprites[i], position.x, position.y, degrees);
+            //drawSprite(fruitSprites[i], position.x, position.y, degrees);
         }
 
         batch.end();
