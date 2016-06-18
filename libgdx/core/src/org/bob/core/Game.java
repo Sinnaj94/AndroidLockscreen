@@ -37,8 +37,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
 
-    public static final int width = 1080;
-    public static final int height = 1920;
+    public static final int width = 1080/2;
+    public static final int height = 1920/2;
 
     /**
      * Adjust this value to change the amount of fruit that falls from the sky.
@@ -69,7 +69,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Physics
         Box2D.init();
         physicsBodies = new PEXML(Gdx.files.internal("physics.xml").file());
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, -120), true);
         debugRenderer = new Box2DDebugRenderer();
 
         // Camera
@@ -78,7 +78,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Viewport
         viewport = new StretchViewport(width, height, camera);
 
-        //viewport = new ExtendViewport(50, 50, camera);
 
         // Stage
         stage = new Stage(viewport);
@@ -112,7 +111,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         debugRenderer.render(world, camera.combined);
-        doPhysicsStep(Gdx.graphics.getDeltaTime());
+
 
         batch.begin();
 
@@ -129,11 +128,12 @@ public class Game extends InputAdapter implements ApplicationListener {
             float degrees = (float) Math.toDegrees(body.getAngle());
 
             // draw the fruit on the screen
-            //drawSprite(fruitSprites[i], position.x, position.y, degrees);
+            drawSprite(fruitSprites[i], position.x, position.y, degrees);
         }
 
         batch.end();
 
+        doPhysicsStep(Gdx.graphics.getDeltaTime());
     }
 
     @Override
@@ -188,8 +188,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             fruitSprites[i] = sprites.get(name);
 
-            float x = random.nextFloat() * 50;
-            float y = random.nextFloat() * 50 + 50;
+            float x = random.nextFloat() * Game.width;
+            float y = random.nextFloat() * Game.height + Game.height;
 
             fruitBodies[i] = createBody(name, x, y, 0);
         }
@@ -216,7 +216,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         fixtureDef.friction = 1;
 
         PolygonShape shape = new PolygonShape();
-
         shape.setAsBox(camera.viewportWidth, 1);
 
         fixtureDef.shape = shape;
