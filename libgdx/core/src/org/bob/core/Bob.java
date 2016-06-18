@@ -56,7 +56,7 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        currentAction = MathUtils.random(0, 2);
+        //currentAction = MathUtils.random(0, 2);
     }
 
     private void setTimerRandom() {
