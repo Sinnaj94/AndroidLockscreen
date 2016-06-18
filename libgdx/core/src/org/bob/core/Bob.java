@@ -63,6 +63,7 @@ public class Bob extends Actor {
         timeToElapse = MathUtils.random(minimumTime, maximumTime);
     }
 
+
     @Override
     public void act(float delta) {
         timer += delta;
