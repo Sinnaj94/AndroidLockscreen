@@ -146,7 +146,7 @@ public class Bob extends Actor {
 
 
     private void createSheet() {
-        walkSheet = new Texture(Gdx.files.internal("gfx/animation_sheet_new.png"));
+        walkSheet = new Texture(Gdx.files.internal("gfx/jeffl.png"));
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
         actorWidth = walkSheet.getWidth() / FRAME_COLS;
         actorHeight = walkSheet.getHeight() / FRAME_ROWS;
