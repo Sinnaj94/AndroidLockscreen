@@ -144,7 +144,7 @@ public class Bob extends Actor {
 
 
         }
-        Gdx.app.log("rightleft", "X: " + body.getPosition().x / Gdx.graphics.getWidth() / 2);
+        //Gdx.app.log("rightleft", "X: " + body.getPosition().x / Gdx.graphics.getWidth() / 2);
 
         moveX(walkingSpeed);
     }

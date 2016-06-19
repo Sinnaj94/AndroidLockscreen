@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import org.bob.core.item.Coconut;
 import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
 
@@ -140,13 +141,16 @@ public class Game extends InputAdapter implements ApplicationListener {
         for (int i = 0; i <= count; i++) {
 
             float x = random.nextFloat() * Game.width;
-            float y = random.nextFloat() * Game.height + Game.height;
+            float y = ((random.nextFloat() * Game.height) / 2) + Game.height;
 
             Vector2 position = new Vector2(x, y);
 
-            switch (random.nextInt(1)) {
+            switch (random.nextInt(2)) {
                 case (0):
                     item = new Grape(world, spriteFactory, position, SCALE);
+                    break;
+                case (1):
+                    item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
                 default:
                     item = null;
