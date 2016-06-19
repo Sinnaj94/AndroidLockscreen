@@ -1,6 +1,7 @@
 package org.bob.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -9,7 +10,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
@@ -42,21 +47,46 @@ public class Bob extends Actor {
     float minimumTime = 1;
     float maximumTime = 10;
     float climbingSpeed;
-
-
-    public Bob() {
+    World world;
+    PolygonShape shape;
+    Body body;
+    Camera camera;
+    public Bob(World world,Camera camera) {
+        this.world = world;
+        this.camera = camera;
         currentAction = 0;
         position = new Vector2(0, 0);
-        walkingSpeed = 3;
+        walkingSpeed = 200;
         createSheet();
-        bodyDef = new BodyDef();
+        createCollider();
         timer = 0;
         climbingSpeed = 1;
         timeToElapse = 1f;
     }
 
+    private void createCollider(){
+        BodyDef bodyDef = new BodyDef();
+
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.friction = 1f;
+        fixtureDef.density = 1f;
+
+        shape = new PolygonShape();
+        shape.setAsBox(actorWidth,actorHeight);
+
+        fixtureDef.shape = shape;
+
+        body = world.createBody(bodyDef);
+        body.createFixture(fixtureDef);
+
+        body.setTransform(100, 100, 0);
+        shape.dispose();
+    }
+
     public void changeAction() {
-        //currentAction = MathUtils.random(0, 2);
+        currentAction = MathUtils.random(0, 1);
     }
 
     private void setTimerRandom() {
@@ -107,6 +137,7 @@ public class Bob extends Actor {
 
     //switch case nr 2
     public void climb(){
+
         moveY(climbingSpeed);
     }
 
@@ -118,30 +149,36 @@ public class Bob extends Actor {
     private Vector2 getPosition() {
         return position;
     }
-
-    private void setPosition(Vector2 position) {
+    //most important
+    private void setActorPosition(Vector2 position) {
         this.position = position;
     }
 
+    private void setActorPosition(float x,float y){
+        setActorPosition(new Vector2(x,y));
+    }
+
     private void setPositionX(float x) {
-        this.position.x = x;
+        setActorPosition(x,getPosition().y);
     }
 
     private void setPositionY(float y) {
-        this.position.y = y;
+        setActorPosition(getPosition().x,y);
     }
 
     private void move(Vector2 delta) {
-        this.position.x += delta.x;
-        this.position.y += delta.y;
+        //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
+        body.setLinearVelocity(delta);
+
     }
 
     private void moveX(float x) {
-        this.position.x += x;
+        move(new Vector2(x,0));
     }
 
     private void moveY(float y) {
-        this.position.y += y;
+        move(new Vector2(0,y));
+
     }
 
 
@@ -175,7 +212,7 @@ public class Bob extends Actor {
 
         walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
-        idleAnimation = new Animation(0.15f, idleFrames);
+        idleAnimation = new Animation(0.1f, idleFrames);
         spriteBatch = new SpriteBatch();                // #12
         stateTime = 0f;
 
@@ -194,8 +231,6 @@ public class Bob extends Actor {
                 }
             case 1:
                 return idleAnimation.getKeyFrame(stateTime, true);
-
-
         }
 
         return idleAnimation.getKeyFrame(stateTime, true);
@@ -205,6 +240,7 @@ public class Bob extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.app.log("MANNAM", "position: " + body.getPosition().y);
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
