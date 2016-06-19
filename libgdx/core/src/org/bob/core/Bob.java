@@ -27,11 +27,15 @@ public class Bob extends Actor {
     Animation walkRightAnimation;          // #3
     Animation walkLeftAnimation;
     Animation idleAnimation;
+    Animation smokeAnimation;          // #3
+
 
     Texture walkSheet;              // #4
     TextureRegion[] walkFramesRight;             // #5
     TextureRegion[] walkFramesLeft;             // #5
     TextureRegion[] idleFrames;
+    TextureRegion[] smokeFrames;
+
 
     SpriteBatch spriteBatch;            // #6
     TextureRegion currentFrame;           // #7
@@ -86,7 +90,7 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        currentAction = MathUtils.random(0, 1);
+        //currentAction = MathUtils.random(0, 1);
     }
 
     private void setTimerRandom() {
@@ -183,7 +187,7 @@ public class Bob extends Actor {
 
 
     private void createSheet() {
-        walkSheet = new Texture(Gdx.files.internal("gfx/jeff.png"));
+        walkSheet = new Texture(Gdx.files.internal("gfx/jeff-01.png"));
         TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
         actorWidth = walkSheet.getWidth() / FRAME_COLS;
         actorHeight = walkSheet.getHeight() / FRAME_ROWS;
@@ -191,6 +195,7 @@ public class Bob extends Actor {
         walkFramesRight = new TextureRegion[FRAME_COLS * 5];
         walkFramesLeft = new TextureRegion[FRAME_COLS * 5];
         idleFrames = new TextureRegion[6];
+        smokeFrames = new TextureRegion[12];
         int index = 0;
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < FRAME_COLS; j++) {
@@ -203,16 +208,27 @@ public class Bob extends Actor {
                 walkFramesLeft[index++] = tmp[i][j];
             }
         }
-        index = 0;
-        for (int i = 0; i < 6; i++) {
-            idleFrames[index++] = tmp[10][i];
 
+        for (int i = 0; i < 6; i++) {
+            idleFrames[i] = tmp[10][i];
         }
+
+        for (int i = 0; i < 6; i++) {
+            smokeFrames[i] = tmp[11][i];
+        }
+        for (int i = 0; i < 6; i++) {
+            smokeFrames[i+6] = tmp[12][i];
+        }
+
+
 
 
         walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
         idleAnimation = new Animation(0.1f, idleFrames);
+        smokeAnimation = new Animation(0.4f, smokeFrames);
+
+        //smokeAnimation = new Animation(0.1f,smokeFrames);
         spriteBatch = new SpriteBatch();                // #12
         stateTime = 0f;
 
@@ -233,7 +249,7 @@ public class Bob extends Actor {
                 return idleAnimation.getKeyFrame(stateTime, true);
         }
 
-        return idleAnimation.getKeyFrame(stateTime, true);
+        return smokeAnimation.getKeyFrame(stateTime, true);
 
     }
 
@@ -244,7 +260,8 @@ public class Bob extends Actor {
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
-        spriteBatch.draw(currentFrame, position.x, position.y);             // #17
+
+        spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth),(body.getPosition().y-actorHeight));
         spriteBatch.end();
     }
 
