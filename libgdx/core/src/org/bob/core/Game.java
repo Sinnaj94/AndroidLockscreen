@@ -6,24 +6,20 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.hi5dev.box2d_pexml.PEXML;
 
 import org.bob.core.item.Grape;
+import org.bob.core.item.Item;
 
-import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 
@@ -33,53 +29,41 @@ import java.util.Random;
 public class Game extends InputAdapter implements ApplicationListener {
 
     private float accumulator = 0;
-    public static final float TIME_STEP = 1/300f;
+    public static final float TIME_STEP = 1 / 300f;
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
 
-    public static final int width = 1080/2;
-    public static final int height = 1920/2;
+    public static final int width = 1080 / 2;
+    public static final int height = 1920 / 2;
 
-    /**
-     * Adjust this value to change the amount of fruit that falls from the sky.
-     */
-
-    static final int COUNT = 25;
-    Body[] fruitBodies = new Body[COUNT];
     public static final float SCALE = 1.05f;
-    final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
-    Sprite[] fruitSprites = new Sprite[COUNT];
-    TextureAtlas textureAtlas;
 
-    public SpriteBatch batch;
     public Viewport viewport;
     public Camera camera;
 
-    public Stage stage;
     public World world;
     public Box2DDebugRenderer debugRenderer;
-    private PEXML physicsBodies;
-
-    private Array<Sprite> bears;
 
     private SpriteFactory spriteFactory;
-
-
+    public SpriteBatch batch;
 
     // Game Objects
+    public Stage stage;
     public Bob bob;
     public Platform platform;
-    public Grape grape;
+    public List<Item> items;
 
 
     @Override
     public void create() {
 
-        SpriteFactory spriteFactory = new SpriteFactory(SCALE);
+        spriteFactory = new SpriteFactory(SCALE);
+
+        items = new LinkedList<Item>();
 
         // Physics
         Box2D.init();
-        physicsBodies = new PEXML(Gdx.files.internal("physics_old.xml").file());
+
         world = new World(new Vector2(0, -120), true);
         debugRenderer = new Box2DDebugRenderer();
 
@@ -93,19 +77,15 @@ public class Game extends InputAdapter implements ApplicationListener {
         stage = new Stage(viewport);
 
         // Create game objects
-        bob = new Bob(world,camera);
+        bob = new Bob(world, camera);
         stage.addActor(bob);
-        platform = new Platform(world,camera);
-        grape = new Grape(world,spriteFactory.get(Grape.SPRITE_ID),SCALE);
+        platform = new Platform(world, camera);
 
         // Batch
         batch = new SpriteBatch();
 
-        textureAtlas = new TextureAtlas("sprites.txt");
+        doSpawnItems(10);
 
-        loadSprites();
-
-        generateFruit();
     }
 
     @Override
@@ -126,23 +106,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         batch.begin();
 
-        grape.render(batch);
-
-        // iterate through each of the fruits
-        for (int i = 0; i < fruitBodies.length; i++) {
-
-            // get the physics body of the fruit
-            Body body = fruitBodies[i];
-
-            // get the position of the fruit from Box2D
-            Vector2 position = body.getPosition();
-
-            // get the degrees of rotation by converting from radians
-            float degrees = (float) Math.toDegrees(body.getAngle());
-
-            // draw the fruit on the screen
-            drawSprite(fruitSprites[i], position.x, position.y, degrees);
-        }
+        // Items
+        for (Item item : items)
+            item.render(batch);
 
         batch.end();
 
@@ -162,62 +128,35 @@ public class Game extends InputAdapter implements ApplicationListener {
     @Override
     public void dispose() {
         stage.dispose();
-        textureAtlas.dispose();
-        sprites.clear();
         world.dispose();
         debugRenderer.dispose();
     }
 
-
-    private void loadSprites() {
-        Array<TextureAtlas.AtlasRegion> regions = textureAtlas.getRegions();
-
-        for (TextureAtlas.AtlasRegion region : regions) {
-            Sprite sprite = textureAtlas.createSprite(region.name);
-
-            float width = sprite.getWidth() * SCALE;
-            float height = sprite.getHeight() * SCALE;
-
-            sprite.setSize(width, height);
-            sprite.setOrigin(0, 0);
-
-            sprites.put(region.name, sprite);
-        }
-    }
-
-    private void drawSprite(Sprite sprite, float x, float y, float degrees) {
-        sprite.setPosition(x, y);
-        sprite.setRotation(degrees);
-        sprite.draw(batch);
-    }
-
-    private void generateFruit() {
-        String[] fruitNames = new String[]{"banana", "cherries", "orange"};
+    public void doSpawnItems(int count) {
 
         Random random = new Random();
 
-        for (int i = 0; i < fruitBodies.length; i++) {
-            String name = fruitNames[random.nextInt(fruitNames.length)];
+        Item item;
 
-            fruitSprites[i] = sprites.get(name);
+        for (int i = 0; i <= count; i++) {
 
             float x = random.nextFloat() * Game.width;
             float y = random.nextFloat() * Game.height + Game.height;
 
-            fruitBodies[i] = createBody(name, x, y, 0);
+            Vector2 position = new Vector2(x, y);
+
+            switch (random.nextInt(1)) {
+                case (0):
+                    item = new Grape(world, spriteFactory, position, SCALE);
+                    break;
+                default:
+                    item = null;
+
+            }
+            if (item != null)
+                items.add(item);
         }
     }
-
-    private Body createBody(String name, float x, float y, float rotation) {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-
-        Body body = physicsBodies.createBody(name, world, bodyDef, SCALE, SCALE);
-        body.setTransform(x, y, rotation);
-
-        return body;
-    }
-
 
     private void doPhysicsStep(float deltaTime) {
         // fixed time step
