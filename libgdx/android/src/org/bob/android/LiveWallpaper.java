@@ -3,7 +3,6 @@ package org.bob.android;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.backends.android.AndroidLiveWallpaperService;
 
-import org.bob.core.Flap;
 import org.bob.core.Game;
 
 /**
