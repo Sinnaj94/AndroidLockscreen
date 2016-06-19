@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -37,15 +37,15 @@ public class Game extends InputAdapter implements ApplicationListener {
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
 
-    public static final int width = 1080;
-    public static final int height = 1920;
+    public static final int width = 1080/2;
+    public static final int height = 1920/2;
 
     /**
      * Adjust this value to change the amount of fruit that falls from the sky.
      */
     static final int COUNT = 25;
     Body[] fruitBodies = new Body[COUNT];
-    static final float SCALE = 0.05f;
+    static final float SCALE = 1.05f;
     final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
     Sprite[] fruitSprites = new Sprite[COUNT];
     TextureAtlas textureAtlas;
@@ -69,14 +69,15 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Physics
         Box2D.init();
         physicsBodies = new PEXML(Gdx.files.internal("physics.xml").file());
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, -120), true);
         debugRenderer = new Box2DDebugRenderer();
 
         // Camera
-        camera = new PerspectiveCamera();
+        camera = new OrthographicCamera();
 
         // Viewport
-        viewport = new StretchViewport(1080, 1920, camera);
+        viewport = new StretchViewport(width, height, camera);
+
 
         // Stage
         stage = new Stage(viewport);
@@ -104,12 +105,12 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
+
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         debugRenderer.render(world, camera.combined);
-        doPhysicsStep(Gdx.graphics.getDeltaTime());
 
 
         batch.begin();
@@ -132,6 +133,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         batch.end();
 
+        doPhysicsStep(Gdx.graphics.getDeltaTime());
     }
 
     @Override
@@ -186,8 +188,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             fruitSprites[i] = sprites.get(name);
 
-            float x = random.nextFloat() * 50;
-            float y = random.nextFloat() * 50 + 50;
+            float x = random.nextFloat() * Game.width;
+            float y = random.nextFloat() * Game.height + Game.height;
 
             fruitBodies[i] = createBody(name, x, y, 0);
         }
@@ -214,7 +216,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         fixtureDef.friction = 1;
 
         PolygonShape shape = new PolygonShape();
-
         shape.setAsBox(camera.viewportWidth, 1);
 
         fixtureDef.shape = shape;
