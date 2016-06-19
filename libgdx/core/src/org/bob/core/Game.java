@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.bob.core.item.Grape;
@@ -71,7 +71,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         camera = new OrthographicCamera();
 
         // Viewport
-        viewport = new StretchViewport(width, height, camera);
+        viewport = new ExtendViewport(width, height, camera);
 
         // Stage
         stage = new Stage(viewport);
@@ -102,7 +102,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
         debugRenderer.render(world, camera.combined);
-
 
         batch.begin();
 
