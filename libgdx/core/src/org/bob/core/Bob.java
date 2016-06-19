@@ -70,7 +70,7 @@ public class Bob extends Actor {
 
     private void createCollider(){
         BodyDef bodyDef = new BodyDef();
-
+        bodyDef.fixedRotation = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         FixtureDef fixtureDef = new FixtureDef();
@@ -90,7 +90,7 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        //currentAction = MathUtils.random(0, 1);
+        currentAction = MathUtils.random(0, 3);
     }
 
     private void setTimerRandom() {
@@ -116,20 +116,28 @@ public class Bob extends Actor {
             case 2:
                 climb();
                 break;
+            case 3:
+                smoke();
+                break;
         }
+
+    }
+
+    private void smoke() {
 
     }
 
     //Switch case nr 0
     public void run() {
-        if (getPosition().x + actorWidth > Gdx.graphics.getWidth()) {
+        if (body.getPosition().x/2 > Gdx.graphics.getWidth()) {
             changeDirection();
-            setPositionX(Gdx.graphics.getWidth() - actorWidth);
-        } else if (getPosition().x < 0) {
+
+        } else if (body.getPosition().x < 0) {
             changeDirection();
-            setPositionX(0);
+
 
         }
+        Gdx.app.log("rightleft", "X: " + body.getPosition().x/Gdx.graphics.getWidth()/2);
 
         moveX(walkingSpeed);
     }
@@ -247,6 +255,8 @@ public class Bob extends Actor {
                 }
             case 1:
                 return idleAnimation.getKeyFrame(stateTime, true);
+            case 3:
+                return smokeAnimation.getKeyFrame(stateTime,true);
         }
 
         return smokeAnimation.getKeyFrame(stateTime, true);
@@ -256,12 +266,12 @@ public class Bob extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-        Gdx.app.log("MANNAM", "position: " + body.getPosition().y);
+
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth),(body.getPosition().y-actorHeight));
+        spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth)/2,(body.getPosition().y-actorHeight)/2);
         spriteBatch.end();
     }
 
