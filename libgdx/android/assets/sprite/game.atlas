@@ -4,6 +4,13 @@ size: 512,128
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+autoreifen
+  rotate: false
+  xy: 315, 3
+  size: 100, 100
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 coconut
   rotate: false
   xy: 109, 3

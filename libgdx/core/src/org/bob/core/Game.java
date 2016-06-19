@@ -18,7 +18,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bob.core.item.Coconut;
 import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
-import org.bob.core.item.Strawberry;
+import org.bob.core.item.Wheel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -158,7 +158,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                     item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
                 case (2):
-                    item = new Strawberry(world, spriteFactory, position, SCALE);
+                    item = new Wheel(world, spriteFactory, position, SCALE);
                     break;
                 default:
                     item = null;
