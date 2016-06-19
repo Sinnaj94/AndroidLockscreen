@@ -88,7 +88,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         stage = new Stage(viewport);
 
         // Create game objects
-        bob = new Bob();
+        bob = new Bob(world,camera);
         stage.addActor(bob);
         platform = new Platform(world,camera);
 
