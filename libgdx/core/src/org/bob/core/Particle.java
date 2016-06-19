@@ -25,15 +25,14 @@ public class Particle extends ApplicationAdapter {
         pe.start();
     }
 
-    public void changePosition(){
-
+    public void changePosition(float x,float y){
+        pe.setPosition(x,y);
     }
 
 
     @Override
     public void render() {
 
-        pe.update(Gdx.graphics.getDeltaTime());
         batch.begin();
         pe.draw(batch);
         batch.end();
@@ -41,6 +40,11 @@ public class Particle extends ApplicationAdapter {
             pe.reset();
 
         }
+    }
+
+    public void updateParticles(){
+        pe.update(Gdx.graphics.getDeltaTime());
+
     }
 
 

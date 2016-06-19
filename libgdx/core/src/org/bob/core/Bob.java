@@ -96,11 +96,11 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        //currentAction = MathUtils.random(0, 3);
+        currentAction = MathUtils.random(0, 3);
     }
 
     private void setTimerRandom() {
-        timeToElapse = MathUtils.random(minimumTime, maximumTime);
+        timeToElapse = MathUtils.random(5, 5);
     }
 
 
@@ -130,7 +130,7 @@ public class Bob extends Actor {
     }
 
     private void smoke() {
-
+        p.changePosition((body.getPosition().x-actorWidth)/2+63,(body.getPosition().y-actorHeight)/2+85);
     }
 
     //Switch case nr 0
@@ -269,18 +269,26 @@ public class Bob extends Actor {
 
     }
 
+
+    private void drawChildObjects(){
+        if(currentAction == 3) {
+            p.render();
+        }
+    }
+
     @Override
     public void draw(Batch batch, float alpha) {
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        //Children Updates:
+        p.updateParticles();
 
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
 
         spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth)/2,(body.getPosition().y-actorHeight)/2);
         spriteBatch.end();
-
-        p.render();
+        drawChildObjects();
     }
 
 
