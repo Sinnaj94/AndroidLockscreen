@@ -13,8 +13,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.bob.core.item.Coconut;
@@ -22,6 +20,7 @@ import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
 import org.bob.core.item.Wheel;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -100,10 +99,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void render() {
-        if(bob.isWaitingForAction()){
 
-        }
-
+        update();
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -139,6 +136,37 @@ public class Game extends InputAdapter implements ApplicationListener {
         debugRenderer.dispose();
     }
 
+    private void update() {
+
+        // Check if item is outside the screen
+
+        for (Iterator<Item> iterator = items.iterator(); iterator.hasNext();) {
+
+            Item item = iterator.next();
+
+            float leftEdge = item.body.getPosition().x + (item.sprite.getWidth() / 2);
+            float rightEdge = item.body.getPosition().x - (item.sprite.getWidth() / 2);;
+
+            //Gdx.app.log("Debug", ""  + camera.viewportWidth);
+
+            boolean remove = false;
+            if (leftEdge < 0){
+                remove = true;
+            }else if(rightEdge > camera.viewportWidth){
+                remove = true;
+            }
+
+            if(remove){
+                world.destroyBody(item.body);
+                iterator.remove();
+            }
+
+        }
+
+        if(bob.isWaitingForAction()){
+            
+        }
+    }
     public void doSpawnItems(int count) {
 
         Random random = new Random();
