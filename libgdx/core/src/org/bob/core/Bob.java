@@ -85,8 +85,12 @@ public class Bob extends Actor {
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
 
-        body.setTransform(100, 100, 0);
+        body.setTransform(100, 200, 0);
         shape.dispose();
+    }
+
+    public void jump(){
+        body.applyForceToCenter(100,0,true);
     }
 
     public void changeAction() {
@@ -180,7 +184,7 @@ public class Bob extends Actor {
 
     private void move(Vector2 delta) {
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
-        body.setLinearVelocity(delta);
+        //body.applyForceToCenter(delta,false);
 
     }
 
