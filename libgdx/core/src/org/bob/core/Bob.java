@@ -27,7 +27,7 @@ public class Bob extends Actor {
     private static final int FRAME_COLS = 6;
     private static final int FRAME_ROWS = 20;
     //Path of the spritesheet
-    final String path = "gfx/jeff-01.png";
+    final String path = "gfx/jeffso1857.png";
 
     //Texture Regions
     Texture spriteSheet;              // #4
@@ -41,7 +41,9 @@ public class Bob extends Actor {
     Animation walkLeftAnimation;
     Animation idleAnimation;
     Animation smokeAnimation;
-
+    Animation climbAnimation;
+    Animation listenAnimation;
+    Animation crouchAnimation;
     //Particle world, smoke
     Particle p;
 
@@ -76,6 +78,7 @@ public class Bob extends Actor {
      * @param camera Camera
      */
     public Bob(World world, Camera camera) {
+
         //Create Particle System
         p = new Particle();
         p.create();
@@ -84,7 +87,7 @@ public class Bob extends Actor {
         this.camera = camera;
 
         //Attributes for the player
-        currentAction = 2;
+        currentAction = 10;
         position = new Vector2(0, 0);
         walkingSpeed = 200;
         climbingSpeed = 1;
@@ -249,6 +252,9 @@ public class Bob extends Actor {
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
         idleAnimation = new Animation(0.1f, idleFrames);
         smokeAnimation = new Animation(0.4f, smokeFrames);
+        climbAnimation = new Animation(0.1f,getFrames(0,5,13,14));
+        listenAnimation = new Animation(.045f,getFramesReverted(0,5,15,15));
+        crouchAnimation = new Animation(.045f,getFramesReverted(0,5,16,16));
 
         //smokeAnimation = new Animation(0.1f,smokeFrames);
         spriteBatch = new SpriteBatch();                // #12
@@ -262,7 +268,7 @@ public class Bob extends Actor {
         xE+=1;
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
         int index = 0;
-        Gdx.app.log("TESTING1"," "+ (yE-yS)*(xE-xS));
+
         TextureRegion[] ret = new TextureRegion[(yE-yS)*(xE-xS)];
 
         for (int x = yS; x < yE; x++) {
@@ -273,6 +279,31 @@ public class Bob extends Actor {
         }
         return ret;
     }
+
+    private TextureRegion[] getFramesReverted( int xS,int xE,int yS, int yE){
+        yE+=1;
+        xE+=1;
+        TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
+        int index = 0;
+
+        TextureRegion[] ret = new TextureRegion[(yE-yS)*(xE-xS)*2];
+
+        for (int x = yS; x < yE; x++) {
+            for (int y = xS; y < xE; y++) {
+                //x and y are swifted??
+                ret[index++] = tmp[x][y];
+            }
+        }
+        for (int x = yE-1; x > yS-1; x--) {
+            for (int y = xE-1; y > xS-1; y--) {
+                //x and y are swifted??
+                ret[index++] = tmp[x][y];
+            }
+        }
+        return ret;
+    }
+
+
 
     private TextureRegion returnSpriteSheet() {
         switch (currentAction) {
@@ -286,11 +317,13 @@ public class Bob extends Actor {
                 }
             case 1:
                 return idleAnimation.getKeyFrame(stateTime, true);
+            case 2:
+                return climbAnimation.getKeyFrame(stateTime,true);
             case 3:
                 return smokeAnimation.getKeyFrame(stateTime, true);
         }
 
-        return smokeAnimation.getKeyFrame(stateTime, true);
+        return listenAnimation.getKeyFrame(stateTime, true);
 
     }
 
