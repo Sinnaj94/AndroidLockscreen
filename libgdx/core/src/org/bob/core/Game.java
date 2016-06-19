@@ -21,6 +21,8 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.hi5dev.box2d_pexml.PEXML;
 
+import org.bob.core.item.Grape;
+
 import java.util.HashMap;
 import java.util.Random;
 
@@ -44,7 +46,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     static final int COUNT = 25;
     Body[] fruitBodies = new Body[COUNT];
-    static final float SCALE = 1.05f;
+    public static final float SCALE = 1.05f;
     final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
     Sprite[] fruitSprites = new Sprite[COUNT];
     TextureAtlas textureAtlas;
@@ -60,20 +62,24 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private Array<Sprite> bears;
 
+    private SpriteFactory spriteFactory;
+
 
 
     // Game Objects
     public Bob bob;
     public Platform platform;
-
+    public Grape grape;
 
 
     @Override
     public void create() {
 
+        SpriteFactory spriteFactory = new SpriteFactory(SCALE);
+
         // Physics
         Box2D.init();
-        physicsBodies = new PEXML(Gdx.files.internal("physics.xml").file());
+        physicsBodies = new PEXML(Gdx.files.internal("physics_old.xml").file());
         world = new World(new Vector2(0, -120), true);
         debugRenderer = new Box2DDebugRenderer();
 
@@ -83,7 +89,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Viewport
         viewport = new StretchViewport(width, height, camera);
 
-
         // Stage
         stage = new Stage(viewport);
 
@@ -91,7 +96,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         bob = new Bob(world,camera);
         stage.addActor(bob);
         platform = new Platform(world,camera);
-
+        grape = new Grape(world,spriteFactory.get(Grape.SPRITE_ID),SCALE);
 
         // Batch
         batch = new SpriteBatch();
@@ -120,6 +125,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
 
         batch.begin();
+
+        grape.render(batch);
 
         // iterate through each of the fruits
         for (int i = 0; i < fruitBodies.length; i++) {
@@ -210,8 +217,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         return body;
     }
-
-
 
 
     private void doPhysicsStep(float deltaTime) {
