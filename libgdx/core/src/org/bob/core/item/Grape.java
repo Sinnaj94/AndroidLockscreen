@@ -1,9 +1,7 @@
 package org.bob.core.item;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -46,8 +44,9 @@ public class Grape extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.9f;
         //fixtureDef.density = 5f;
-        //fixtureDef.friction = 0.4f;
         //fixtureDef.restitution = 0.6f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);
@@ -64,18 +63,9 @@ public class Grape extends Item {
         // get the degrees of rotation by converting from radians
         float degrees = (float) Math.toDegrees(body.getAngle());
 
-        sprite.setPosition(position.x, position.y);
+        sprite.setPosition(position.x-(sprite.getWidth()/2), position.y - (sprite.getHeight()/2));
         sprite.setRotation(degrees);
         sprite.draw(batch);
 
-
-        if(!projectionMatrixSet){
-            shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
-        }
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.RED);
-
-        shapeRenderer.rect(position.x, position.y, sprite.getWidth(), sprite.getHeight());
-        shapeRenderer.end();
     }
 }

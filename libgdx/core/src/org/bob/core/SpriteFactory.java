@@ -34,7 +34,7 @@ public class SpriteFactory {
             float height = sprite.getHeight() * scale;
 
             sprite.setSize(width, height);
-            sprite.setOrigin(0, 0);
+            sprite.setOrigin(width/2, height/2);
 
             sprites.put(region.name, sprite);
         }
