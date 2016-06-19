@@ -22,23 +22,29 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class Bob extends Actor {
 
-    private static final int FRAME_COLS = 6;         // #1
-    private static final int FRAME_ROWS = 20;         // #2
-    Animation walkRightAnimation;          // #3
-    Animation walkLeftAnimation;
-    Animation idleAnimation;
-    Animation smokeAnimation;          // #3
+    //Define How many frames the Spritesheet has.
+    private static final int FRAME_COLS = 6;
+    private static final int FRAME_ROWS = 20;
 
-
+    //Texture Regions
     Texture walkSheet;              // #4
     TextureRegion[] walkFramesRight;             // #5
     TextureRegion[] walkFramesLeft;             // #5
     TextureRegion[] idleFrames;
     TextureRegion[] smokeFrames;
+
+    //Animations
+    Animation walkRightAnimation;
+    Animation walkLeftAnimation;
+    Animation idleAnimation;
+    Animation smokeAnimation;
+
+    //Particle world, smoke
     Particle p;
 
-    SpriteBatch spriteBatch;            // #6
-    TextureRegion currentFrame;           // #7
+
+    SpriteBatch spriteBatch;
+    TextureRegion currentFrame;
     float stateTime;                                        // #8
     float actorX = 0, actorY = 100, actorWidth, actorHeight;
     Vector2 position;
@@ -144,7 +150,7 @@ public class Bob extends Actor {
 
 
         }
-        Gdx.app.log("rightleft", "X: " + body.getPosition().x / Gdx.graphics.getWidth() / 2);
+        
 
         moveX(walkingSpeed);
     }
