@@ -41,7 +41,6 @@ public class SpriteFactory {
     }
 
     public Sprite get(String spriteId) {
-        System.out.print(spriteId);
         return sprites.get(spriteId);
     }
 }

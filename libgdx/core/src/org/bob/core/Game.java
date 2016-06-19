@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bob.core.item.Coconut;
 import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
+import org.bob.core.item.Wheel;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -151,12 +152,15 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             Vector2 position = new Vector2(x, y);
 
-            switch (random.nextInt(2)) {
+            switch (random.nextInt(3)) {
                 case (0):
                     item = new Grape(world, spriteFactory, position, SCALE);
                     break;
                 case (1):
                     item = new Coconut(world, spriteFactory, position, SCALE);
+                    break;
+                case (2):
+                    item = new Wheel(world, spriteFactory, position, SCALE);
                     break;
                 default:
                     item = null;
