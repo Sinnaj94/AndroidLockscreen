@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Disposable;
 public class Particle extends ApplicationAdapter {
     ParticleEffect pe;
     SpriteBatch batch;
-
+    boolean startedSystem;
     @Override
     public void create() {
         batch = new SpriteBatch();
