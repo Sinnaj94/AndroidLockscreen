@@ -20,7 +20,7 @@ public class Particle extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         pe = new ParticleEffect();
-        pe.load(Gdx.files.internal("Particles.p"), Gdx.files.internal(""));
+        pe.load(Gdx.files.internal("gfx/Particles"), Gdx.files.internal("gfx"));
         pe.getEmitters().first().setPosition(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         pe.start();
     }

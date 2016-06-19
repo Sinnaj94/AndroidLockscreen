@@ -55,7 +55,8 @@ public class Bob extends Actor {
     PolygonShape shape;
     Body body;
     Camera camera;
-    public Bob(World world,Camera camera) {
+
+    public Bob(World world, Camera camera) {
         p = new Particle();
         p.create();
         this.world = world;
@@ -70,7 +71,7 @@ public class Bob extends Actor {
         timeToElapse = 1f;
     }
 
-    private void createCollider(){
+    private void createCollider() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.fixedRotation = true;
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -80,7 +81,7 @@ public class Bob extends Actor {
         fixtureDef.density = 1f;
 
         shape = new PolygonShape();
-        shape.setAsBox(actorWidth,actorHeight);
+        shape.setAsBox(actorWidth, actorHeight);
 
         fixtureDef.shape = shape;
 
@@ -91,8 +92,8 @@ public class Bob extends Actor {
         shape.dispose();
     }
 
-    public void jump(){
-        body.applyForceToCenter(100,0,true);
+    public void jump() {
+        body.applyForceToCenter(100, 0, true);
     }
 
     public void changeAction() {
@@ -130,12 +131,12 @@ public class Bob extends Actor {
     }
 
     private void smoke() {
-        p.changePosition((body.getPosition().x-actorWidth)/2+63,(body.getPosition().y-actorHeight)/2+85);
+        p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
     }
 
     //Switch case nr 0
     public void run() {
-        if (body.getPosition().x/2 > Gdx.graphics.getWidth()) {
+        if (body.getPosition().x / 2 > Gdx.graphics.getWidth()) {
             changeDirection();
 
         } else if (body.getPosition().x < 0) {
@@ -143,7 +144,7 @@ public class Bob extends Actor {
 
 
         }
-        Gdx.app.log("rightleft", "X: " + body.getPosition().x/Gdx.graphics.getWidth()/2);
+        Gdx.app.log("rightleft", "X: " + body.getPosition().x / Gdx.graphics.getWidth() / 2);
 
         moveX(walkingSpeed);
     }
@@ -154,7 +155,7 @@ public class Bob extends Actor {
     }
 
     //switch case nr 2
-    public void climb(){
+    public void climb() {
 
         moveY(climbingSpeed);
     }
@@ -167,21 +168,22 @@ public class Bob extends Actor {
     private Vector2 getPosition() {
         return position;
     }
+
     //most important
     private void setActorPosition(Vector2 position) {
         this.position = position;
     }
 
-    private void setActorPosition(float x,float y){
-        setActorPosition(new Vector2(x,y));
+    private void setActorPosition(float x, float y) {
+        setActorPosition(new Vector2(x, y));
     }
 
     private void setPositionX(float x) {
-        setActorPosition(x,getPosition().y);
+        setActorPosition(x, getPosition().y);
     }
 
     private void setPositionY(float y) {
-        setActorPosition(getPosition().x,y);
+        setActorPosition(getPosition().x, y);
     }
 
     private void move(Vector2 delta) {
@@ -191,11 +193,11 @@ public class Bob extends Actor {
     }
 
     private void moveX(float x) {
-        move(new Vector2(x,0));
+        move(new Vector2(x, 0));
     }
 
     private void moveY(float y) {
-        move(new Vector2(0,y));
+        move(new Vector2(0, y));
 
     }
 
@@ -231,10 +233,8 @@ public class Bob extends Actor {
             smokeFrames[i] = tmp[11][i];
         }
         for (int i = 0; i < 6; i++) {
-            smokeFrames[i+6] = tmp[12][i];
+            smokeFrames[i + 6] = tmp[12][i];
         }
-
-
 
 
         walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
@@ -262,7 +262,7 @@ public class Bob extends Actor {
             case 1:
                 return idleAnimation.getKeyFrame(stateTime, true);
             case 3:
-                return smokeAnimation.getKeyFrame(stateTime,true);
+                return smokeAnimation.getKeyFrame(stateTime, true);
         }
 
         return smokeAnimation.getKeyFrame(stateTime, true);
@@ -270,10 +270,10 @@ public class Bob extends Actor {
     }
 
 
-    private void drawChildObjects(){
-        if(currentAction == 3) {
-            p.render();
-        }
+    private void drawChildObjects() {
+
+        p.render();
+
     }
 
     @Override
@@ -286,7 +286,7 @@ public class Bob extends Actor {
         currentFrame = returnSpriteSheet();  // #16
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth)/2,(body.getPosition().y-actorHeight)/2);
+        spriteBatch.draw(currentFrame, (body.getPosition().x - actorWidth) / 2, (body.getPosition().y - actorHeight) / 2);
         spriteBatch.end();
         drawChildObjects();
     }
