@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -25,9 +26,11 @@ public class Bob extends Actor {
     //Define How many frames the Spritesheet has.
     private static final int FRAME_COLS = 6;
     private static final int FRAME_ROWS = 20;
+    //Path of the spritesheet
+    final String path = "gfx/jeff-01.png";
 
     //Texture Regions
-    Texture walkSheet;              // #4
+    Texture spriteSheet;              // #4
     TextureRegion[] walkFramesRight;             // #5
     TextureRegion[] walkFramesLeft;             // #5
     TextureRegion[] idleFrames;
@@ -42,39 +45,57 @@ public class Bob extends Actor {
     //Particle world, smoke
     Particle p;
 
-
+    //Draw Objects
     SpriteBatch spriteBatch;
     TextureRegion currentFrame;
-    float stateTime;                                        // #8
-    float actorX = 0, actorY = 100, actorWidth, actorHeight;
+    float stateTime;
+
+    //Actor attributes
+    float actorWidth, actorHeight;
     Vector2 position;
     float walkingSpeed;
-    public boolean started = false;
-    BodyDef bodyDef;
     int currentAction;
+    float climbingSpeed;
+
+    //Timed events
     float timer;
     float timeToElapse;
-    float minimumTime = 1;
-    float maximumTime = 10;
-    float climbingSpeed;
+    float minimumTime;
+    float maximumTime;
+
+    //Physic Objects
     World world;
     PolygonShape shape;
     Body body;
     Camera camera;
 
+    /**
+     * Constructor
+     *
+     * @param world  current World
+     * @param camera Camera
+     */
     public Bob(World world, Camera camera) {
+        //Create Particle System
         p = new Particle();
         p.create();
+
         this.world = world;
         this.camera = camera;
-        currentAction = 3;
+
+        //Attributes for the player
+        currentAction = 2;
         position = new Vector2(0, 0);
         walkingSpeed = 200;
+        climbingSpeed = 1;
+
+        //Create the sheet and Collision box
         createSheet();
         createCollider();
-        timer = 0;
-        climbingSpeed = 1;
-        timeToElapse = 1f;
+
+        //Initiate timer
+        resetTimer();
+
     }
 
     private void createCollider() {
@@ -84,6 +105,7 @@ public class Bob extends Actor {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.friction = 1f;
+
         fixtureDef.density = 1f;
 
         shape = new PolygonShape();
@@ -106,19 +128,30 @@ public class Bob extends Actor {
         currentAction = MathUtils.random(0, 3);
     }
 
-    private void setTimerRandom() {
+    private void resetTimer() {
+        timer = 0;
+        timeToElapse = 1f;
         timeToElapse = MathUtils.random(5, 5);
     }
 
+    private boolean timeOver(float delta) {
+        timer += delta;
+        if (timer >= timeToElapse) {
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public void act(float delta) {
-        timer += delta;
-        if (timer >= timeToElapse) {
+        if (timeOver(delta)) {
+            resetTimer();
             changeAction();
-            setTimerRandom();
-            timer = 0;
         }
+        decideAction();
+    }
+
+    private void decideAction() {
         switch (currentAction) {
             case 0:
                 run();
@@ -133,12 +166,8 @@ public class Bob extends Actor {
                 smoke();
                 break;
         }
-
     }
 
-    private void smoke() {
-        p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
-    }
 
     //Switch case nr 0
     public void run() {
@@ -150,7 +179,7 @@ public class Bob extends Actor {
 
 
         }
-        
+
 
         moveX(walkingSpeed);
     }
@@ -166,35 +195,23 @@ public class Bob extends Actor {
         moveY(climbingSpeed);
     }
 
+    //switch case nr 3
+    private void smoke() {
+        p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
+    }
+
     private void changeDirection() {
         walkingSpeed *= -1;
-
     }
 
     private Vector2 getPosition() {
         return position;
     }
 
-    //most important
-    private void setActorPosition(Vector2 position) {
-        this.position = position;
-    }
-
-    private void setActorPosition(float x, float y) {
-        setActorPosition(new Vector2(x, y));
-    }
-
-    private void setPositionX(float x) {
-        setActorPosition(x, getPosition().y);
-    }
-
-    private void setPositionY(float y) {
-        setActorPosition(getPosition().x, y);
-    }
-
+    //Move the Actor.
     private void move(Vector2 delta) {
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
-        //body.applyForceToCenter(delta,false);
+        body.applyForceToCenter(delta,false);
 
     }
 
@@ -204,44 +221,29 @@ public class Bob extends Actor {
 
     private void moveY(float y) {
         move(new Vector2(0, y));
-
     }
 
-
+    //Create the Sheet
     private void createSheet() {
-        walkSheet = new Texture(Gdx.files.internal("gfx/jeff-01.png"));
-        TextureRegion[][] tmp = TextureRegion.split(walkSheet, walkSheet.getWidth() / FRAME_COLS, walkSheet.getHeight() / FRAME_ROWS);
-        actorWidth = walkSheet.getWidth() / FRAME_COLS;
-        actorHeight = walkSheet.getHeight() / FRAME_ROWS;
-        Gdx.app.log("actorsize", "Width = " + actorWidth + ", Height = " + actorHeight);
-        walkFramesRight = new TextureRegion[FRAME_COLS * 5];
+        spriteSheet = new Texture(Gdx.files.internal(path));
+        //Define the actor width & height
+        actorWidth = spriteSheet.getWidth() / FRAME_COLS;
+        actorHeight = spriteSheet.getHeight() / FRAME_ROWS;
+
+        //SPECIAL CASES *****
         walkFramesLeft = new TextureRegion[FRAME_COLS * 5];
-        idleFrames = new TextureRegion[6];
-        smokeFrames = new TextureRegion[12];
+        TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
         int index = 0;
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < FRAME_COLS; j++) {
-                walkFramesRight[index++] = tmp[i][j];
-            }
-        }
-        index = 0;
         for (int i = 5; i < 10; i++) {
             for (int j = FRAME_COLS - 1; j > -1; j--) {
                 walkFramesLeft[index++] = tmp[i][j];
             }
         }
+        //******** SPECIAL CASES
 
-        for (int i = 0; i < 6; i++) {
-            idleFrames[i] = tmp[10][i];
-        }
-
-        for (int i = 0; i < 6; i++) {
-            smokeFrames[i] = tmp[11][i];
-        }
-        for (int i = 0; i < 6; i++) {
-            smokeFrames[i + 6] = tmp[12][i];
-        }
-
+        walkFramesRight = getFrames(0,5,0,4);
+        idleFrames = getFrames(0,5,10,10);
+        smokeFrames = getFrames(0,5,11,12);
 
         walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
@@ -253,6 +255,23 @@ public class Bob extends Actor {
         stateTime = 0f;
 
         // #13
+    }
+
+    private TextureRegion[] getFrames( int xS,int xE,int yS, int yE){
+        yE+=1;
+        xE+=1;
+        TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
+        int index = 0;
+        Gdx.app.log("TESTING1"," "+ (yE-yS)*(xE-xS));
+        TextureRegion[] ret = new TextureRegion[(yE-yS)*(xE-xS)];
+
+        for (int x = yS; x < yE; x++) {
+            for (int y = xS; y < xE; y++) {
+                //x and y are swifted??
+                ret[index++] = tmp[x][y];
+            }
+        }
+        return ret;
     }
 
     private TextureRegion returnSpriteSheet() {
@@ -298,4 +317,7 @@ public class Bob extends Actor {
     }
 
 
+    public boolean isWaitingForAction() {
+        return false;
+    }
 }
