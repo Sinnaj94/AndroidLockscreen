@@ -14,8 +14,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -50,19 +48,25 @@ public class Game extends InputAdapter implements ApplicationListener {
     final HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
     Sprite[] fruitSprites = new Sprite[COUNT];
     TextureAtlas textureAtlas;
-    Body ground;
-
 
     public SpriteBatch batch;
     public Viewport viewport;
     public Camera camera;
-    public Bob bob;
+
     public Stage stage;
     public World world;
     public Box2DDebugRenderer debugRenderer;
     private PEXML physicsBodies;
 
     private Array<Sprite> bears;
+
+
+
+    // Game Objects
+    public Bob bob;
+    public Platform platform;
+
+
 
     @Override
     public void create() {
@@ -83,9 +87,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Stage
         stage = new Stage(viewport);
 
-        //ACTOR BOB **
+        // Create game objects
         bob = new Bob();
         stage.addActor(bob);
+        platform = new Platform(world,camera);
+
 
         // Batch
         batch = new SpriteBatch();
@@ -101,7 +107,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     public void resize(int width, int height) {
         viewport.update(width, height);
         batch.setProjectionMatrix(camera.combined);
-        createGround();
     }
 
     @Override
@@ -206,28 +211,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         return body;
     }
 
-    private void createGround() {
-        if (ground != null) world.destroyBody(ground);
-
-        BodyDef bodyDef = new BodyDef();
-
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.friction = 1;
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(camera.viewportWidth, 1);
-
-        fixtureDef.shape = shape;
-
-        ground = world.createBody(bodyDef);
-        ground.createFixture(fixtureDef);
-
-        ground.setTransform(0, 0, 0);
-
-        shape.dispose();
-    }
 
 
 
