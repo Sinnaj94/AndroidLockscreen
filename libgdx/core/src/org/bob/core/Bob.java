@@ -35,7 +35,7 @@ public class Bob extends Actor {
     TextureRegion[] walkFramesLeft;             // #5
     TextureRegion[] idleFrames;
     TextureRegion[] smokeFrames;
-
+    Particle p;
 
     SpriteBatch spriteBatch;            // #6
     TextureRegion currentFrame;           // #7
@@ -56,9 +56,11 @@ public class Bob extends Actor {
     Body body;
     Camera camera;
     public Bob(World world,Camera camera) {
+        p = new Particle();
+        p.create();
         this.world = world;
         this.camera = camera;
-        currentAction = 0;
+        currentAction = 3;
         position = new Vector2(0, 0);
         walkingSpeed = 200;
         createSheet();
@@ -94,7 +96,7 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        currentAction = MathUtils.random(0, 3);
+        //currentAction = MathUtils.random(0, 3);
     }
 
     private void setTimerRandom() {
@@ -277,6 +279,8 @@ public class Bob extends Actor {
 
         spriteBatch.draw(currentFrame,(body.getPosition().x-actorWidth)/2,(body.getPosition().y-actorHeight)/2);
         spriteBatch.end();
+
+        p.render();
     }
 
 
