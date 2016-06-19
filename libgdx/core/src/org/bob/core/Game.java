@@ -43,6 +43,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     /**
      * Adjust this value to change the amount of fruit that falls from the sky.
      */
+
     static final int COUNT = 25;
     Body[] fruitBodies = new Body[COUNT];
     static final float SCALE = 1.05f;
