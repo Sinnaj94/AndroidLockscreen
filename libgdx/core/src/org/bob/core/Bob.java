@@ -18,7 +18,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Bob extends Actor {
 
     private static final int FRAME_COLS = 6;         // #1
-    private static final int FRAME_ROWS = 11;         // #2
+    private static final int FRAME_ROWS = 20;         // #2
     Animation walkRightAnimation;          // #3
     Animation walkLeftAnimation;
     Animation idleAnimation;
