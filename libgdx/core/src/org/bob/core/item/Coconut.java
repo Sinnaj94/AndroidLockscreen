@@ -12,13 +12,13 @@ import org.bob.core.SpriteFactory;
 /**
  * Created by jeff on 19/06/16.
  */
-public class Grape extends Item {
+public class Coconut extends Item {
 
-    public static final String SPRITE_ID = "grape";
+    public static final String SPRITE_ID = "coconut";
     public float radius = 50f;
 
 
-    public Grape(World world, SpriteFactory spriteFactory, Vector2 position, float scale){
+    public Coconut(World world, SpriteFactory spriteFactory, Vector2 position, float scale){
         super(world, spriteFactory, scale, position);
 
         create(world, spriteFactory);
@@ -28,7 +28,7 @@ public class Grape extends Item {
 
     public void create(World world, SpriteFactory spriteFactory){
 
-        sprite = spriteFactory.get(Grape.SPRITE_ID);
+        sprite = spriteFactory.get(SPRITE_ID);
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
