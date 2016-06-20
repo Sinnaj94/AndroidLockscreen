@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 
+import org.bob.core.BodyEditorLoader;
 import org.bob.core.SpriteFactory;
 
 /**
@@ -24,6 +25,9 @@ public class Item {
     }
 
     public void create(World world, SpriteFactory spriteFactory) {
+    }
+
+    public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
     }
 
     public void render(SpriteBatch batch) {

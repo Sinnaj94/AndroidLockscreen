@@ -18,8 +18,10 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.bob.core.item.Coconut;
+import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
 import org.bob.core.item.Strawberry;
+import org.bob.core.item.Weinflasche;
 import org.bob.core.item.Wheel;
 
 import java.util.Iterator;
@@ -52,7 +54,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Box2DDebugRenderer debugRenderer;
 
     private SpriteFactory spriteFactory;
-    private BodyEditorLoader physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
+    private BodyEditorLoader physicsLoader;
     public SpriteBatch batch;
 
     // Game Objects
@@ -64,14 +66,17 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void create() {
+
+        // Physics
+        Box2D.init();
+
         backgroundImage = new Texture(Gdx.files.internal("gfx/background.png"));
         backgroundSprite = new Sprite(backgroundImage);
         spriteFactory = new SpriteFactory(SCALE);
 
         items = new LinkedList<Item>();
 
-        // Physics
-        Box2D.init();
+        physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
 
         world = new World(new Vector2(0, -120), true);
         debugRenderer = new Box2DDebugRenderer();
@@ -157,8 +162,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             float leftEdge = item.body.getPosition().x + (item.sprite.getWidth() / 2);
             float rightEdge = item.body.getPosition().x - (item.sprite.getWidth() / 2);;
 
-            //Gdx.app.log("Debug", ""  + camera.viewportWidth);
-
             boolean remove = false;
             if (leftEdge < 0){
                 remove = true;
@@ -190,7 +193,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             Vector2 position = new Vector2(x, y);
 
-            switch (random.nextInt(3)) {
+            switch (random.nextInt(5)) {
                 case (0):
                     item = new Strawberry(world, spriteFactory, physicsLoader, position, SCALE);
                     break;
@@ -199,6 +202,12 @@ public class Game extends InputAdapter implements ApplicationListener {
                     break;
                 case (2):
                     item = new Wheel(world, spriteFactory, position, SCALE);
+                    break;
+                case (3):
+                    item = new Weinflasche(world, spriteFactory, physicsLoader, position, SCALE);
+                    break;
+                case (4):
+                    item = new Grape(world, spriteFactory, position, SCALE);
                     break;
                 default:
                     item = null;

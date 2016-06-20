@@ -4,8 +4,8 @@
       "name": "strawberry",
       "imagePath": "strawberry.png",
       "origin": {
-        "x": 0,
-        "y": 0
+        "x": 0.5,
+        "y": 0.5
       },
       "polygons": [
         [
@@ -226,8 +226,8 @@
       "name": "weinflasche",
       "imagePath": "weinflasche.png",
       "origin": {
-        "x": 0,
-        "y": 0
+        "x": 0.5,
+        "y": 0.5
       },
       "polygons": [
         [
