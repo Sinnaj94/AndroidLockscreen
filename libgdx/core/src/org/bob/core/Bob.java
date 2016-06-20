@@ -173,13 +173,13 @@ public class Bob extends Actor {
                 run();
                 break;
             case 1:
-                run();
+                stand();
                 break;
             case 2:
-                run();
+                climb();
                 break;
             case 3:
-                run();
+                smoke();
                 break;
         }
     }
@@ -226,19 +226,17 @@ public class Bob extends Actor {
 
     //Move the Actor.
     private void move(Vector2 delta) {
-
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
         body.setLinearVelocity(delta);
-        //body.setTransform(body.getPosition().x + delta.x, body.getPosition().y + delta.y, 0);
 
     }
 
     private void moveX(float x) {
-        move(new Vector2(x, body.getLinearVelocity().y));
+        move(new Vector2(x, 0));
     }
 
     private void moveY(float y) {
-        move(new Vector2(body.getLinearVelocity().x, y));
+        move(new Vector2(0, y));
     }
 
     //Create the Sheet
@@ -359,13 +357,10 @@ public class Bob extends Actor {
 
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();
+
         spriteBatch.begin();
-        spriteBatch.draw(currentFrame, body.getPosition().x - (actorWidth), body.getPosition().y - (actorHeight));
 
-        Gdx.app.log("debug", "actorWidth:" + actorWidth);
-        Gdx.app.log("debug", "currentFrame.getRegionWidth:" + currentFrame.getRegionWidth());
-        Gdx.app.log("debug", "currentFrame.getRegionWidth:" + body.getPosition());
-
+        spriteBatch.draw(currentFrame, body.getPosition().x-actorWidth ,body.getPosition().y-actorHeight);
 
         spriteBatch.end();
         drawChildObjects();
