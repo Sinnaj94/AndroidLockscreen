@@ -232,11 +232,11 @@ public class Bob extends Actor {
     }
 
     private void moveX(float x) {
-        move(new Vector2(x, 0));
+        move(new Vector2(x, body.getLinearVelocity().y));
     }
 
     private void moveY(float y) {
-        move(new Vector2(0, y));
+        move(new Vector2(body.getLinearVelocity().x, y));
     }
 
     //Create the Sheet
