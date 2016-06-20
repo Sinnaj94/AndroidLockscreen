@@ -129,6 +129,20 @@ public class Bob extends Actor {
         currentAction = MathUtils.random(0, 3);
     }
 
+    public void changeAction(int newAction) {
+        resetTimer();
+        currentAction = newAction;
+    }
+
+    public void setDirection(int direction){
+        if(direction < 0){
+            walkingSpeed = -Math.abs(walkingSpeed);
+        }else{
+            walkingSpeed = Math.abs(walkingSpeed);
+
+        }
+    }
+
     private void resetTimer() {
         timer = 0;
         timeToElapse = 1f;
@@ -213,7 +227,7 @@ public class Bob extends Actor {
     //Move the Actor.
     private void move(Vector2 delta) {
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
-        body.applyForceToCenter(delta,false);
+        body.applyForceToCenter(delta, false);
 
     }
 
@@ -243,17 +257,17 @@ public class Bob extends Actor {
         }
         //******** SPECIAL CASES
 
-        walkFramesRight = getFrames(0,5,0,4);
-        idleFrames = getFrames(0,5,10,10);
-        smokeFrames = getFrames(0,5,11,12);
+        walkFramesRight = getFrames(0, 5, 0, 4);
+        idleFrames = getFrames(0, 5, 10, 10);
+        smokeFrames = getFrames(0, 5, 11, 12);
 
         walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
         idleAnimation = new Animation(0.1f, idleFrames);
         smokeAnimation = new Animation(0.4f, smokeFrames);
-        climbAnimation = new Animation(0.1f,getFrames(0,5,13,14));
-        listenAnimation = new Animation(.045f,getFramesReverted(0,5,15,15));
-        crouchAnimation = new Animation(.045f,getFramesReverted(0,5,16,16));
+        climbAnimation = new Animation(0.1f, getFrames(0, 5, 13, 14));
+        listenAnimation = new Animation(.045f, getFramesReverted(0, 5, 15, 15));
+        crouchAnimation = new Animation(.045f, getFramesReverted(0, 5, 16, 16));
 
         //smokeAnimation = new Animation(0.1f,smokeFrames);
         spriteBatch = new SpriteBatch();                // #12
@@ -262,13 +276,13 @@ public class Bob extends Actor {
         // #13
     }
 
-    private TextureRegion[] getFrames( int xS,int xE,int yS, int yE){
-        yE+=1;
-        xE+=1;
+    private TextureRegion[] getFrames(int xS, int xE, int yS, int yE) {
+        yE += 1;
+        xE += 1;
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
         int index = 0;
 
-        TextureRegion[] ret = new TextureRegion[(yE-yS)*(xE-xS)];
+        TextureRegion[] ret = new TextureRegion[(yE - yS) * (xE - xS)];
 
         for (int x = yS; x < yE; x++) {
             for (int y = xS; y < xE; y++) {
@@ -279,13 +293,13 @@ public class Bob extends Actor {
         return ret;
     }
 
-    private TextureRegion[] getFramesReverted( int xS,int xE,int yS, int yE){
-        yE+=1;
-        xE+=1;
+    private TextureRegion[] getFramesReverted(int xS, int xE, int yS, int yE) {
+        yE += 1;
+        xE += 1;
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
         int index = 0;
 
-        TextureRegion[] ret = new TextureRegion[(yE-yS)*(xE-xS)*2];
+        TextureRegion[] ret = new TextureRegion[(yE - yS) * (xE - xS) * 2];
 
         for (int x = yS; x < yE; x++) {
             for (int y = xS; y < xE; y++) {
@@ -293,15 +307,14 @@ public class Bob extends Actor {
                 ret[index++] = tmp[x][y];
             }
         }
-        for (int x = yE-1; x > yS-1; x--) {
-            for (int y = xE-1; y > xS-1; y--) {
+        for (int x = yE - 1; x > yS - 1; x--) {
+            for (int y = xE - 1; y > xS - 1; y--) {
                 //x and y are swifted??
                 ret[index++] = tmp[x][y];
             }
         }
         return ret;
     }
-
 
 
     private TextureRegion returnSpriteSheet() {
@@ -317,7 +330,7 @@ public class Bob extends Actor {
             case 1:
                 return idleAnimation.getKeyFrame(stateTime, true);
             case 2:
-                return climbAnimation.getKeyFrame(stateTime,true);
+                return climbAnimation.getKeyFrame(stateTime, true);
             case 3:
                 return smokeAnimation.getKeyFrame(stateTime, true);
         }
@@ -328,9 +341,9 @@ public class Bob extends Actor {
 
 
     private void drawChildObjects() {
-        if(currentAction == 3){
+        if (currentAction == 3) {
             p.startEmitting();
-        }else{
+        } else {
             p.stopEmitting();
         }
         p.render();

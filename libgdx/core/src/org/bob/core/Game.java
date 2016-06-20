@@ -53,7 +53,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Box2DDebugRenderer debugRenderer;
 
     private SpriteFactory spriteFactory;
-    private BodyEditorLoader physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
+    //private BodyEditorLoader physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
     public SpriteBatch batch;
 
     // Game Objects
@@ -100,7 +100,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         doSpawnItems(10);
 
         //Input listener
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob)));
 
     }
 
@@ -196,7 +196,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             switch (random.nextInt(3)) {
                 case (0):
-                    item = new Strawberry(world, spriteFactory, physicsLoader, position, SCALE);
+                    item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
                 case (1):
                     item = new Coconut(world, spriteFactory, position, SCALE);

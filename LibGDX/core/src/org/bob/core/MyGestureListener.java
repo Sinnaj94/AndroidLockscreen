@@ -1,5 +1,6 @@
 package org.bob.core;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -7,6 +8,11 @@ import com.badlogic.gdx.math.Vector2;
  * Created by Jannis on 20.06.2016.
  */
 public class MyGestureListener implements GestureDetector.GestureListener{
+    final int THRESHOLD_X = 1000;
+    Bob bob;
+    public MyGestureListener(Bob bob){
+        this.bob = bob;
+    }
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
         return false;
@@ -14,6 +20,8 @@ public class MyGestureListener implements GestureDetector.GestureListener{
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
+
+
         return false;
     }
 
@@ -24,6 +32,14 @@ public class MyGestureListener implements GestureDetector.GestureListener{
 
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
+        if(velocityX > THRESHOLD_X){
+            bob.changeAction(0);
+            bob.setDirection(1);
+        }else if(velocityX < -THRESHOLD_X){
+            bob.changeAction(0);
+            bob.setDirection(-1);
+
+        }
         return false;
     }
 
