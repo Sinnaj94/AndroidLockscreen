@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.bob.core.item.Coconut;
-import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
+import org.bob.core.item.Strawberry;
 import org.bob.core.item.Wheel;
 
 import java.util.Iterator;
@@ -52,6 +52,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Box2DDebugRenderer debugRenderer;
 
     private SpriteFactory spriteFactory;
+    private BodyEditorLoader physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
     public SpriteBatch batch;
 
     // Game Objects
@@ -191,7 +192,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             switch (random.nextInt(3)) {
                 case (0):
-                    item = new Grape(world, spriteFactory, position, SCALE);
+                    item = new Strawberry(world, spriteFactory, physicsLoader, position, SCALE);
                     break;
                 case (1):
                     item = new Coconut(world, spriteFactory, position, SCALE);
