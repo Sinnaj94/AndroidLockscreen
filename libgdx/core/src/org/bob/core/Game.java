@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -96,6 +97,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch = new SpriteBatch();
 
         doSpawnItems(10);
+
+        //Input listener
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener()));
 
     }
 
