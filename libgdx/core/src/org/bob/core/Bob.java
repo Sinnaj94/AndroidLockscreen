@@ -227,7 +227,7 @@ public class Bob extends Actor {
     //Move the Actor.
     private void move(Vector2 delta) {
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
-        body.applyForceToCenter(delta, false);
+        body.setLinearVelocity(delta);
 
     }
 
@@ -356,10 +356,10 @@ public class Bob extends Actor {
         p.updateParticles();
 
         stateTime += Gdx.graphics.getDeltaTime();
-        currentFrame = returnSpriteSheet();  // #16
+        currentFrame = returnSpriteSheet();
         spriteBatch.begin();
+        spriteBatch.draw(currentFrame, body.getPosition().x ,body.getPosition().y);
 
-        spriteBatch.draw(currentFrame, (body.getPosition().x - actorWidth) / 2, (body.getPosition().y - actorHeight) / 2);
         spriteBatch.end();
         drawChildObjects();
     }
