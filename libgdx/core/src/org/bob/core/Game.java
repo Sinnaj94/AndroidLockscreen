@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -20,7 +21,6 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bob.core.item.Coconut;
 import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
-import org.bob.core.item.Strawberry;
 import org.bob.core.item.Weinflasche;
 import org.bob.core.item.Wheel;
 
@@ -54,7 +54,9 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Box2DDebugRenderer debugRenderer;
 
     private SpriteFactory spriteFactory;
+
     private BodyEditorLoader physicsLoader;
+
     public SpriteBatch batch;
 
     // Game Objects
@@ -102,6 +104,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch = new SpriteBatch();
 
         doSpawnItems(10);
+
+        //Input listener
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob)));
 
     }
 
@@ -195,7 +200,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             switch (random.nextInt(5)) {
                 case (0):
-                    item = new Strawberry(world, spriteFactory, physicsLoader, position, SCALE);
+                    item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
                 case (1):
                     item = new Coconut(world, spriteFactory, position, SCALE);
