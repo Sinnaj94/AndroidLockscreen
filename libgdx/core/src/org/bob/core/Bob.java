@@ -85,7 +85,7 @@ public class Bob extends Actor {
         this.camera = camera;
 
         //Attributes for the player
-        currentAction = 10;
+        currentAction = 3;
         position = new Vector2(0, 0);
         walkingSpeed = 200;
         climbingSpeed = 1;
@@ -153,6 +153,7 @@ public class Bob extends Actor {
     }
 
     private void decideAction() {
+
         switch (currentAction) {
             case 0:
                 run();
@@ -327,7 +328,11 @@ public class Bob extends Actor {
 
 
     private void drawChildObjects() {
-
+        if(currentAction == 3){
+            p.startEmitting();
+        }else{
+            p.stopEmitting();
+        }
         p.render();
 
     }
