@@ -11,12 +11,12 @@ import org.bob.core.SpriteFactory;
 /**
  * Created by jeff on 19/06/16.
  */
-public class Strawberry extends Item {
+public class Weinflasche extends Item {
 
-    public static final String SPRITE_ID = "strawberry";
+    public static final String SPRITE_ID = "weinflasche";
 
 
-    public Strawberry(World world, SpriteFactory spriteFactory, BodyEditorLoader bel, Vector2 position, float scale) {
+    public Weinflasche(World world, SpriteFactory spriteFactory, BodyEditorLoader bel, Vector2 position, float scale) {
         super(world, spriteFactory, scale, position);
 
         create(world, spriteFactory, bel);
@@ -25,7 +25,7 @@ public class Strawberry extends Item {
 
     public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
 
-        sprite = spriteFactory.get(Strawberry.SPRITE_ID);
+        sprite = spriteFactory.get(Weinflasche.SPRITE_ID);
 
         float density = 1f;
         float friction = 0.9f;
@@ -42,5 +42,4 @@ public class Strawberry extends Item {
 
         bel.attachFixture(body, SPRITE_ID, fixtureDef, sprite.getWidth());
     }
-
 }
