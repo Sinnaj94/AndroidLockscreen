@@ -70,6 +70,9 @@ public class Bob extends Actor {
     Camera camera;
     float directionTimer;
     float maxDirectionTimer;
+    //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
+    char hitLast;
+
     /**
      * Constructor
      *
@@ -77,7 +80,7 @@ public class Bob extends Actor {
      * @param camera Camera
      */
     public Bob(World world, Camera camera) {
-
+        hitLast = 'n';
         //Create Particle System
         p = new Particle();
         p.create();
@@ -133,13 +136,16 @@ public class Bob extends Actor {
 
     public void changeAction(int newAction) {
         resetTimer();
+        if (newAction == 0) {
+            hitLast = 'n';
+        }
         currentAction = newAction;
     }
 
-    public void setDirection(int direction){
-        if(direction < 0){
+    public void setDirection(int direction) {
+        if (direction < 0) {
             walkingSpeed = -Math.abs(walkingSpeed);
-        }else{
+        } else {
             walkingSpeed = Math.abs(walkingSpeed);
 
         }
@@ -172,7 +178,7 @@ public class Bob extends Actor {
 
         switch (currentAction) {
             case 0:
-                run(delta);
+                run();
                 break;
             case 1:
                 stand();
@@ -188,12 +194,18 @@ public class Bob extends Actor {
 
 
     //Switch case nr 0
-    public void run(float delta) {
-        if (position.x + actorWidth *2> Gdx.graphics.getWidth()) {
-            changeDirection(delta);
+    public void run() {
+        if (position.x + actorWidth * 2 > Gdx.graphics.getWidth()) {
+            if (hitLast != 'r') {
+                changeDirection();
+                hitLast = 'r';
+            }
 
         } else if (position.x < 0) {
-            changeDirection(delta);
+            if (hitLast != 'l') {
+                changeDirection();
+                hitLast = 'l';
+            }
 
 
         }
@@ -218,12 +230,11 @@ public class Bob extends Actor {
         p.changePosition((body.getPosition().x - actorWidth) + 63, (body.getPosition().y - actorHeight) + 85);
     }
 
-    private void changeDirection(float delta) {
-        directionTimer+=delta;
-        if(directionTimer >= maxDirectionTimer){
-            walkingSpeed *= -1;
-            directionTimer = 0;
-        }
+    private void changeDirection() {
+
+        walkingSpeed *= -1;
+        directionTimer = 0;
+
     }
 
     private Vector2 getPosition() {
@@ -367,11 +378,11 @@ public class Bob extends Actor {
 
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();
-        position.x =(body.getPosition().x - actorWidth);
+        position.x = (body.getPosition().x - actorWidth);
         position.y = (body.getPosition().y - actorHeight);
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame,position.x,position.y,actorWidth*2,actorHeight*2);
+        spriteBatch.draw(currentFrame, position.x, position.y, actorWidth * 2, actorHeight * 2);
 
         spriteBatch.end();
         drawChildObjects();
