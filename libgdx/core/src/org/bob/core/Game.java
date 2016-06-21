@@ -91,12 +91,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Stage
         stage = new Stage(viewport);
 
-        // Create game objects
-
-        bob = new Bob(world, camera);
-
-        stage.addActor(bob);
-
         // Batch
         batch = new SpriteBatch();
 
@@ -114,6 +108,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         this.height = height;
 
         platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
+
+        bob = new Bob(world, camera, platform);
+        stage.addActor(bob);
 
         System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
     }
