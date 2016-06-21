@@ -113,8 +113,12 @@ public class Bob extends Actor {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 100f;
 
+        Vector2 [] vertices = new Vector2[] {new Vector2(-actorWidth/2,-actorHeight),new Vector2(-actorWidth/2,actorHeight/2),new Vector2(0,actorHeight),new Vector2(actorWidth/2,actorHeight/2),new Vector2(actorWidth/2,-actorHeight)};
+
         shape = new PolygonShape();
-        shape.setAsBox(actorWidth, actorHeight);
+
+        shape.set(vertices);
+        //shape.setAsBox(actorWidth, actorHeight);
 
         fixtureDef.shape = shape;
 
