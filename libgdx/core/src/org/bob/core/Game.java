@@ -82,7 +82,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
 
-        world = new World(new Vector2(0, -120), true);
+        world = new World(new Vector2(0, -320), true);
         debugRenderer = new Box2DDebugRenderer();
 
         // Camera
