@@ -140,7 +140,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.end();
         stage.draw();
 
-        debugRenderer.render(world, camera.combined);
+        //debugRenderer.render(world, camera.combined);
 
         doPhysicsStep(Gdx.graphics.getDeltaTime());
     }
