@@ -360,7 +360,7 @@ public class Bob extends Actor {
 
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame, body.getPosition().x-actorWidth ,body.getPosition().y-actorHeight);
+        spriteBatch.draw(currentFrame, (body.getPosition().x - actorWidth) / 2, (body.getPosition().y - actorHeight) / 2);
 
         spriteBatch.end();
         drawChildObjects();
