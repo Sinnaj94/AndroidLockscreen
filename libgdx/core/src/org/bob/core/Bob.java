@@ -69,6 +69,7 @@ public class Bob extends Actor {
     Body body;
     Camera camera;
     float directionTimer;
+    float maxDirectionTimer;
     /**
      * Constructor
      *
@@ -96,7 +97,8 @@ public class Bob extends Actor {
 
         //Initiate timer
         resetTimer();
-        directionTimer = .5f;
+        maxDirectionTimer = .1f;
+        directionTimer = maxDirectionTimer;
 
     }
 
@@ -218,7 +220,7 @@ public class Bob extends Actor {
 
     private void changeDirection(float delta) {
         directionTimer+=delta;
-        if(directionTimer >= .5f){
+        if(directionTimer >= maxDirectionTimer){
             walkingSpeed *= -1;
             directionTimer = 0;
         }
