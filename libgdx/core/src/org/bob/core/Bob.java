@@ -130,15 +130,15 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        changeAction(MathUtils.random(0, 3));
+        changeAction(MathUtils.random(0, 5));
     }
 
     public void changeAction(int newAction) {
         resetTimer();
         if (newAction == 0) {
             hitLast = 'n';
-        }else{
-            body.setLinearVelocity(0,0);
+        } else {
+            body.setLinearVelocity(0, 0);
         }
         currentAction = newAction;
     }
@@ -154,8 +154,8 @@ public class Bob extends Actor {
 
     private void resetTimer() {
         timer = 0;
+
         timeToElapse = 1f;
-        timeToElapse = MathUtils.random(5, 5);
     }
 
     private boolean timeOver(float delta) {
@@ -223,7 +223,7 @@ public class Bob extends Actor {
     //switch case nr 3
     private void smoke() {
         moveX(0f); // force stop
-        p.changePosition((position.x+ actorWidth*2*.75f), (position.y +actorHeight*2*.8f));
+        p.changePosition((position.x + actorWidth * 2 * .75f), (position.y + actorHeight * 2 * .8f));
     }
 
     private void changeDirection() {
@@ -347,9 +347,14 @@ public class Bob extends Actor {
                 return climbAnimation.getKeyFrame(stateTime, true);
             case 3:
                 return smokeAnimation.getKeyFrame(stateTime, true);
+            case 4:
+                return listenAnimation.getKeyFrame(stateTime, true);
+            case 5:
+                return crouchAnimation.getKeyFrame(stateTime, true);
+
         }
 
-        return listenAnimation.getKeyFrame(stateTime, true);
+        return crouchAnimation.getKeyFrame(stateTime, true);
 
     }
 
