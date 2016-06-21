@@ -24,8 +24,6 @@ public class Wheel extends Item {
         create(world, spriteFactory);
     }
 
-
-
     public void create(World world, SpriteFactory spriteFactory){
 
         sprite = spriteFactory.get(Wheel.SPRITE_ID);
@@ -41,7 +39,7 @@ public class Wheel extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 10f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 0.9f;
         //fixtureDef.density = 5f;
         fixtureDef.restitution = 0.8f; // Make it bounce a little bit
