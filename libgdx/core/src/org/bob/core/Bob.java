@@ -105,7 +105,7 @@ public class Bob extends Actor {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.friction = 100f;
+        fixtureDef.friction = 0f;
         fixtureDef.density = 100f;
 
         shape = new PolygonShape();
@@ -195,7 +195,6 @@ public class Bob extends Actor {
 
         }
 
-
         moveX(walkingSpeed);
     }
 
@@ -206,12 +205,13 @@ public class Bob extends Actor {
 
     //switch case nr 2
     public void climb() {
-
+        moveX(0f); // force stop
         moveY(climbingSpeed);
     }
 
     //switch case nr 3
     private void smoke() {
+        moveX(0f); // force stop
         p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
     }
 
@@ -351,6 +351,9 @@ public class Bob extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha) {
+
+        System.out.println(body.getLinearVelocity().x + " : " + body.getLinearVelocity().y);
+
         //Children Updates:
         p.updateParticles();
 
