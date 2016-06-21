@@ -166,10 +166,10 @@ public class Bob extends Actor {
     private void resetTimer() {
         timer = 0;
         if (currentAction == 0) {
-            timeToElapse = MathUtils.random(1f, 7f);
+            timeToElapse = MathUtils.random(4f, 7f);
 
         } else {
-            timeToElapse = MathUtils.random(1f, 4f);
+            timeToElapse = MathUtils.random(2f, 4f);
         }
     }
 
