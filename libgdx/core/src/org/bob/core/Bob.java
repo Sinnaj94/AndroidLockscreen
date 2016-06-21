@@ -359,10 +359,11 @@ public class Bob extends Actor {
 
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();
-
+        position.x =(body.getPosition().x - actorWidth);
+        position.y = (body.getPosition().y - actorHeight);
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame, (body.getPosition().x - actorWidth) / 2, (body.getPosition().y - actorHeight) / 2);
+        spriteBatch.draw(currentFrame,position.x,position.y,actorWidth,actorHeight);
 
         spriteBatch.end();
         drawChildObjects();
