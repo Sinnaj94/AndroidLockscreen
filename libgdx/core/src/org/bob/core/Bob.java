@@ -130,7 +130,14 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        changeAction(MathUtils.random(0, 5));
+        //Mechanism:
+        int newAction;
+        if (currentAction == 0) {
+            newAction = MathUtils.random(1, 5);
+        } else {
+            newAction = 0;
+        }
+        changeAction(newAction);
     }
 
     public void changeAction(int newAction) {
@@ -154,8 +161,12 @@ public class Bob extends Actor {
 
     private void resetTimer() {
         timer = 0;
+        if (currentAction == 0) {
+            timeToElapse = MathUtils.random(1f, 7f);
 
-        timeToElapse = 1f;
+        } else {
+            timeToElapse = MathUtils.random(1f, 4f);
+        }
     }
 
     private boolean timeOver(float delta) {
