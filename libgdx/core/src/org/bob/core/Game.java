@@ -41,8 +41,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
 
-    public static final int width = 1080;
-    public static final int height = 1920;
+    public float width;
+    public float height;
 
     Texture backgroundImage;
     Sprite backgroundSprite;
@@ -88,6 +88,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Viewport
         viewport = new ScreenViewport(camera);
 
+
+
         // Stage
         stage = new Stage(viewport);
 
@@ -102,8 +104,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Batch
         batch = new SpriteBatch();
 
-        doSpawnItems(20,null);
-
         //Input listener
         Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob,this)));
 
@@ -113,6 +113,13 @@ public class Game extends InputAdapter implements ApplicationListener {
     public void resize(int width, int height) {
         viewport.update(width, height);
         batch.setProjectionMatrix(camera.combined);
+
+        this.width = width;
+        this.height = height;
+
+        doSpawnItems(20,null);
+
+        System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
     }
 
     @Override
@@ -195,8 +202,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         for (int i = 0; i <= count; i++) {
 
             if (position == null) {
-                float x = random.nextFloat() * Game.width;
-                float y = ((random.nextFloat() * Game.height) / 2) + Game.height;
+                float x = random.nextFloat() * width;
+                float y = ((random.nextFloat() * height) / 2) + height;
 
                 position = new Vector2(x, y);
             }
