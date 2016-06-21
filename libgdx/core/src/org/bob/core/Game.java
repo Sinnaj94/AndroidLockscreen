@@ -93,7 +93,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // Create game objects
 
-        bob = new Bob(world, camera);
+        bob = new Bob(world, camera,this);
 
         stage.addActor(bob);
 
