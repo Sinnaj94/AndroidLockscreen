@@ -39,12 +39,11 @@ public class Grape extends Item {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(radius * scale);
+        circle.setRadius(sprite.getWidth()/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
         fixtureDef.density = 1f;
-        fixtureDef.friction = 0.9f;
         fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 
 

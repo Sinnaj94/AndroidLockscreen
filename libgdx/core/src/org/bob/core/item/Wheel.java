@@ -14,7 +14,7 @@ import org.bob.core.SpriteFactory;
  */
 public class Wheel extends Item {
 
-    public static final float SCALE = 2.5f;
+    public static final float SCALE = 1.6f;
     public static final String SPRITE_ID = "autoreifen";
 
     public float radius = 50f * SCALE;

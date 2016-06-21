@@ -29,7 +29,7 @@ public class Strawberry extends Item {
         sprite = spriteFactory.get(Strawberry.SPRITE_ID);
 
         float density = 1f;
-        float friction = 0.9f;
+
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -39,7 +39,6 @@ public class Strawberry extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
-        fixtureDef.friction = friction;
 
         bel.attachFixture(body, SPRITE_ID, fixtureDef, sprite.getWidth());
     }

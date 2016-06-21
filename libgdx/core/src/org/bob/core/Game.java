@@ -127,7 +127,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.begin();
 
         // Items
-        batch.draw(backgroundSprite,0,0,Gdx.graphics.getWidth()*2,Gdx.graphics.getHeight()*2);
+        batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
         for (Item item : items)
             item.render(batch);
         batch.end();
@@ -159,32 +159,34 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // Check if item is outside the screen
 
-        for (Iterator<Item> iterator = items.iterator(); iterator.hasNext();) {
+        for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
 
             Item item = iterator.next();
 
             float leftEdge = item.body.getPosition().x + (item.sprite.getWidth() / 2);
-            float rightEdge = item.body.getPosition().x - (item.sprite.getWidth() / 2);;
+            float rightEdge = item.body.getPosition().x - (item.sprite.getWidth() / 2);
+            ;
 
             boolean remove = false;
-            if (leftEdge < 0){
+            if (leftEdge < 0) {
                 remove = true;
-            }else if(rightEdge > camera.viewportWidth){
+            } else if (rightEdge > camera.viewportWidth) {
                 remove = true;
             }
 
-            if(remove){
+            if (remove) {
                 world.destroyBody(item.body);
                 iterator.remove();
             }
 
         }
 
-        if(bob.isWaitingForAction()){
-            
+        if (bob.isWaitingForAction()) {
+
         }
     }
-    public void doSpawnItems(int count) {
+
+    public void doSpawnItems(int count, Vector2 position) {
 
         Random random = new Random();
 
@@ -192,16 +194,19 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (int i = 0; i <= count; i++) {
 
-            float x = random.nextFloat() * Game.width;
-            float y = ((random.nextFloat() * Game.height) / 2) + Game.height;
+            if (position == null) {
+                float x = random.nextFloat() * Game.width;
+                float y = ((random.nextFloat() * Game.height) / 2) + Game.height;
 
-            Vector2 position = new Vector2(x, y);
+                position = new Vector2(x, y);
+            }
 
-            switch (random.nextInt(6)) {
+            switch (random.nextInt(7)) {
                 case (0):
                     item = new Coconut(world, spriteFactory, position);
                     break;
                 case (1):
+                case (6):
                     item = new Strawberry(world, spriteFactory, physicsLoader, position);
                     break;
                 case (2):
@@ -214,16 +219,15 @@ public class Game extends InputAdapter implements ApplicationListener {
                 case (4):
                     item = new Grape(world, spriteFactory, position);
                     break;
-
                 default:
                     item = null;
 
             }
             if (item != null) {
                 items.add(item);
-                Gdx.app.log("Debug",item.sprite.getWidth() + "");
-            }else{
-                Gdx.app.log("Error","aasdsdfsd");
+                Gdx.app.log("Debug", item.sprite.getWidth() + "");
+            } else {
+                Gdx.app.log("Error", "aasdsdfsd");
             }
         }
     }
