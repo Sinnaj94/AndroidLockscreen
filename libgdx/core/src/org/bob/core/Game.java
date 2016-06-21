@@ -15,15 +15,13 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.FillViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import org.bob.core.item.Coconut;
 import org.bob.core.item.Grape;
 import org.bob.core.item.Item;
+import org.bob.core.item.Strawberry;
 import org.bob.core.item.Weinflasche;
 import org.bob.core.item.Wheel;
 
@@ -43,10 +41,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
 
-    public static final int width = 1080 / 2;
-    public static final int height = 1920 / 2;
-
-    public static final float SCALE = 1.05f;
+    public static final int width = 1080;
+    public static final int height = 1920;
 
     Texture backgroundImage;
     Sprite backgroundSprite;
@@ -77,7 +73,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         backgroundImage = new Texture(Gdx.files.internal("gfx/background.png"));
         backgroundSprite = new Sprite(backgroundImage);
-        spriteFactory = new SpriteFactory(SCALE);
+        spriteFactory = new SpriteFactory();
 
         items = new LinkedList<Item>();
 
@@ -106,7 +102,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Batch
         batch = new SpriteBatch();
 
-        doSpawnItems(10);
+        doSpawnItems(20);
 
         //Input listener
         Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob)));
@@ -203,28 +199,32 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             switch (random.nextInt(6)) {
                 case (0):
-                    item = new Coconut(world, spriteFactory, position, SCALE);
+                    item = new Coconut(world, spriteFactory, position);
                     break;
                 case (1):
-                    item = new Coconut(world, spriteFactory, position, SCALE);
+                    item = new Strawberry(world, spriteFactory, physicsLoader, position);
                     break;
                 case (2):
                 case (5):
-                    item = new Wheel(world, spriteFactory, position, SCALE);
+                    item = new Wheel(world, spriteFactory, position);
                     break;
                 case (3):
-                    item = new Weinflasche(world, spriteFactory, physicsLoader, position, SCALE);
+                    item = new Weinflasche(world, spriteFactory, physicsLoader, position);
                     break;
                 case (4):
-                    item = new Grape(world, spriteFactory, position, SCALE);
+                    item = new Grape(world, spriteFactory, position);
                     break;
 
                 default:
                     item = null;
 
             }
-            if (item != null)
+            if (item != null) {
                 items.add(item);
+                Gdx.app.log("Debug",item.sprite.getWidth() + "");
+            }else{
+                Gdx.app.log("Error","aasdsdfsd");
+            }
         }
     }
 

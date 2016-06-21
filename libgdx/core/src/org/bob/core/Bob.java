@@ -368,8 +368,6 @@ public class Bob extends Actor {
     @Override
     public void draw(Batch batch, float alpha) {
 
-        //System.out.println(body.getLinearVelocity().x + " : " + body.getLinearVelocity().y);
-
         //Children Updates:
         p.updateParticles();
 

@@ -13,11 +13,12 @@ import org.bob.core.SpriteFactory;
  */
 public class Strawberry extends Item {
 
+    public static final float SCALE = 0.5f;
     public static final String SPRITE_ID = "strawberry";
 
 
-    public Strawberry(World world, SpriteFactory spriteFactory, BodyEditorLoader bel, Vector2 position, float scale) {
-        super(world, spriteFactory, scale, position);
+    public Strawberry(World world, SpriteFactory spriteFactory, BodyEditorLoader bel, Vector2 position) {
+        super(world, spriteFactory, position);
 
         create(world, spriteFactory, bel);
     }
