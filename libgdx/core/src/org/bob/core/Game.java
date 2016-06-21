@@ -93,10 +93,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // Batch
         batch = new SpriteBatch();
-
-        //Input listener
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob,this)));
-
     }
 
     @Override
@@ -112,7 +108,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         bob = new Bob(world, camera, platform);
         stage.addActor(bob);
 
-        System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
+        //Input listener
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob, this)));
     }
 
     @Override
