@@ -88,8 +88,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Viewport
         viewport = new ScreenViewport(camera);
 
-
-
         // Stage
         stage = new Stage(viewport);
 
@@ -172,7 +170,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             float leftEdge = item.body.getPosition().x + (item.sprite.getWidth() / 2);
             float rightEdge = item.body.getPosition().x - (item.sprite.getWidth() / 2);
-            ;
 
             boolean remove = false;
             if (leftEdge < 0) {
@@ -199,7 +196,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         Item item;
 
-        for (int i = 0; i <= count; i++) {
+        for (int i = 0; i < count; i++) {
 
             if (position == null) {
                 float x = random.nextFloat() * width;
@@ -232,8 +229,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             if (item != null) {
                 items.add(item);
-            } else {
-                Gdx.app.log("Error", "aasdsdfsd");
             }
         }
     }
