@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 public class MyGestureListener implements GestureDetector.GestureListener{
     final int THRESHOLD_X = 1000;
     Bob bob;
-    public MyGestureListener(Bob bob){
+    public MyGestureListener(Bob bob,Game game){
         this.bob = bob;
     }
     @Override

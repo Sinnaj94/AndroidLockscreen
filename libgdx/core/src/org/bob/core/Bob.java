@@ -131,13 +131,15 @@ public class Bob extends Actor {
     }
 
     public void changeAction() {
-        currentAction = MathUtils.random(0, 3);
+        changeAction(MathUtils.random(0, 3));
     }
 
     public void changeAction(int newAction) {
         resetTimer();
         if (newAction == 0) {
             hitLast = 'n';
+        }else{
+            body.setLinearVelocity(0,0);
         }
         currentAction = newAction;
     }
@@ -168,7 +170,6 @@ public class Bob extends Actor {
     @Override
     public void act(float delta) {
         if (timeOver(delta)) {
-            resetTimer();
             changeAction();
         }
         decideAction(delta);
@@ -223,7 +224,7 @@ public class Bob extends Actor {
     //switch case nr 3
     private void smoke() {
         moveX(0f); // force stop
-        p.changePosition((position.x+ actorWidth*2*.77f), (position.y +actorHeight*2*.81f));
+        p.changePosition((position.x+ actorWidth*2*.75f), (position.y +actorHeight*2*.8f));
     }
 
     private void changeDirection() {
