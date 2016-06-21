@@ -102,7 +102,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Batch
         batch = new SpriteBatch();
 
-        doSpawnItems(20);
+        doSpawnItems(20,null);
 
         //Input listener
         Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob,this)));
