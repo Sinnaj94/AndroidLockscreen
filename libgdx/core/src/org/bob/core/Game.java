@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -89,7 +90,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         camera = new OrthographicCamera();
 
         // Viewport
-        viewport = new FillViewport(width, height, camera);
+        viewport = new ScreenViewport(camera);
 
         // Stage
         stage = new Stage(viewport);
