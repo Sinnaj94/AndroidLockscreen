@@ -200,16 +200,12 @@ public class Bob extends Actor {
                 changeDirection();
                 hitLast = 'r';
             }
-
         } else if (position.x < 0) {
             if (hitLast != 'l') {
                 changeDirection();
                 hitLast = 'l';
             }
-
-
         }
-
         moveX(walkingSpeed);
     }
 
@@ -227,7 +223,7 @@ public class Bob extends Actor {
     //switch case nr 3
     private void smoke() {
         moveX(0f); // force stop
-        p.changePosition((body.getPosition().x - actorWidth) + 63, (body.getPosition().y - actorHeight) + 85);
+        p.changePosition((position.x+ actorWidth*2*.77f), (position.y +actorHeight*2*.81f));
     }
 
     private void changeDirection() {
