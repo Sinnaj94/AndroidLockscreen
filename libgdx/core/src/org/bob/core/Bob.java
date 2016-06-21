@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import org.bob.core.item.Item;
+
 /**
  * Created by jeff on 16/06/16.
  */
@@ -74,6 +76,9 @@ public class Bob extends Actor {
     //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
     char hitLast;
 
+    //Item list to check
+    Game game;
+
     /**
      * Constructor
      *
@@ -105,6 +110,8 @@ public class Bob extends Actor {
         maxDirectionTimer = .1f;
         directionTimer = maxDirectionTimer;
 
+        this.game = game;
+
     }
 
     private void createCollider() {
@@ -115,7 +122,7 @@ public class Bob extends Actor {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = 100f;
 
-        Vector2 [] vertices = new Vector2[] {new Vector2(-actorWidth/2,-actorHeight),new Vector2(-actorWidth/2,actorHeight/2),new Vector2(0,actorHeight),new Vector2(actorWidth/2,actorHeight/2),new Vector2(actorWidth/2,-actorHeight)};
+        Vector2[] vertices = new Vector2[]{new Vector2(-actorWidth / 2, -actorHeight), new Vector2(-actorWidth / 2, actorHeight / 2), new Vector2(0, actorHeight), new Vector2(actorWidth / 2, actorHeight / 2), new Vector2(actorWidth / 2, -actorHeight)};
 
         shape = new PolygonShape();
 
@@ -135,13 +142,26 @@ public class Bob extends Actor {
         body.applyForceToCenter(100, 0, true);
     }
 
+    public boolean objectAboveHead() {
+        for(Item i : game.items){
+            if(i.position.x > position.x && i.position.x < position.x+actorWidth*2){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void changeAction() {
         //Mechanism:
         int newAction;
         if (currentAction == 0) {
-            newAction = MathUtils.random(1, 5);
+            newAction = MathUtils.random(1, 4);
         } else {
             newAction = 0;
+        }
+
+        if (objectAboveHead()) {
+            newAction = 5;
         }
         changeAction(newAction);
     }
@@ -167,11 +187,18 @@ public class Bob extends Actor {
 
     private void resetTimer() {
         timer = 0;
-        if (currentAction == 0) {
-            timeToElapse = MathUtils.random(4f, 7f);
+        timeToElapse = getNewTime();
+    }
 
-        } else {
-            timeToElapse = MathUtils.random(2f, 4f);
+    private float getNewTime(){
+        if (currentAction == 0) {
+            return MathUtils.random(5f, 12f);
+
+        } else if(currentAction == 5) {
+            return 2;
+        }
+        else{
+            return MathUtils.random(5f, 10f);
         }
     }
 
