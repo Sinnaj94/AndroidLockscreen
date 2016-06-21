@@ -97,8 +97,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         stage.addActor(bob);
 
-        platform = new Platform(world, camera);
-
         // Batch
         batch = new SpriteBatch();
 
@@ -114,7 +112,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         this.width = width;
         this.height = height;
-        
+
+        platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
+
         System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
     }
 
@@ -124,10 +124,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         update();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         stage.act(Gdx.graphics.getDeltaTime());
 
 
         batch.begin();
+
+        // Draw platform
+        platform.draw(batch);
 
         // Items
         batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
@@ -136,7 +140,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.end();
         stage.draw();
 
-        //debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
         doPhysicsStep(Gdx.graphics.getDeltaTime());
     }

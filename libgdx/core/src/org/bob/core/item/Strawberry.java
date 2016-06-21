@@ -38,10 +38,8 @@ public class Strawberry extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.density = density;
-        fixtureDef.friction = 0;
-
+        
         bel.attachFixture(body, SPRITE_ID, fixtureDef, sprite.getWidth());
-
     }
 
 }
