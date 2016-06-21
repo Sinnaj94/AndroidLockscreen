@@ -113,7 +113,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         this.width = width;
         this.height = height;
 
-        platform =  new Platform(world, camera, ((float)height) * 0.2f, width);
+        platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
 
         System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
     }
