@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 public class MyGestureListener implements GestureDetector.GestureListener{
     final int THRESHOLD_X = 1000;
     Bob bob;
+    Game game;
     public MyGestureListener(Bob bob,Game game){
         this.bob = bob;
+        this.game = game;
     }
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
@@ -20,7 +22,7 @@ public class MyGestureListener implements GestureDetector.GestureListener{
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-
+        game.doSpawnItems(1);
 
         return false;
     }

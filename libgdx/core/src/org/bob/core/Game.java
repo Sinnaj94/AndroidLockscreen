@@ -105,7 +105,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         doSpawnItems(20);
 
         //Input listener
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob)));
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob,this)));
 
     }
 
