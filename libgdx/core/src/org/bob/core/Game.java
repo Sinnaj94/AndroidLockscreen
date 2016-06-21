@@ -114,9 +114,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         this.width = width;
         this.height = height;
-
-        doSpawnItems(20,null);
-
+        
         System.out.println(viewport.getScreenWidth() + "-" + viewport.getWorldWidth());
     }
 
