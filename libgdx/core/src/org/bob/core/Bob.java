@@ -68,7 +68,7 @@ public class Bob extends Actor {
     PolygonShape shape;
     Body body;
     Camera camera;
-
+    float directionTimer;
     /**
      * Constructor
      *
@@ -96,6 +96,7 @@ public class Bob extends Actor {
 
         //Initiate timer
         resetTimer();
+        directionTimer = .5f;
 
     }
 
@@ -162,14 +163,14 @@ public class Bob extends Actor {
             resetTimer();
             changeAction();
         }
-        decideAction();
+        decideAction(delta);
     }
 
-    private void decideAction() {
+    private void decideAction(float delta) {
 
         switch (currentAction) {
             case 0:
-                run();
+                run(delta);
                 break;
             case 1:
                 stand();
@@ -185,12 +186,12 @@ public class Bob extends Actor {
 
 
     //Switch case nr 0
-    public void run() {
-        if (body.getPosition().x / 2 > Gdx.graphics.getWidth()) {
-            changeDirection();
+    public void run(float delta) {
+        if (position.x + actorWidth *2> Gdx.graphics.getWidth()) {
+            changeDirection(delta);
 
-        } else if (body.getPosition().x < 0) {
-            changeDirection();
+        } else if (position.x < 0) {
+            changeDirection(delta);
 
 
         }
@@ -212,11 +213,15 @@ public class Bob extends Actor {
     //switch case nr 3
     private void smoke() {
         moveX(0f); // force stop
-        p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
+        p.changePosition((body.getPosition().x - actorWidth) + 63, (body.getPosition().y - actorHeight) + 85);
     }
 
-    private void changeDirection() {
-        walkingSpeed *= -1;
+    private void changeDirection(float delta) {
+        directionTimer+=delta;
+        if(directionTimer >= .5f){
+            walkingSpeed *= -1;
+            directionTimer = 0;
+        }
     }
 
     private Vector2 getPosition() {
@@ -317,6 +322,7 @@ public class Bob extends Actor {
 
 
     private TextureRegion returnSpriteSheet() {
+
         switch (currentAction) {
             case 0:
                 if (walkingSpeed < 0) {
