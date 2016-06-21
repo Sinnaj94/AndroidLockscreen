@@ -14,12 +14,14 @@ import org.bob.core.SpriteFactory;
  */
 public class Coconut extends Item {
 
+    public static final float SCALE = 1f;
+
     public static final String SPRITE_ID = "coconut";
-    public float radius = 50f;
+    public float radius = 50f * SCALE;
 
 
-    public Coconut(World world, SpriteFactory spriteFactory, Vector2 position, float scale){
-        super(world, spriteFactory, scale, position);
+    public Coconut(World world, SpriteFactory spriteFactory, Vector2 position){
+        super(world, spriteFactory, position);
 
         create(world, spriteFactory);
     }
@@ -37,7 +39,7 @@ public class Coconut extends Item {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(radius * scale);
+        circle.setRadius(radius);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;

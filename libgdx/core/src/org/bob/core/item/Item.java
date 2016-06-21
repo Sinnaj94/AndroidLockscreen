@@ -19,8 +19,7 @@ public class Item {
     public Vector2 position;
     public Sprite sprite;
 
-    public Item(World world, SpriteFactory spriteFactory, float scale, Vector2 position) {
-        this.scale = scale;
+    public Item(World world, SpriteFactory spriteFactory, Vector2 position) {
         this.position = position;
     }
 
@@ -42,6 +41,8 @@ public class Item {
         sprite.draw(batch);
 
     }
+
+
 }
 
 

@@ -14,12 +14,14 @@ import org.bob.core.SpriteFactory;
  */
 public class Wheel extends Item {
 
+    public static final float SCALE = 2.5f;
     public static final String SPRITE_ID = "autoreifen";
-    public float radius = 50f;
+
+    public float radius = 50f * SCALE;
 
 
-    public Wheel(World world, SpriteFactory spriteFactory, Vector2 position, float scale){
-        super(world, spriteFactory, scale, position);
+    public Wheel(World world, SpriteFactory spriteFactory, Vector2 position){
+        super(world, spriteFactory, position);
 
         create(world, spriteFactory);
     }
@@ -35,13 +37,12 @@ public class Wheel extends Item {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(radius * scale);
+        circle.setRadius(sprite.getWidth()/2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.9f;
-        //fixtureDef.density = 5f;
         fixtureDef.restitution = 0.8f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);
