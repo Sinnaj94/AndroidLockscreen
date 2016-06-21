@@ -103,9 +103,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         this.width = width;
         this.height = height;
 
-        platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
+        this.platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
 
-        bob = new Bob(world, camera, platform);
+        bob = new Bob(this, world, camera);
         stage.addActor(bob);
 
         //Input listener

@@ -70,7 +70,6 @@ public class Bob extends Actor {
     PolygonShape shape;
     Body body;
     Camera camera;
-    Platform platform;
     float directionTimer;
     float maxDirectionTimer;
     //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
@@ -85,7 +84,10 @@ public class Bob extends Actor {
      * @param world  current World
      * @param camera Camera
      */
-    public Bob(World world, Camera camera, Platform platform) {
+    public Bob(Game game, World world, Camera camera) {
+
+        this.game = game;
+
         hitLast = 'n';
         //Create Particle System
         p = new Particle();
@@ -93,7 +95,6 @@ public class Bob extends Actor {
 
         this.world = world;
         this.camera = camera;
-        this.platform = platform;
 
         //Attributes for the player
         currentAction = 3;
@@ -110,7 +111,6 @@ public class Bob extends Actor {
         maxDirectionTimer = .1f;
         directionTimer = maxDirectionTimer;
 
-        this.game = game;
 
     }
 
@@ -134,7 +134,7 @@ public class Bob extends Actor {
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
         
-        body.setTransform(100, platform.positionY+100, 0);
+        body.setTransform(100, game.platform.positionY+100, 0);
         shape.dispose();
     }
 
