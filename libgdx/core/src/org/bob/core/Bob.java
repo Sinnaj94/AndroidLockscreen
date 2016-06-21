@@ -111,7 +111,6 @@ public class Bob extends Actor {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.friction = 0f;
         fixtureDef.density = 100f;
 
         shape = new PolygonShape();
