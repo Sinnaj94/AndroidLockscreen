@@ -68,6 +68,10 @@ public class Bob extends Actor {
     PolygonShape shape;
     Body body;
     Camera camera;
+    float directionTimer;
+    float maxDirectionTimer;
+    //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
+    char hitLast;
 
     /**
      * Constructor
@@ -76,7 +80,7 @@ public class Bob extends Actor {
      * @param camera Camera
      */
     public Bob(World world, Camera camera) {
-
+        hitLast = 'n';
         //Create Particle System
         p = new Particle();
         p.create();
@@ -96,6 +100,8 @@ public class Bob extends Actor {
 
         //Initiate timer
         resetTimer();
+        maxDirectionTimer = .1f;
+        directionTimer = maxDirectionTimer;
 
     }
 
@@ -130,13 +136,16 @@ public class Bob extends Actor {
 
     public void changeAction(int newAction) {
         resetTimer();
+        if (newAction == 0) {
+            hitLast = 'n';
+        }
         currentAction = newAction;
     }
 
-    public void setDirection(int direction){
-        if(direction < 0){
+    public void setDirection(int direction) {
+        if (direction < 0) {
             walkingSpeed = -Math.abs(walkingSpeed);
-        }else{
+        } else {
             walkingSpeed = Math.abs(walkingSpeed);
 
         }
@@ -162,10 +171,10 @@ public class Bob extends Actor {
             resetTimer();
             changeAction();
         }
-        decideAction();
+        decideAction(delta);
     }
 
-    private void decideAction() {
+    private void decideAction(float delta) {
 
         switch (currentAction) {
             case 0:
@@ -186,15 +195,17 @@ public class Bob extends Actor {
 
     //Switch case nr 0
     public void run() {
-        if (body.getPosition().x / 2 > Gdx.graphics.getWidth()) {
-            changeDirection();
-
-        } else if (body.getPosition().x < 0) {
-            changeDirection();
-
-
+        if (position.x + actorWidth * 2 > Gdx.graphics.getWidth()) {
+            if (hitLast != 'r') {
+                changeDirection();
+                hitLast = 'r';
+            }
+        } else if (position.x < 0) {
+            if (hitLast != 'l') {
+                changeDirection();
+                hitLast = 'l';
+            }
         }
-
         moveX(walkingSpeed);
     }
 
@@ -212,11 +223,14 @@ public class Bob extends Actor {
     //switch case nr 3
     private void smoke() {
         moveX(0f); // force stop
-        p.changePosition((body.getPosition().x - actorWidth) / 2 + 63, (body.getPosition().y - actorHeight) / 2 + 85);
+        p.changePosition((position.x+ actorWidth*2*.77f), (position.y +actorHeight*2*.81f));
     }
 
     private void changeDirection() {
+
         walkingSpeed *= -1;
+        directionTimer = 0;
+
     }
 
     private Vector2 getPosition() {
@@ -317,6 +331,7 @@ public class Bob extends Actor {
 
 
     private TextureRegion returnSpriteSheet() {
+
         switch (currentAction) {
             case 0:
                 if (walkingSpeed < 0) {
@@ -357,11 +372,11 @@ public class Bob extends Actor {
 
         stateTime += Gdx.graphics.getDeltaTime();
         currentFrame = returnSpriteSheet();
-        position.x =(body.getPosition().x - actorWidth);
+        position.x = (body.getPosition().x - actorWidth);
         position.y = (body.getPosition().y - actorHeight);
         spriteBatch.begin();
 
-        spriteBatch.draw(currentFrame,position.x,position.y,actorWidth*2,actorHeight*2);
+        spriteBatch.draw(currentFrame, position.x, position.y, actorWidth * 2, actorHeight * 2);
 
         spriteBatch.end();
         drawChildObjects();
