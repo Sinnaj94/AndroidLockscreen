@@ -198,7 +198,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             Vector2 position = new Vector2(x, y);
 
-            switch (random.nextInt(5)) {
+            switch (random.nextInt(6)) {
                 case (0):
                     item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
@@ -206,6 +206,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                     item = new Coconut(world, spriteFactory, position, SCALE);
                     break;
                 case (2):
+                case (5):
                     item = new Wheel(world, spriteFactory, position, SCALE);
                     break;
                 case (3):
@@ -214,6 +215,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 case (4):
                     item = new Grape(world, spriteFactory, position, SCALE);
                     break;
+
                 default:
                     item = null;
 

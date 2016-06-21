@@ -41,10 +41,10 @@ public class Wheel extends Item {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 10f;
         fixtureDef.friction = 0.9f;
         //fixtureDef.density = 5f;
-        fixtureDef.restitution = 0.6f; // Make it bounce a little bit
+        fixtureDef.restitution = 0.8f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);
 

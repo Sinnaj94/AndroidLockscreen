@@ -43,8 +43,7 @@ public class Coconut extends Item {
         fixtureDef.shape = circle;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.9f;
-        //fixtureDef.density = 5f;
-        //fixtureDef.restitution = 0.6f; // Make it bounce a little bit
+        fixtureDef.restitution = 0.2f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);
 
