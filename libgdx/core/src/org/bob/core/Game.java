@@ -225,7 +225,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             if (item != null) {
                 items.add(item);
-                Gdx.app.log("Debug", item.sprite.getWidth() + "");
             } else {
                 Gdx.app.log("Error", "aasdsdfsd");
             }

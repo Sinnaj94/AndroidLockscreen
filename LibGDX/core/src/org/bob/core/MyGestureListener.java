@@ -1,6 +1,5 @@
 package org.bob.core;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
@@ -22,7 +21,7 @@ public class MyGestureListener implements GestureDetector.GestureListener{
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        game.doSpawnItems(1);
+        game.doSpawnItems(1,null);
 
         return false;
     }

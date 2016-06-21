@@ -17,9 +17,6 @@ public class Wheel extends Item {
     public static final float SCALE = 1.6f;
     public static final String SPRITE_ID = "autoreifen";
 
-    public float radius = 50f * SCALE;
-
-
     public Wheel(World world, SpriteFactory spriteFactory, Vector2 position){
         super(world, spriteFactory, position);
 
@@ -43,7 +40,7 @@ public class Wheel extends Item {
         fixtureDef.shape = circle;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.9f;
-        fixtureDef.restitution = 0.8f; // Make it bounce a little bit
+        fixtureDef.restitution = 0.6f; // Make it bounce a little bit
 
         Fixture fixture = body.createFixture(fixtureDef);
 

@@ -14,7 +14,7 @@ import org.bob.core.SpriteFactory;
  */
 public class Coconut extends Item {
 
-    public static final float SCALE = 1f;
+    public static final float SCALE = 0.7f;
 
     public static final String SPRITE_ID = "coconut";
     public float radius = 50f * SCALE;

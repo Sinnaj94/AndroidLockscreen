@@ -17,8 +17,6 @@ public class Grape extends Item {
     public static final float SCALE = 0.5f;
 
     public static final String SPRITE_ID = "grape";
-    public float radius = 50f * SCALE;
-
 
     public Grape(World world, SpriteFactory spriteFactory, Vector2 position){
         super(world, spriteFactory, position);
