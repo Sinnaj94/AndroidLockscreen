@@ -13,7 +13,9 @@ public class Particle extends ApplicationAdapter {
     int maxParticleCount;
     boolean running;
 
-
+    /**
+     * Creates the Particlesystem from the File "gfx/Particles" but doesnt start yet
+     */
     @Override
     public void create() {
         running = true;
@@ -29,10 +31,18 @@ public class Particle extends ApplicationAdapter {
 
     }
 
+    /**
+     * Changes the Position of the current system
+     * @param x New Position x
+     * @param y New Position y
+     */
     public void changePosition(float x, float y) {
         pe.getEmitters().first().setPosition(x, y);
     }
 
+    /**
+     * Starts the first emitter by setting the maxParticleCount-Attribute
+     */
     public void startEmitting() {
         if(!running){
             pe.getEmitters().first().setMaxParticleCount(maxParticleCount);
@@ -40,6 +50,9 @@ public class Particle extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Stops the first emitter by setting the maxParticleCount-Attribute
+     */
     public void stopEmitting() {
         if(running){
             pe.getEmitters().first().setMaxParticleCount(0);
@@ -47,6 +60,9 @@ public class Particle extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Renders the current particle-system
+     */
     @Override
     public void render() {
 
@@ -59,6 +75,9 @@ public class Particle extends ApplicationAdapter {
         }
     }
 
+    /**
+     * Updates the Particles
+     */
     public void updateParticles() {
         pe.update(Gdx.graphics.getDeltaTime());
 

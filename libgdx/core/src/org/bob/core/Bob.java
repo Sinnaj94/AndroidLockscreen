@@ -199,21 +199,30 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     * Changes the direction
+     * @param direction Negative -> left, positive -> right
+     */
     public void setDirection(int direction) {
         if (direction < 0) {
             walkingSpeed = -Math.abs(walkingSpeed);
         } else {
             walkingSpeed = Math.abs(walkingSpeed);
-
         }
     }
 
+    /**
+     *  Resets the Timer
+     */
     private void resetTimer() {
         timer = 0;
         timeToElapse = getNewTime();
-        Gdx.app.log("OUTOUT", "+ " + timeToElapse);
     }
 
+    /**
+     *
+     * @return The time for the specific action, for the timer. Partly randomly generated.
+     */
     private float getNewTime() {
         if (currentAction == 0) {
             return MathUtils.random(5f, 12f);
@@ -225,6 +234,10 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     * @param delta The game-time-milliseconds
+     * @return Time to jump from one frame to another
+     */
     private boolean timeOver(float delta) {
         timer += delta;
         if (timer >= timeToElapse) {
@@ -233,6 +246,10 @@ public class Bob extends Actor {
         return false;
     }
 
+    /**
+     * The act method from bob
+     * @param delta Time to jump from one frame to another
+     */
     @Override
     public void act(float delta) {
         if (timeOver(delta)) {
@@ -241,6 +258,10 @@ public class Bob extends Actor {
         decideAction(delta);
     }
 
+    /**
+     * Performs the move (like running or climbing)
+     * @param delta Time to jump from one frame to another
+     */
     private void decideAction(float delta) {
 
         switch (currentAction) {
@@ -260,7 +281,9 @@ public class Bob extends Actor {
     }
 
 
-    //Switch case nr 0
+    /**
+     * First State
+     */
     public void run() {
         if (position.x + actorWidth * 2 > Gdx.graphics.getWidth()) {
             if (hitLast != 'r') {
@@ -276,57 +299,78 @@ public class Bob extends Actor {
         moveX(walkingSpeed);
     }
 
-    //switch case nr 1
+    /**
+     * Second State
+     */
     public void stand() {
-        //TODO: Implement
+
     }
 
-    //switch case nr 2
+    /**
+     * Third State
+     */
     public void climb() {
         moveX(0f); // force stop
         moveY(climbingSpeed);
     }
 
-    //switch case nr 3
+    /**
+     * Fourth State
+     */
     private void smoke() {
         moveX(0f); // force stop
         p.changePosition((position.x + actorWidth * 2 * .75f), (position.y + actorHeight * 2 * .8f));
     }
 
+    /**
+     * Changes the direction
+     */
     private void changeDirection() {
 
         walkingSpeed *= -1;
-        directionTimer = 0;
 
     }
 
-    private Vector2 getPosition() {
-        return position;
-    }
 
-    //Move the Actor.
+    /**
+     * Move the actor on x & y axis
+     * @param delta Speed Vector
+     */
     private void move(Vector2 delta) {
         //setActorPosition(getPosition().x + delta.x, getPosition().y + delta.y);
         body.setLinearVelocity(delta);
 
     }
 
+    /**
+     * Moves the actor on x axis
+     * @param x Speed
+     */
     private void moveX(float x) {
         move(new Vector2(x, body.getLinearVelocity().y));
     }
 
+    /**
+     * Moves the actor on y axis
+     * @param y Speed
+     */
     private void moveY(float y) {
         move(new Vector2(body.getLinearVelocity().x, y));
     }
 
-    //Create the Sheet
+    /**
+     * Creates the Spritesheet from the PNG
+     * Contains Parts from https://github.com/libgdx/libgdx/wiki/2D-Animation
+     */
     private void createSheet() {
         spriteSheet = new Texture(Gdx.files.internal(path));
         //Define the actor width & height
         actorWidth = spriteSheet.getWidth() / FRAME_COLS;
         actorHeight = spriteSheet.getHeight() / FRAME_ROWS;
 
+        //Define The Frames
         //SPECIAL CASES *****
+        //We use special cases, because we want some Animations from the Spritesheet go backwards and forward, not repeat
         walkFramesLeft = new TextureRegion[FRAME_COLS * 5];
         TextureRegion[][] tmp = TextureRegion.split(spriteSheet, spriteSheet.getWidth() / FRAME_COLS, spriteSheet.getHeight() / FRAME_ROWS);
         int index = 0;
@@ -341,7 +385,8 @@ public class Bob extends Actor {
         idleFrames = getFrames(0, 5, 10, 10);
         smokeFrames = getFrames(0, 5, 11, 12);
 
-        walkRightAnimation = new Animation(0.025f, walkFramesRight);      // #11
+        //Here we build the Animations
+        walkRightAnimation = new Animation(0.025f, walkFramesRight);
         walkLeftAnimation = new Animation(0.025f, walkFramesLeft);
         idleAnimation = new Animation(0.1f, idleFrames);
         smokeAnimation = new Animation(0.4f, smokeFrames);
@@ -349,13 +394,19 @@ public class Bob extends Actor {
         listenAnimation = new Animation(.045f, getFramesReverted(0, 5, 15, 15));
         crouchAnimation = new Animation(.045f, getFramesReverted(0, 5, 16, 16));
 
-        //smokeAnimation = new Animation(0.1f,smokeFrames);
-        spriteBatch = new SpriteBatch();                // #12
-        stateTime = 0f;
 
-        // #13
+        spriteBatch = new SpriteBatch();
+        stateTime = 0f;
     }
 
+    /**
+     * The start X and Y values define the current array number
+     * @param xS Start X
+     * @param xE End X
+     * @param yS Start Y
+     * @param yE End Y
+     * @return An Array of Frames in the given range
+     */
     private TextureRegion[] getFrames(int xS, int xE, int yS, int yE) {
         yE += 1;
         xE += 1;
@@ -373,6 +424,14 @@ public class Bob extends Actor {
         return ret;
     }
 
+    /**
+     * The start X and Y values define the current array number
+     * @param xS Start X
+     * @param xE End X
+     * @param yS Start Y
+     * @param yE End Y
+     * @return An Array of Frames in the given range, also backwards
+     */
     private TextureRegion[] getFramesReverted(int xS, int xE, int yS, int yE) {
         yE += 1;
         xE += 1;
@@ -396,7 +455,10 @@ public class Bob extends Actor {
         return ret;
     }
 
-
+    /**
+     *
+     * @return Returns the Spritearrays of the current Action
+     */
     private TextureRegion returnSpriteSheet() {
 
         switch (currentAction) {
@@ -425,7 +487,9 @@ public class Bob extends Actor {
 
     }
 
-
+    /**
+     * Draws child objects, for example Particles eg. Also starts the Particles, when the smoke case is on.
+     */
     private void drawChildObjects() {
         if (currentAction == 3) {
             p.startEmitting();
@@ -436,6 +500,11 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     * Draws Bob and his child elements
+     * @param batch current Batch
+     * @param alpha Opacity of the drawn elements
+     */
     @Override
     public void draw(Batch batch, float alpha) {
 
@@ -455,10 +524,9 @@ public class Bob extends Actor {
     }
 
 
-    public boolean isWaitingForAction() {
-        return false;
-    }
-
+    /**
+     * Delete all the Elements (by garbage collector, setting them to null)
+     */
     public void dispose() {
 
         if(spriteSheet != null) {
