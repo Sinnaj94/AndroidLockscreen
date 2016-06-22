@@ -134,7 +134,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.end();
         stage.draw();
 
-        debugRenderer.render(world, camera.combined);
+        //debugRenderer.render(world, camera.combined);
 
         doPhysicsStep(Gdx.graphics.getDeltaTime());
     }
@@ -201,16 +201,14 @@ public class Game extends InputAdapter implements ApplicationListener {
                 position = new Vector2(x, y);
             }
 
-            switch (random.nextInt(7)) {
+            switch (random.nextInt(5)) {
                 case (0):
                     item = new Coconut(world, spriteFactory, position);
                     break;
                 case (1):
-                case (6):
                     item = new Strawberry(world, spriteFactory, physicsLoader, position);
                     break;
                 case (2):
-                case (5):
                     item = new Wheel(world, spriteFactory, position);
                     break;
                 case (3):

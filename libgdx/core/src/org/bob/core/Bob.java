@@ -16,8 +16,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
-import org.bob.core.item.Item;
-
 /**
  * Created by jeff on 16/06/16.
  */
