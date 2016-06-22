@@ -34,8 +34,8 @@ import java.util.Random;
 /**
  * Main Application class.
  * Manage all the game logic and the drawing.
- *
- *
+ * <p/>
+ * <p/>
  * Created by jeff on 16/06/16.
  */
 public class Game extends InputAdapter implements ApplicationListener {
@@ -63,6 +63,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Bob bob;
     public Platform platform;
     public List<Item> items;
+    public GestureDetector gestureDetector;
 
 
     /*
@@ -116,15 +117,24 @@ public class Game extends InputAdapter implements ApplicationListener {
         this.width = width;
         this.height = height;
 
+
         // Create static platform where bob walks
-        this.platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
+        if (platform == null) {
+            this.platform = new Platform(world, camera, ((float) height) * 0.13f, width);
+        }
 
         // Create bob
-        bob = new Bob(this, world, camera);
-        stage.addActor(bob);
+        if (bob == null) {
+            bob = new Bob(this, world, camera);
+            stage.addActor(bob);
+        }
+
 
         // Set input listener
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob, this)));
+        if (gestureDetector == null) {
+            gestureDetector = new GestureDetector(new MyGestureListener(bob, this));
+            Gdx.input.setInputProcessor(gestureDetector);
+        }
     }
 
     @Override
@@ -186,12 +196,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         viewport = null;
         camera = null;
         physicsLoader = null;
+        gestureDetector = null;
     }
 
     /**
      * Update the logic of the game and
      * cleanup unused objects.
-     *
      */
     private void update() {
 
@@ -222,11 +232,10 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     /**
-     *
      * Spawn random objects. Use count to specify the number of items to spawn
      * and postion to choose a postition to spawn. Keep positon null to use a random position
      *
-     * @param count number of items to spawn
+     * @param count    number of items to spawn
      * @param position the position to spawn the objects, null for random position above the screen.
      */
     public void doSpawnItems(int count, Vector2 position) {

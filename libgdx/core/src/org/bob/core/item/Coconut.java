@@ -10,10 +10,15 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.bob.core.SpriteFactory;
 
 /**
+ * Co
+ *
  * Created by jeff on 19/06/16.
  */
 public class Coconut extends Item {
 
+    /**
+     * Item Scale
+     */
     public static final float SCALE = 0.7f;
 
     public static final String SPRITE_ID = "coconut";
@@ -26,8 +31,7 @@ public class Coconut extends Item {
         create(world, spriteFactory);
     }
 
-
-
+    @Override
     public void create(World world, SpriteFactory spriteFactory){
 
         sprite = spriteFactory.get(SPRITE_ID);

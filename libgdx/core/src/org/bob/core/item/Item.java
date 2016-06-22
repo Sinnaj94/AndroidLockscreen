@@ -10,27 +10,55 @@ import org.bob.core.BodyEditorLoader;
 import org.bob.core.SpriteFactory;
 
 /**
+ * Abstract class represents a game item.
+ * Items can be spawned in the game.
+ *
  * Created by jeff on 16/06/16.
  */
-public class Item {
+public abstract class Item {
 
     public Body body;
     public float scale;
     public Vector2 position;
     public Sprite sprite;
 
+    /**
+     * Constructor
+     *
+     * @param world the world
+     * @param spriteFactory the sprite factory
+     * @param position the position of the item
+     */
     public Item(World world, SpriteFactory spriteFactory, Vector2 position) {
         this.position = position;
     }
 
+    /**
+     * Create game object.
+     *
+     * @param world the world
+     * @param spriteFactory the sprite factory
+     */
     public void create(World world, SpriteFactory spriteFactory) {
     }
 
+    /**
+     * Create game object.
+     *
+     * @param world the world
+     * @param spriteFactory the sprite factory
+     * @param bel physics meta information
+     */
     public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
     }
 
+    /**
+     * Render item on the screen.
+     * @param batch the sprite batch
+     */
     public void render(SpriteBatch batch) {
 
+        // Postion to draw the item
         position = body.getPosition();
 
         // get the degrees of rotation by converting from radians

@@ -24,6 +24,7 @@ public class Strawberry extends Item {
     }
 
 
+    @Override
     public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
 
         sprite = spriteFactory.get(Strawberry.SPRITE_ID);

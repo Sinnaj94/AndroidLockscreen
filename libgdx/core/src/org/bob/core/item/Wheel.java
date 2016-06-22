@@ -23,6 +23,7 @@ public class Wheel extends Item {
         create(world, spriteFactory);
     }
 
+    @Override
     public void create(World world, SpriteFactory spriteFactory){
 
         sprite = spriteFactory.get(Wheel.SPRITE_ID);

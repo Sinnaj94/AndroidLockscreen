@@ -24,6 +24,7 @@ public class Weinflasche extends Item {
     }
 
 
+    @Override
     public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
 
         sprite = spriteFactory.get(Weinflasche.SPRITE_ID);
