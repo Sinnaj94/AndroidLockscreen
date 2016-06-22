@@ -9,7 +9,7 @@ import org.bob.core.Game;
  * Entry point for android wallpaper service.
  * Class inherits from WallpaperService and libgdx AndroidLiveWallpaperService.
  * AndroidLiveWallpaperService adds special support for libgdx Android-Wallpapers.
- *
+ * <p/>
  * Created by jeff on 09/06/16.
  */
 public class LiveWallpaper extends AndroidLiveWallpaperService {
