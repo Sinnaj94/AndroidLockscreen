@@ -199,6 +199,10 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     * Changes the direction
+     * @param direction Negative -> left, positive -> right
+     */
     public void setDirection(int direction) {
         if (direction < 0) {
             walkingSpeed = -Math.abs(walkingSpeed);
@@ -208,12 +212,18 @@ public class Bob extends Actor {
         }
     }
 
+    /**
+     *  Resets the Timer
+     */
     private void resetTimer() {
         timer = 0;
         timeToElapse = getNewTime();
-        Gdx.app.log("OUTOUT", "+ " + timeToElapse);
     }
 
+    /**
+     *
+     * @return The time for the specific action, for the timer. Partly randomly generated.
+     */
     private float getNewTime() {
         if (currentAction == 0) {
             return MathUtils.random(5f, 12f);
@@ -225,6 +235,11 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     *
+     * @param delta The game-time-milliseconds
+     * @return If the Timer is over
+     */
     private boolean timeOver(float delta) {
         timer += delta;
         if (timer >= timeToElapse) {
