@@ -17,6 +17,9 @@ import org.bob.core.SpriteFactory;
  */
 public abstract class Item {
 
+    /*
+     * Fields
+     */
     public Body body;
     public float scale;
     public Vector2 position;
@@ -58,15 +61,16 @@ public abstract class Item {
      */
     public void render(SpriteBatch batch) {
 
-        // Postion to draw the item
+        // Position to draw the item
         position = body.getPosition();
 
         // get the degrees of rotation by converting from radians
         float degrees = (float) Math.toDegrees(body.getAngle());
 
+        // Set the position at the sprite
         sprite.setPosition(position.x-(sprite.getWidth()/2), position.y - (sprite.getHeight()/2));
-        sprite.setRotation(degrees);
-        sprite.draw(batch);
+        sprite.setRotation(degrees); // Rotate sprite
+        sprite.draw(batch); // Draw sprite at batch
 
     }
 

@@ -8,15 +8,26 @@ import org.bob.core.Game;
 
 import static com.badlogic.gdx.tools.texturepacker.TexturePacker.process;
 
+/**
+ * Desktop game launcher.
+ */
 public class DesktopLauncher {
-	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.width = 1020/2;
-		config.height = 1980/2;
 
-		TexturePacker.Settings settings = new TexturePacker.Settings();
-		process(settings, "gfx/texturepack", "sprite", "game");
+    /**
+     * Main game launcher function.
+     *
+     * @param arg arguments
+     */
+    public static void main(String[] arg) {
+        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+        config.width = 1020 / 2;
+        config.height = 1980 / 2;
 
-		new LwjglApplication(new Game(), config);
-	}
+        // Pack sprite to texture
+        TexturePacker.Settings settings = new TexturePacker.Settings();
+        process(settings, "gfx/texturepack", "sprite", "game");
+
+        // Launch desktop game
+        new LwjglApplication(new Game(), config);
+    }
 }

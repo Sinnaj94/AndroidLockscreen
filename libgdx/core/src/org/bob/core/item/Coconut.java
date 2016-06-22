@@ -10,29 +10,40 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.bob.core.SpriteFactory;
 
 /**
- * Co
- *
+ * Coconut game item.
+ * <p/>
+ * Class is a implementation of the
+ * abstract Item class. It can be used
+ * to specify an object which can be spawned
+ * on the screen.
+ * <p/>
+ * <p/>
  * Created by jeff on 19/06/16.
  */
 public class Coconut extends Item {
 
-    /**
-     * Item Scale
+    /*
+     * Fields
      */
     public static final float SCALE = 0.7f;
-
     public static final String SPRITE_ID = "coconut";
     public float radius = 50f * SCALE;
 
 
-    public Coconut(World world, SpriteFactory spriteFactory, Vector2 position){
+    /**
+     * Constructor
+     * @param world the box2d world
+     * @param spriteFactory the sprite factory
+     * @param position the position of the item
+     */
+    public Coconut(World world, SpriteFactory spriteFactory, Vector2 position) {
         super(world, spriteFactory, position);
 
         create(world, spriteFactory);
     }
 
     @Override
-    public void create(World world, SpriteFactory spriteFactory){
+    public void create(World world, SpriteFactory spriteFactory) {
 
         sprite = spriteFactory.get(SPRITE_ID);
 
@@ -55,7 +66,6 @@ public class Coconut extends Item {
 
         circle.dispose();
     }
-
 
 
 }

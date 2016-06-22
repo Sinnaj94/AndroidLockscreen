@@ -8,9 +8,13 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import org.bob.core.Game;
 
 /**
+ * Main android launcher class.
+ * Used to launch the game as a regular application.
+ *
  * Created by jeff on 18/06/16.
  */
 public class AndroidLauncher extends AndroidApplication {
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
