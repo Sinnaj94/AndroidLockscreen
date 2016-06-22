@@ -1,4 +1,4 @@
 <wallpaper
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:thumbnail="@drawable/ic_launcher"
-    android:settingsActivity="com.mygdx.game.AndroidLauncher"/>
+    android:settingsActivity="org.bob.android.MyPreferencesActivity"/>
