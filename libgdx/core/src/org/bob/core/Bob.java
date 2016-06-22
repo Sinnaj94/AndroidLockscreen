@@ -16,6 +16,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Created by jeff on 16/06/16.
  */
@@ -64,17 +66,17 @@ public class Bob extends Actor {
     float maximumTime;
 
     //Physic Objects
-    World world;
+    WeakReference <World> world;
     PolygonShape shape;
     Body body;
-    Camera camera;
+    WeakReference<Camera> camera;
     float directionTimer;
     float maxDirectionTimer;
     //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
     char hitLast;
 
     //Game contains Item list to check
-    Game game;
+    WeakReference <Game> game;
 
     /**
      * Constructor
@@ -84,15 +86,15 @@ public class Bob extends Actor {
      */
     public Bob(Game game, World world, Camera camera) {
 
-        this.game = game;
+        this.game = new WeakReference<Game>(game);
 
         hitLast = 'n';
         //Create Particle System
         p = new Particle();
         p.create();
 
-        this.world = world;
-        this.camera = camera;
+        this.world = new WeakReference<World>(world);
+        this.camera = new WeakReference<Camera>(camera);
 
         //Attributes for the player
         currentAction = 3;
@@ -102,15 +104,15 @@ public class Bob extends Actor {
 
         //Create the sheet and Collision box
         createSheet();
-        createCollider();
+        createCollider(game);
 
         //Initiate timer
         resetTimer();
         maxDirectionTimer = .1f;
         directionTimer = maxDirectionTimer;
-
-
     }
+
+
 
     /**
      * Creates a Collider for Bob
@@ -119,6 +121,7 @@ public class Bob extends Actor {
      *    |   |
      *    |   |
      *    |___|
+     *
      *
      */
     private void createCollider() {
@@ -138,10 +141,10 @@ public class Bob extends Actor {
 
         fixtureDef.shape = shape;
 
-        body = world.createBody(bodyDef);
+        body = world.get().createBody(bodyDef);
         body.createFixture(fixtureDef);
 
-        body.setTransform(100, game.platform.positionY + 100, 0);
+        body.setTransform(100, this.game.get().platform.positionY + 100, 0);
         shape.dispose();
     }
 
@@ -454,5 +457,47 @@ public class Bob extends Actor {
 
     public boolean isWaitingForAction() {
         return false;
+    }
+
+    public void dispose() {
+
+        if(spriteSheet != null) {
+            spriteSheet.dispose();
+            spriteSheet = null;
+        }
+
+        walkFramesRight = null;
+        walkFramesLeft = null;
+        idleFrames = null;
+        smokeFrames = null;
+
+
+        walkRightAnimation = null;
+        walkLeftAnimation = null;
+        idleAnimation = null;
+        smokeAnimation = null;
+        climbAnimation = null;
+        listenAnimation = null;
+        crouchAnimation = null;
+
+        if(p!= null) {
+            p.dispose();
+            p = null;
+        }
+
+        if(spriteBatch != null) {
+            spriteBatch.dispose();
+            spriteBatch = null;
+        }
+
+        currentFrame = null;
+        position = null;
+        world = null;
+        if(shape != null){
+            shape.dispose();
+        }
+        body = null;
+        camera = null;
+        game = null;
     }
 }

@@ -159,7 +159,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         platform = null;
         debugRenderer.dispose();
         debugRenderer = null;
-        //bob.dispose();
+        bob.dispose();
         spriteFactory.dispose();
         spriteFactory = null;
         viewport = null;
