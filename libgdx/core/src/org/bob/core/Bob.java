@@ -240,7 +240,7 @@ public class Bob extends Actor {
             return MathUtils.random(5f, 12f);
 
         } else if (currentAction == 5) {
-            return 3;
+            return 6f;
         }
         return MathUtils.random(5f, 10f);
 
