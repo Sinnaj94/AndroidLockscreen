@@ -84,7 +84,11 @@ public class Bob extends Actor {
      * @param world  current World
      * @param camera Camera
      */
-    public Bob(World world, Camera camera, Game game) {
+
+    public Bob(Game game, World world, Camera camera) {
+
+        this.game = game;
+
         hitLast = 'n';
         //Create Particle System
         p = new Particle();
@@ -108,7 +112,6 @@ public class Bob extends Actor {
         maxDirectionTimer = .1f;
         directionTimer = maxDirectionTimer;
 
-        this.game = game;
 
     }
 
@@ -132,7 +135,7 @@ public class Bob extends Actor {
         body = world.createBody(bodyDef);
         body.createFixture(fixtureDef);
 
-        body.setTransform(100, 200, 0);
+        body.setTransform(100, game.platform.positionY + 100, 0);
         shape.dispose();
     }
 
@@ -184,7 +187,7 @@ public class Bob extends Actor {
     private void resetTimer() {
         timer = 0;
         timeToElapse = getNewTime();
-        Gdx.app.log("OUTOUT","+ "+timeToElapse);
+        Gdx.app.log("OUTOUT", "+ " + timeToElapse);
     }
 
     private float getNewTime() {
