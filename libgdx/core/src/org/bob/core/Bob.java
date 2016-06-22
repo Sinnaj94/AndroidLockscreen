@@ -486,7 +486,6 @@ public class Bob extends Actor {
         idleFrames = null;
         smokeFrames = null;
 
-
         walkRightAnimation = null;
         walkLeftAnimation = null;
         idleAnimation = null;
@@ -508,9 +507,7 @@ public class Bob extends Actor {
         currentFrame = null;
         position = null;
         world = null;
-        if(shape != null){
-            shape.dispose();
-        }
+        shape = null;
         body = null;
         camera = null;
         game = null;
