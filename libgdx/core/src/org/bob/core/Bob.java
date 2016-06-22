@@ -1,6 +1,7 @@
 package org.bob.core;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -78,6 +79,9 @@ public class Bob extends Actor {
     //Game contains Item list to check
     WeakReference <Game> game;
 
+    //Music
+    Music music;
+
     /**
      * Constructor
      *
@@ -110,6 +114,9 @@ public class Bob extends Actor {
         resetTimer();
         maxDirectionTimer = .1f;
         directionTimer = maxDirectionTimer;
+
+        //Initiate Music
+        music = Gdx.audio.newMusic(Gdx.files.internal("data/weekend.mp3"));
     }
 
 
@@ -177,7 +184,7 @@ public class Bob extends Actor {
         int newAction;
         if (currentAction == 0) {
             newAction = MathUtils.random(1, 4);
-        } else {
+        } else{
             newAction = 0;
         }
 
@@ -191,8 +198,13 @@ public class Bob extends Actor {
     public void changeAction(int newAction) {
         if (newAction == 0) {
             hitLast = 'n';
-        } else {
+        } else if(newAction == 4){
+            music.play();
+        } else{
             body.setLinearVelocity(0, 0);
+        }
+        if(newAction!=4){
+            music.stop();
         }
         currentAction = newAction;
         resetTimer();
@@ -564,5 +576,6 @@ public class Bob extends Actor {
         body = null;
         camera = null;
         game = null;
+        music = null;
     }
 }
