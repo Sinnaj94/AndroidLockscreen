@@ -73,7 +73,7 @@ public class Bob extends Actor {
     //HIT LAST: 'n' -> null, 'l' -> left, 'r' -> right
     char hitLast;
 
-    //Item list to check
+    //Game contains Item list to check
     Game game;
 
     /**
@@ -82,7 +82,6 @@ public class Bob extends Actor {
      * @param world  current World
      * @param camera Camera
      */
-
     public Bob(Game game, World world, Camera camera) {
 
         this.game = game;
@@ -113,6 +112,15 @@ public class Bob extends Actor {
 
     }
 
+    /**
+     * Creates a Collider for Bob
+     *      ^
+     *    ´   `
+     *    |   |
+     *    |   |
+     *    |___|
+     *
+     */
     private void createCollider() {
         BodyDef bodyDef = new BodyDef();
         bodyDef.fixedRotation = true;
@@ -137,11 +145,19 @@ public class Bob extends Actor {
         shape.dispose();
     }
 
+    /**
+     * Adds a force to Bob, to make him jump
+     */
     public void jump() {
         body.applyForceToCenter(100, 0, true);
     }
 
-    public boolean betweenMyX(float x, float y) {
+    /**
+     * Checks whether the given X-Position is overlapping with bob.
+     * @param x X-Position
+     * @return True if overlaps, false if not.
+     */
+    public boolean betweenMyX(float x) {
 
         if (x > position.x && x < position.x + actorWidth * 2) {
             return true;
@@ -150,6 +166,9 @@ public class Bob extends Actor {
         return false;
     }
 
+    /**
+     * Changes the Action of Bob, accordingly to a simple automat.
+     */
     public void changeAction() {
         //Mechanism:
         int newAction;
@@ -162,6 +181,10 @@ public class Bob extends Actor {
         changeAction(newAction);
     }
 
+    /**
+     * Changes Bobs Action and resets the timer. Also adjusts some special cases.
+     * @param newAction The number of the new Action
+     */
     public void changeAction(int newAction) {
         if (newAction == 0) {
             hitLast = 'n';

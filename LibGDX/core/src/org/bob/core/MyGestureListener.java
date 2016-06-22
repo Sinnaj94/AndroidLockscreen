@@ -24,7 +24,7 @@ public class MyGestureListener implements GestureDetector.GestureListener{
     @Override
     public boolean tap(float x, float y, int count, int button) {
         game.doSpawnItems(1,new Vector2(x, Gdx.graphics.getHeight()-y));
-        if(bob.betweenMyX(x,y)){
+        if(bob.betweenMyX(x)){
             bob.changeAction(5);
         }
         return false;
