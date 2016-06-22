@@ -154,7 +154,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.begin();
 
         // Draw items
-        batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
+        batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() );
         for (Item item : items)
             item.render(batch);
         batch.end();
