@@ -32,38 +32,42 @@ import java.util.Random;
 
 
 /**
+ * Main Application class.
+ * Manage all the game logic and the drawing.
+ *
+ *
  * Created by jeff on 16/06/16.
  */
 public class Game extends InputAdapter implements ApplicationListener {
+
+    /*
+     * Fields
+     */
 
     private float accumulator = 0;
     public static final float TIME_STEP = 1 / 300f;
     public static final int VELOCITY_ITERATIONS = 6;
     public static final int POSITION_ITERATIONS = 2;
-
     public float width;
     public float height;
-
     Texture backgroundImage;
     Sprite backgroundSprite;
     public Viewport viewport;
     public Camera camera;
-
     public World world;
     public Box2DDebugRenderer debugRenderer;
-
     private SpriteFactory spriteFactory;
-
     private BodyEditorLoader physicsLoader;
-
     public SpriteBatch batch;
-
-    // Game Objects
     public Stage stage;
     public Bob bob;
     public Platform platform;
     public List<Item> items;
 
+
+    /*
+     * Overriden Methods
+     */
 
     @Override
     public void create() {
@@ -71,63 +75,77 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Physics
         Box2D.init();
 
+        // Load background image and set as sprite
         backgroundImage = new Texture(Gdx.files.internal("gfx/background.png"));
         backgroundSprite = new Sprite(backgroundImage);
+
+        // Create sprite factory, used for creating all spawned items.
         spriteFactory = new SpriteFactory();
 
+        // Instantiate list for spawned items
         items = new LinkedList<Item>();
 
+        // Load physics body information from json
         physicsLoader = new BodyEditorLoader(Gdx.files.internal("data/physic_bodies.json"));
 
+        // Create libgdx world
         world = new World(new Vector2(0, -320), true);
+
+        // Create box2d debug renderer
         debugRenderer = new Box2DDebugRenderer();
 
-        // Camera
+        // Create camera
         camera = new OrthographicCamera();
 
-        // Viewport
+        // Create viewport
         viewport = new ScreenViewport(camera);
 
-        // Stage
+        // Create stage
         stage = new Stage(viewport);
 
-        // Batch
+        // Create SpriteBatch
         batch = new SpriteBatch();
     }
 
     @Override
     public void resize(int width, int height) {
+
+        // Set screen dimensions
         viewport.update(width, height);
         batch.setProjectionMatrix(camera.combined);
-
         this.width = width;
         this.height = height;
 
+        // Create static platform where bob walks
         this.platform =  new Platform(world, camera, ((float)height) * 0.13f, width);
 
+        // Create bob
         bob = new Bob(this, world, camera);
         stage.addActor(bob);
 
-        //Input listener
+        // Set input listener
         Gdx.input.setInputProcessor(new GestureDetector(new MyGestureListener(bob, this)));
     }
 
     @Override
     public void render() {
 
+        // Update logic
         update();
 
+        // Clean screen
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Update scene2d
         stage.act(Gdx.graphics.getDeltaTime());
 
-
+        // Prepare patch for drawing
         batch.begin();
 
         // Draw platform
         platform.draw(batch);
 
-        // Items
+        // Draw items
         batch.draw(backgroundSprite, 0, 0, Gdx.graphics.getWidth() * 2, Gdx.graphics.getHeight() * 2);
         for (Item item : items)
             item.render(batch);
@@ -136,6 +154,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         //debugRenderer.render(world, camera.combined);
 
+        // Update box2d world
         doPhysicsStep(Gdx.graphics.getDeltaTime());
     }
 
@@ -151,6 +170,11 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void dispose() {
+
+        /*
+         * Cleanup resources
+         */
+
         stage.dispose();
         stage = null;
         world.dispose();
@@ -167,10 +191,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         physicsLoader = null;
     }
 
+    /**
+     * Update the logic of the game and
+     * cleanup unused objects.
+     *
+     */
     private void update() {
 
         // Check if item is outside the screen
-
         for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
 
             Item item = iterator.next();
@@ -180,31 +208,40 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             boolean remove = false;
             if (leftEdge < 0) {
-                remove = true;
+                remove = true; // left from the screen
             } else if (rightEdge > camera.viewportWidth) {
-                remove = true;
+                remove = true; // right from the screen
             }
 
+            // Item outside?
             if (remove) {
+                // Remove item from world
                 world.destroyBody(item.body);
+                // Remove from list
                 iterator.remove();
             }
 
         }
-
-        if (bob.isWaitingForAction()) {
-
-        }
     }
 
+    /**
+     *
+     * Spawn random objects. Use count to specify the number of items to spawn
+     * and postion to choose a postition to spawn. Keep positon null to use a random position
+     *
+     * @param count number of items to spawn
+     * @param position the position to spawn the objects, null for random position above the screen.
+     */
     public void doSpawnItems(int count, Vector2 position) {
 
+        // Create a random
         Random random = new Random();
 
         Item item;
 
         for (int i = 0; i < count; i++) {
 
+            // if position not set use random positon
             if (position == null) {
                 float x = random.nextFloat() * width;
                 float y = ((random.nextFloat() * height) / 2) + height;
@@ -212,6 +249,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 position = new Vector2(x, y);
             }
 
+            // set random item
             switch (random.nextInt(5)) {
                 case (0):
                     item = new Coconut(world, spriteFactory, position);
@@ -233,11 +271,17 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             }
             if (item != null) {
+                // add item
                 items.add(item);
             }
         }
     }
 
+    /**
+     * Update box2d world.
+     *
+     * @param deltaTime elapsed time sind last draw.
+     */
     private void doPhysicsStep(float deltaTime) {
         // fixed time step
         // max frame time to avoid spiral of death (on slow devices)

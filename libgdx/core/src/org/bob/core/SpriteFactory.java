@@ -13,6 +13,10 @@ import org.bob.core.item.Wheel;
 import java.util.HashMap;
 
 /**
+ * Managing all spawnable game sprites.
+ * Loads sprites from texture atlas and scales
+ * the sprites to their correct size.
+ *
  * Created by jeff on 19/06/16.
  */
 public class SpriteFactory {
@@ -21,16 +25,21 @@ public class SpriteFactory {
     TextureAtlas textureAtlas;
 
     public SpriteFactory() {
-
         loadSprites();
     }
 
+    /**
+     * Loads sprites from texture atlas file.
+     */
     private void loadSprites() {
 
+        // Load combined sprites
         textureAtlas = new TextureAtlas("sprite/game.atlas");
 
+        // Split sprites
         Array<TextureAtlas.AtlasRegion> regions = textureAtlas.getRegions();
 
+        // Instantiate all sprites with their specified scale
         for (TextureAtlas.AtlasRegion region : regions) {
             Sprite sprite = textureAtlas.createSprite(region.name);
 
@@ -51,17 +60,27 @@ public class SpriteFactory {
             float width = sprite.getWidth() * scale;
             float height = sprite.getHeight() * scale;
 
-            sprite.setSize(width, height);
-            sprite.setOrigin(width / 2, height / 2);
+            sprite.setSize(width, height); // Set scaled size
+            sprite.setOrigin(width / 2, height / 2); // Set origin in the middle
 
-            sprites.put(region.name, sprite);
+            sprites.put(region.name, sprite); // Add to list
         }
     }
 
+    /**
+     * Getter for returning the sprite
+     * by its key.
+     *
+     * @param spriteId the sprite Id
+     * @return the sprite or null
+     */
     public Sprite get(String spriteId) {
         return sprites.get(spriteId);
     }
 
+    /**
+     * Cleanup
+     */
     public void dispose() {
         sprites.clear();
         if(textureAtlas != null){
