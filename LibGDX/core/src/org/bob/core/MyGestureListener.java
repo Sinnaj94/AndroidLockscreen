@@ -4,28 +4,50 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
+import java.lang.ref.WeakReference;
+
 /**
+ * Main game gesture listener. Class listens for
+ * touch and swipe events.
+ *
  * Created by Jannis on 20.06.2016.
  */
 public class MyGestureListener implements GestureDetector.GestureListener{
+
+    /*
+     * Fields
+     */
+
     final int THRESHOLD_X = 1000;
-    Bob bob;
-    Game game;
+    WeakReference <Bob> bob;
+    WeakReference <Game> game;
+
+    /**
+     * Constructor
+     * @param bob our bob
+     * @param game game object
+     */
     public MyGestureListener(Bob bob,Game game){
-        this.bob = bob;
-        this.game = game;
+        this.bob = new WeakReference<Bob>(bob);
+        this.game = new WeakReference<Game>(game);
     }
+
+
+    /*
+     * Overridden methods.
+     */
+
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-
         return false;
     }
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-        game.doSpawnItems(1,new Vector2(x, Gdx.graphics.getHeight()-y));
-        if(bob.betweenMyX(x)){
-            bob.changeAction(5);
+        // Spawn item on tap
+        game.get().doSpawnItems(1,new Vector2(x, Gdx.graphics.getHeight()-y));
+        if(bob.get().betweenMyX(x)){
+            bob.get().changeAction(5);
         }
         return false;
     }
@@ -38,11 +60,15 @@ public class MyGestureListener implements GestureDetector.GestureListener{
     @Override
     public boolean fling(float velocityX, float velocityY, int button) {
         if(velocityX > THRESHOLD_X){
-            bob.changeAction(0);
-            bob.setDirection(1);
+            // Swipe from left to right
+            bob.get().changeAction(0);
+            // Let bob walk to the right
+            bob.get().setDirection(1);
         }else if(velocityX < -THRESHOLD_X){
-            bob.changeAction(0);
-            bob.setDirection(-1);
+            // Swipe from right to left
+            bob.get().changeAction(0);
+            // Let bob walk to the left
+            bob.get().setDirection(-1);
 
         }
         return false;
