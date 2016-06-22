@@ -104,7 +104,7 @@ public class Bob extends Actor {
 
         //Create the sheet and Collision box
         createSheet();
-        createCollider(game);
+        createCollider();
 
         //Initiate timer
         resetTimer();
