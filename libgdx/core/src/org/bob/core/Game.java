@@ -65,7 +65,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Platform platform;
     public List<Item> items;
     public GestureDetector gestureDetector;
-    Sound sound = Gdx.audio.newSound(Gdx.files.internal("data/mysound.mp3"));
+
 
     /*
      * Overriden Methods
