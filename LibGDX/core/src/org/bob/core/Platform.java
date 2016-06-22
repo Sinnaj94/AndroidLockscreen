@@ -58,4 +58,13 @@ public class Platform  {
         renderer.end();
 */
     }
+
+    public void dispose() {
+        if(renderer != null) {
+            renderer.dispose();
+            renderer = null;
+        }
+
+        body = null;
+    }
 }

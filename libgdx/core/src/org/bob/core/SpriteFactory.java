@@ -61,4 +61,12 @@ public class SpriteFactory {
     public Sprite get(String spriteId) {
         return sprites.get(spriteId);
     }
+
+    public void dispose() {
+        sprites.clear();
+        if(textureAtlas != null){
+            textureAtlas.dispose();
+            textureAtlas = null;
+        }
+    }
 }

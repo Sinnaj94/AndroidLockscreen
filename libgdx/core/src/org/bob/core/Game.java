@@ -152,8 +152,19 @@ public class Game extends InputAdapter implements ApplicationListener {
     @Override
     public void dispose() {
         stage.dispose();
+        stage = null;
         world.dispose();
+        world = null;
+        platform.dispose();
+        platform = null;
         debugRenderer.dispose();
+        debugRenderer = null;
+        //bob.dispose();
+        spriteFactory.dispose();
+        spriteFactory = null;
+        viewport = null;
+        camera = null;
+        physicsLoader = null;
     }
 
     private void update() {

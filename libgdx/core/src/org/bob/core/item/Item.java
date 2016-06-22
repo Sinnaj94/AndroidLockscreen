@@ -41,8 +41,7 @@ public class Item {
         sprite.draw(batch);
 
     }
-
-
+    
 }
 
 
