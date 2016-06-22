@@ -192,9 +192,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         }
 
-        if (bob.isWaitingForAction()) {
 
-        }
     }
 
     public void doSpawnItems(int count, Vector2 position) {
