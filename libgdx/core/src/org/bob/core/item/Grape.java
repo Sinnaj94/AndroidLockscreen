@@ -10,15 +10,33 @@ import com.badlogic.gdx.physics.box2d.World;
 import org.bob.core.SpriteFactory;
 
 /**
+ * Grape game item.
+ * <p/>
+ * Class is a implementation of the
+ * abstract Item class. It can be used
+ * to specify an object which can be spawned
+ * on the screen.
+ * <p/>
+ * <p/>
  * Created by jeff on 19/06/16.
  */
 public class Grape extends Item {
 
-    public static final float SCALE = 0.5f;
+    /*
+     * Fields
+     */
 
+    public static final float SCALE = 0.5f;
     public static final String SPRITE_ID = "grape";
 
-    public Grape(World world, SpriteFactory spriteFactory, Vector2 position){
+    /**
+     * Constructor
+     *
+     * @param world         the box2d world
+     * @param spriteFactory the sprite factory
+     * @param position      the position of the item
+     */
+    public Grape(World world, SpriteFactory spriteFactory, Vector2 position) {
         super(world, spriteFactory, position);
 
         create(world, spriteFactory);
@@ -26,7 +44,7 @@ public class Grape extends Item {
 
 
     @Override
-    public void create(World world, SpriteFactory spriteFactory){
+    public void create(World world, SpriteFactory spriteFactory) {
 
         sprite = spriteFactory.get(Grape.SPRITE_ID);
 
@@ -37,7 +55,7 @@ public class Grape extends Item {
         body = world.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
-        circle.setRadius(sprite.getWidth()/2);
+        circle.setRadius(sprite.getWidth() / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
@@ -49,7 +67,6 @@ public class Grape extends Item {
 
         circle.dispose();
     }
-
 
 
 }
