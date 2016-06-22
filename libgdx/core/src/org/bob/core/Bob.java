@@ -84,7 +84,7 @@ public class Bob extends Actor {
      * @param world  current World
      * @param camera Camera
      */
-    public Bob(World world, Camera camera,Game game) {
+    public Bob(World world, Camera camera, Game game) {
         hitLast = 'n';
         //Create Particle System
         p = new Particle();
@@ -140,12 +140,12 @@ public class Bob extends Actor {
         body.applyForceToCenter(100, 0, true);
     }
 
-    public boolean objectAboveHead() {
-        for(Item i : game.items){
-            if(i.position.x > position.x && i.position.x < position.x+actorWidth*2){
-                return true;
-            }
+    public boolean betweenMyX(float x, float y) {
+
+        if (x > position.x && x < position.x + actorWidth * 2) {
+            return true;
         }
+
         return false;
     }
 
@@ -158,20 +158,18 @@ public class Bob extends Actor {
             newAction = 0;
         }
 
-        if (objectAboveHead()) {
-            newAction = 5;
-        }
         changeAction(newAction);
     }
 
     public void changeAction(int newAction) {
-        resetTimer();
         if (newAction == 0) {
             hitLast = 'n';
         } else {
             body.setLinearVelocity(0, 0);
         }
         currentAction = newAction;
+        resetTimer();
+
     }
 
     public void setDirection(int direction) {
@@ -186,18 +184,18 @@ public class Bob extends Actor {
     private void resetTimer() {
         timer = 0;
         timeToElapse = getNewTime();
+        Gdx.app.log("OUTOUT","+ "+timeToElapse);
     }
 
-    private float getNewTime(){
+    private float getNewTime() {
         if (currentAction == 0) {
             return MathUtils.random(5f, 12f);
 
-        } else if(currentAction == 5) {
-            return 2;
+        } else if (currentAction == 5) {
+            return 1;
         }
-        else{
-            return MathUtils.random(5f, 10f);
-        }
+        return MathUtils.random(5f, 10f);
+
     }
 
     private boolean timeOver(float delta) {

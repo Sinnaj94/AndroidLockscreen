@@ -17,14 +17,16 @@ public class MyGestureListener implements GestureDetector.GestureListener{
     }
     @Override
     public boolean touchDown(float x, float y, int pointer, int button) {
-        game.doSpawnItems(1,new Vector2(x, Gdx.graphics.getHeight()-y));
 
         return false;
     }
 
     @Override
     public boolean tap(float x, float y, int count, int button) {
-
+        game.doSpawnItems(1,new Vector2(x, Gdx.graphics.getHeight()-y));
+        if(bob.betweenMyX(x,y)){
+            bob.changeAction(5);
+        }
         return false;
     }
 
