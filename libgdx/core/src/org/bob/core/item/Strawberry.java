@@ -45,19 +45,22 @@ public class Strawberry extends Item {
     @Override
     public void create(World world, SpriteFactory spriteFactory, BodyEditorLoader bel) {
 
+        // Load sprite
         sprite = spriteFactory.get(Strawberry.SPRITE_ID);
 
-        float density = 1f;
-
+        // Add body definition and position
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x, position.y);
 
+        // Attach body to world
         body = world.createBody(bodyDef);
 
+        // Specify physics attribute
         FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.density = density;
+        fixtureDef.density = 1f;
 
+        // Load bounding polygon fron json
         bel.attachFixture(body, SPRITE_ID, fixtureDef, sprite.getWidth());
     }
 

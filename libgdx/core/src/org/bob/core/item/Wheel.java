@@ -45,25 +45,32 @@ public class Wheel extends Item {
     @Override
     public void create(World world, SpriteFactory spriteFactory) {
 
+        // Load sprite
         sprite = spriteFactory.get(Wheel.SPRITE_ID);
 
+        // Create body definition and set position
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(position.x, position.y);
 
+        // Add body to world.
         body = world.createBody(bodyDef);
 
+        // Create body bounding box
         CircleShape circle = new CircleShape();
         circle.setRadius(sprite.getWidth() / 2);
 
+        // Set body physics attributes
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.9f;
         fixtureDef.restitution = 0.6f; // Make it bounce a little bit
 
+        // Add physics attributes to body
         Fixture fixture = body.createFixture(fixtureDef);
 
+        // Cleanup
         circle.dispose();
     }
 
