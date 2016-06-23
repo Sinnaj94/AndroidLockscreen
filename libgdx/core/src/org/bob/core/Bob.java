@@ -290,6 +290,10 @@ public class Bob extends Actor {
                 smoke();
                 break;
         }
+
+        if(currentAction!=0){
+            moveX(0f);
+        }
     }
 
 
